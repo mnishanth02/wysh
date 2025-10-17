@@ -11,6 +11,13 @@ import { gsap } from "gsap";
 import { FESTIVALS } from "@/lib/constants";
 import type { RelationshipContext } from "@/types";
 import { generateUniqueKey } from "@/lib/utils";
+import {
+    detectDevicePerformance,
+    optimizeGSAPTimeline,
+    shouldUseReducedMotion,
+    startFPSMonitor,
+    logPerformanceMetrics
+} from "@/lib/performance";
 
 interface DiwaliTemplateProps {
     recipientName: string;
@@ -54,13 +61,40 @@ export function DiwaliTemplate({
     useEffect(() => {
         if (!containerRef.current) return;
 
+        // T125: Start FPS monitoring for performance profiling
+        const fpsMonitor = process.env.NODE_ENV === 'development' ? startFPSMonitor() : null;
+
+        // T127: Check for reduced motion preference
+        const useReducedMotion = shouldUseReducedMotion();
+
+        // T124: Detect device performance for optimization
+        const devicePerf = detectDevicePerformance();
+
         const ctx = gsap.context(() => {
             // Create GSAP timeline
             const tl = gsap.timeline({
                 onComplete: () => {
+                    // T125: Log performance metrics after animation completes
+                    if (fpsMonitor) {
+                        const metrics = fpsMonitor.stop();
+                        logPerformanceMetrics('DiwaliTemplate', metrics);
+                    }
                     onAnimationComplete?.();
                 },
             });
+
+            // T127: Skip animations for reduced motion preference
+            if (useReducedMotion) {
+                tl.set([".diwali-bg", ".diya", ".flame", ".greeting-text", ".recipient-name", ".sender-name", ".sparkle"], {
+                    opacity: 1,
+                    scale: 1,
+                });
+                tl.play();
+                return;
+            }
+
+            // T126: Optimize timeline based on device performance
+            optimizeGSAPTimeline(tl, devicePerf);
 
             timelineRef.current = tl;
 

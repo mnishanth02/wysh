@@ -163,104 +163,18 @@
   }
 }
 
-@layer utilities {
-  /* Touch Target Utilities - Minimum 44px × 44px for accessibility */
-  .touch-target {
-    min-height: 44px;
-    min-width: 44px;
-  }
+/* Touch Target Utilities - Minimum 44px × 44px for accessibility */
+@utility touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
 
-  .touch-target-lg {
-    min-height: 48px;
-    min-width: 48px;
-  }
+@utility touch-target-lg {
+  min-height: 48px;
+  min-width: 48px;
+}
 
-  .touch-target-xl {
-    min-height: 56px;
-    min-width: 56px;
-  }
-
-  /* Mobile-optimized spacing utilities */
-  .mobile-padding {
-    @apply px-4 sm:px-6 md:px-8;
-  }
-
-  .mobile-padding-y {
-    @apply py-4 sm:py-6 md:py-8;
-  }
-
-  .mobile-section-spacing {
-    @apply py-8 sm:py-12 md:py-16 lg:py-20;
-  }
-
-  .mobile-container {
-    @apply w-full max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8;
-  }
-
-  /* Responsive text scaling */
-  .text-responsive-xs {
-    @apply text-xs sm:text-sm;
-  }
-
-  .text-responsive-sm {
-    @apply text-sm sm:text-base;
-  }
-
-  .text-responsive-base {
-    @apply text-base sm:text-lg;
-  }
-
-  .text-responsive-lg {
-    @apply text-lg sm:text-xl;
-  }
-
-  .text-responsive-xl {
-    @apply text-xl sm:text-2xl;
-  }
-
-  .text-responsive-2xl {
-    @apply text-2xl sm:text-3xl md:text-4xl;
-  }
-
-  .text-responsive-3xl {
-    @apply text-3xl sm:text-4xl md:text-5xl;
-  }
-
-  .text-responsive-4xl {
-    @apply text-4xl sm:text-5xl md:text-6xl lg:text-7xl;
-  }
-
-  /* Safe area for mobile devices */
-  .safe-area-inset-bottom {
-    padding-bottom: max(1rem, env(safe-area-inset-bottom));
-  }
-
-  .safe-area-inset-top {
-    padding-top: max(1rem, env(safe-area-inset-top));
-  }
-
-  /* Prevent horizontal scroll on mobile */
-  .no-scrollbar-x {
-    overflow-x: hidden;
-  }
-
-  /* Animation delay utilities */
-  .animation-delay-100 {
-    animation-delay: var(--animation-delay-100);
-  }
-  .animation-delay-200 {
-    animation-delay: var(--animation-delay-200);
-  }
-  .animation-delay-300 {
-    animation-delay: var(--animation-delay-300);
-  }
-  .animation-delay-500 {
-    animation-delay: var(--animation-delay-500);
-  }
-  .animation-delay-600 {
-    animation-delay: var(--animation-delay-600);
-  }
-  .animation-delay-700 {
-    animation-delay: var(--animation-delay-700);
-  }
+@utility touch-target-xl {
+  min-height: 56px;
+  min-width: 56px;
 }
