@@ -2,37 +2,82 @@
 
 /**
  * Share Button Component
- * Generates WhatsApp deep link and handles sharing
+ * Generates WhatsApp deep link and handles sharing with festival context
  */
 
 import { Button } from "@/components/ui/button";
-import { generateWhatsAppLink } from "@/lib/whatsapp";
-import { MessageCircle } from "lucide-react";
+import { generateWhatsAppLink, isWhatsAppAvailable } from "@/lib/whatsapp";
+import { MessageCircle, Copy } from "lucide-react";
 import { buildGreetingUrl } from "@/lib/utils";
+import type { FestivalType } from "@/types";
+import { useState } from "react";
 
 interface ShareButtonProps {
     shareableId: string;
+    festivalType?: FestivalType;
+    senderName?: string;
 }
 
-export function ShareButton({ shareableId }: ShareButtonProps) {
+export function ShareButton({
+    shareableId,
+    festivalType,
+    senderName,
+}: ShareButtonProps) {
+    const [copied, setCopied] = useState(false);
+    const whatsappAvailable = isWhatsAppAvailable();
+
     const handleWhatsAppShare = () => {
-        const greetingUrl = buildGreetingUrl(shareableId);
-        const whatsappUrl = generateWhatsAppLink(greetingUrl);
+        const whatsappUrl = generateWhatsAppLink(
+            shareableId,
+            festivalType,
+            senderName,
+        );
         window.open(whatsappUrl, "_blank");
     };
 
+    const handleCopyLink = async () => {
+        const greetingUrl = buildGreetingUrl(shareableId);
+        try {
+            await navigator.clipboard.writeText(greetingUrl);
+            setCopied(true);
+            setTimeout(() => setCopied(false), 2000);
+        } catch (error) {
+            console.error("Failed to copy link:", error);
+        }
+    };
+
     return (
-        <Button
-            onClick={ handleWhatsAppShare }
-            className="touch-target-lg h-auto py-3 sm:py-4 bg-green-600 hover:bg-green-700 active:scale-95 w-full sm:w-auto"
-        >
-            <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
-            <div className="text-left">
-                <div className="font-semibold text-sm sm:text-base">
-                    Share via WhatsApp
+        <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
+            <Button
+                onClick={ handleWhatsAppShare }
+                className="touch-target-lg h-auto py-3 sm:py-4 bg-green-600 hover:bg-green-700 active:scale-95 w-full sm:w-auto"
+            >
+                <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                <div className="text-left">
+                    <div className="font-semibold text-sm sm:text-base">
+                        Share via WhatsApp
+                    </div>
+                    <div className="text-xs opacity-90">Instant share</div>
                 </div>
-                <div className="text-xs opacity-90">Instant share</div>
-            </div>
-        </Button>
+            </Button>
+
+            { !whatsappAvailable && (
+                <Button
+                    onClick={ handleCopyLink }
+                    variant="outline"
+                    className="touch-target-lg h-auto py-3 sm:py-4 active:scale-95 w-full sm:w-auto"
+                >
+                    <Copy className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+                    <div className="text-left">
+                        <div className="font-semibold text-sm sm:text-base">
+                            { copied ? "Link Copied!" : "Copy Link" }
+                        </div>
+                        <div className="text-xs opacity-90">
+                            { copied ? "Ready to share" : "Alternative share" }
+                        </div>
+                    </div>
+                </Button>
+            ) }
+        </div>
     );
 }

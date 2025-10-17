@@ -88,6 +88,18 @@ export const FESTIVAL_TYPES: FestivalType[] = [
   "generic",
 ];
 
+/**
+ * Festival emoji mappings for WhatsApp messages and metadata
+ */
+export const FESTIVAL_EMOJIS: Record<FestivalType, string> = {
+  diwali: "🪔",
+  holi: "🎨",
+  christmas: "🎄",
+  newyear: "🎉",
+  pongal: "🌾",
+  generic: "✨",
+};
+
 // ============================================================================
 // Relationship Types
 // ============================================================================
