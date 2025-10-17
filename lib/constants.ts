@@ -370,3 +370,44 @@ export const TEMPLATES_PER_FESTIVAL = {
  * Template complexity levels
  */
 export const TEMPLATE_COMPLEXITY = ["simple", "moderate", "complex"] as const;
+
+// ============================================================================
+// Sample Greetings for Landing Page
+// ============================================================================
+
+/**
+ * Sample greetings to showcase on landing page
+ * Displays variety of festivals and relationship contexts
+ */
+export const SAMPLE_GREETINGS = [
+  {
+    id: "sample-diwali-professional",
+    festivalType: "diwali" as const,
+    relationshipType: "colleague" as const,
+    recipientName: "Team",
+    senderName: "Priya",
+    message: "",
+    label: "Diwali • Professional",
+    description: "Warm festival wishes for colleagues",
+  },
+  {
+    id: "sample-holi-friends",
+    festivalType: "holi" as const,
+    relationshipType: "best_friend" as const,
+    recipientName: "Raj",
+    senderName: "Amit",
+    message: "",
+    label: "Holi • Friends",
+    description: "Colorful celebration with friends",
+  },
+  {
+    id: "sample-christmas-family",
+    festivalType: "christmas" as const,
+    relationshipType: "parents" as const,
+    recipientName: "Mom & Dad",
+    senderName: "Sarah",
+    message: "",
+    label: "Christmas • Family",
+    description: "Heartfelt wishes for loved ones",
+  },
+] as const;
