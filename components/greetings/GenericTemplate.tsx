@@ -6,11 +6,11 @@
  * Features: Star sparkle and confetti animation
  */
 
-import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { useEffect, useRef } from "react";
 import { FESTIVALS } from "@/lib/constants";
-import type { RelationshipContext } from "@/types";
 import { generateUniqueKey } from "@/lib/utils";
+import type { RelationshipContext } from "@/types";
 
 interface GenericTemplateProps {
   recipientName: string;

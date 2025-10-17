@@ -3,10 +3,10 @@
  * Displayed when users navigate to invalid routes
  */
 
+import { Home, PlusCircle, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { Sparkles, Home, PlusCircle } from "lucide-react";
 
 export default function NotFound() {
   return (

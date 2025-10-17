@@ -5,10 +5,10 @@
  * Catches React errors and displays user-friendly error UI
  */
 
+import { AlertTriangle } from "lucide-react";
 import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
-import { AlertTriangle } from "lucide-react";
 
 export default function GlobalError({
   error,

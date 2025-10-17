@@ -5,16 +5,62 @@
  * Fetches and displays the animated greeting
  */
 
+import { useMutation, useQuery } from "convex/react";
 import { useEffect } from "react";
-import { useQuery, useMutation } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import { LoadingState } from "@/components/shared/LoadingState";
-import { ErrorState } from "@/components/shared/ErrorState";
 import { GreetingRenderer } from "@/components/greetings/GreetingRenderer";
+import { ErrorState } from "@/components/shared/ErrorState";
+import { LoadingState } from "@/components/shared/LoadingState";
+import { api } from "@/convex/_generated/api";
 import type { FestivalType, RelationshipType } from "@/types";
 
 interface GreetingViewProps {
   shareableId: string;
+}
+
+/**
+ * Key for storing viewed greeting IDs in sessionStorage
+ */
+const VIEWED_GREETINGS_KEY = "wysh_viewed_greetings";
+
+/**
+ * Check if greeting has already been viewed in current session
+ *
+ * @param greetingId - The Convex document ID of the greeting
+ * @returns True if greeting has been viewed, false otherwise
+ */
+function hasViewedGreeting(greetingId: string): boolean {
+  if (typeof window === "undefined") return false;
+
+  try {
+    const viewed = sessionStorage.getItem(VIEWED_GREETINGS_KEY);
+    if (!viewed) return false;
+
+    const viewedIds = JSON.parse(viewed) as string[];
+    return viewedIds.includes(greetingId);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Mark greeting as viewed in current session
+ *
+ * @param greetingId - The Convex document ID of the greeting
+ */
+function markGreetingAsViewed(greetingId: string): void {
+  if (typeof window === "undefined") return;
+
+  try {
+    const viewed = sessionStorage.getItem(VIEWED_GREETINGS_KEY);
+    const viewedIds = viewed ? (JSON.parse(viewed) as string[]) : [];
+
+    if (!viewedIds.includes(greetingId)) {
+      viewedIds.push(greetingId);
+      sessionStorage.setItem(VIEWED_GREETINGS_KEY, JSON.stringify(viewedIds));
+    }
+  } catch {
+    // Silent failure - non-critical
+  }
 }
 
 export function GreetingView({ shareableId }: GreetingViewProps) {
@@ -25,11 +71,17 @@ export function GreetingView({ shareableId }: GreetingViewProps) {
 
   useEffect(() => {
     // Increment view count when greeting loads (fire-and-forget)
-    if (greeting?._id) {
-      incrementViewCount({ greetingId: greeting._id }).catch(() => {
-        // Silent failure - view tracking is non-critical
-        console.log("View count tracking failed (non-critical)");
-      });
+    // Only increment if greeting hasn't been viewed in current session
+    if (greeting?._id && !hasViewedGreeting(greeting._id)) {
+      incrementViewCount({ greetingId: greeting._id })
+        .then(() => {
+          // Mark as viewed only after successful increment
+          markGreetingAsViewed(greeting._id);
+        })
+        .catch(() => {
+          // Silent failure - view tracking is non-critical
+          console.log("View count tracking failed (non-critical)");
+        });
     }
   }, [greeting?._id, incrementViewCount]);
 
@@ -47,12 +99,12 @@ export function GreetingView({ shareableId }: GreetingViewProps) {
 
   return (
     <GreetingRenderer
-      festivalType={greeting.festivalType as FestivalType}
-      relationshipType={greeting.relationshipType as RelationshipType}
-      recipientName={greeting.recipientName}
-      senderName={greeting.senderName}
-      message={greeting.customMessage || greeting.generatedMessage || ""}
-      templateId={greeting.templateId}
+      festivalType={ greeting.festivalType as FestivalType }
+      relationshipType={ greeting.relationshipType as RelationshipType }
+      recipientName={ greeting.recipientName }
+      senderName={ greeting.senderName }
+      message={ greeting.customMessage || greeting.generatedMessage || "" }
+      templateId={ greeting.templateId }
     />
   );
 }

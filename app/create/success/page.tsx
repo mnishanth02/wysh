@@ -5,16 +5,16 @@
  * Displays success message and sharing options after greeting creation
  */
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import { Navigation } from "@/components/layout/Navigation";
-import { Footer } from "@/components/layout/Footer";
-import { Card } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Check, Copy, Sparkles } from "lucide-react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { Footer } from "@/components/layout/Footer";
+import { Navigation } from "@/components/layout/Navigation";
 import { ShareButton } from "@/components/shared/ShareButton";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import type { FestivalType } from "@/types";
 
 export default function SuccessPage() {

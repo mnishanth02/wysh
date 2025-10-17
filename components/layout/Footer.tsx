@@ -3,8 +3,8 @@
  * Footer section for the Wysh platform
  */
 
-import Link from "next/link";
 import { Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export function Footer() {
   return (

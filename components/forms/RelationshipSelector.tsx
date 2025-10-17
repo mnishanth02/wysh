@@ -6,10 +6,10 @@
  * Handles relationship selection for greeting personalization
  */
 
+import { Briefcase, Heart, UserCircle, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Card } from "@/components/ui/card";
 import { RELATIONSHIP_TYPES } from "@/lib/constants";
-import { Users, Heart, Briefcase, UserCircle } from "lucide-react";
 import type { RelationshipType } from "@/types";
 
 const CATEGORY_ICONS = {

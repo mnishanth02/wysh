@@ -5,14 +5,14 @@
  * Third step in greeting creation flow
  */
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { Navigation } from "@/components/layout/Navigation";
-import { Footer } from "@/components/layout/Footer";
-import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import type { FestivalType, RelationshipType } from "@/types";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { PersonalizationForm } from "@/components/forms/PersonalizationForm";
+import { Footer } from "@/components/layout/Footer";
+import { Navigation } from "@/components/layout/Navigation";
+import { Button } from "@/components/ui/button";
+import type { FestivalType, RelationshipType } from "@/types";
 
 export default function PersonalizePage() {
   const router = useRouter();

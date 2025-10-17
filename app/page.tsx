@@ -1,13 +1,13 @@
 "use client";
 
-import Link from "next/link";
-import { Navigation } from "@/components/layout/Navigation";
-import { Button } from "@/components/ui/button";
 import { Sparkles } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { Footer } from "@/components/layout/Footer";
+import { Navigation } from "@/components/layout/Navigation";
 import { SampleGreeting } from "@/components/shared/SampleGreeting";
+import { Button } from "@/components/ui/button";
 import { SAMPLE_GREETINGS } from "@/lib/constants";
-import { useEffect, useState, useRef } from "react";
 
 export default function Home() {
   const [samplesVisible, setSamplesVisible] = useState(false);

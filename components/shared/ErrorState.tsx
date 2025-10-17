@@ -4,10 +4,10 @@
  * Displays error messages and retry options
  */
 
-import { AlertCircle, RefreshCw, Home } from "lucide-react";
-import { Button } from "../ui/button";
-import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { AlertCircle, Home, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { Alert, AlertDescription, AlertTitle } from "../ui/alert";
+import { Button } from "../ui/button";
 
 // ============================================================================
 // Error State Props

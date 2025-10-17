@@ -6,11 +6,11 @@
  * Features: Vibrant color burst animations
  */
 
-import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { useEffect, useRef } from "react";
 import { FESTIVALS } from "@/lib/constants";
-import type { RelationshipContext } from "@/types";
 import { generateUniqueKey } from "@/lib/utils";
+import type { RelationshipContext } from "@/types";
 
 interface HoliTemplateProps {
   recipientName: string;
@@ -32,7 +32,7 @@ export function HoliTemplate({
   const festivalData = FESTIVALS.holi;
   const colors = festivalData.colorPalette;
 
-  const animationDuration =
+  const _animationDuration =
     relationshipContext.animationSpeed === "slow"
       ? 7
       : relationshipContext.animationSpeed === "fast"

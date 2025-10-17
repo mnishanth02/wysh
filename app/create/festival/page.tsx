@@ -5,9 +5,9 @@
  * First step in greeting creation flow
  */
 
-import { Navigation } from "@/components/layout/Navigation";
-import { Footer } from "@/components/layout/Footer";
 import { FestivalSelector } from "@/components/forms/FestivalSelector";
+import { Footer } from "@/components/layout/Footer";
+import { Navigation } from "@/components/layout/Navigation";
 
 export default function FestivalPage() {
   return (

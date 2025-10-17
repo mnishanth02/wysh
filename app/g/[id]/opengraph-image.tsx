@@ -5,8 +5,8 @@
  */
 
 import { ImageResponse } from "next/og";
+import { FESTIVAL_EMOJIS, FESTIVALS } from "@/lib/constants";
 import { fetchGreetingByShareableId } from "@/lib/convex-server";
-import { FESTIVALS, FESTIVAL_EMOJIS } from "@/lib/constants";
 import type { FestivalType } from "@/types";
 
 export const runtime = "edge";

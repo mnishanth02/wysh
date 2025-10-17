@@ -6,12 +6,12 @@
  * Fetches festivals from Convex and handles selection
  */
 
-import { useRouter } from "next/navigation";
 import { useQuery } from "convex/react";
-import { api } from "@/convex/_generated/api";
-import { Card } from "@/components/ui/card";
-import { LoadingState } from "@/components/shared/LoadingState";
+import { useRouter } from "next/navigation";
 import { ErrorState } from "@/components/shared/ErrorState";
+import { LoadingState } from "@/components/shared/LoadingState";
+import { Card } from "@/components/ui/card";
+import { api } from "@/convex/_generated/api";
 import { FESTIVALS } from "@/lib/constants";
 import type { FestivalType } from "@/types";
 

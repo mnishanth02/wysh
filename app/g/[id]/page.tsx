@@ -4,8 +4,8 @@
  */
 
 import type { Metadata } from "next";
+import { FESTIVAL_EMOJIS, FESTIVALS } from "@/lib/constants";
 import { fetchGreetingByShareableId } from "@/lib/convex-server";
-import { FESTIVALS, FESTIVAL_EMOJIS } from "@/lib/constants";
 import type { FestivalType } from "@/types";
 
 interface GreetingPageProps {

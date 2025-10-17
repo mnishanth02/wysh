@@ -6,8 +6,8 @@
  * Features: Reduced complexity animations, auto-play, subtle looping
  */
 
-import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
+import { useEffect, useRef, useState } from "react";
 import { FESTIVALS } from "@/lib/constants";
 import { getRelationshipContext } from "@/lib/context-engine";
 import { generateUniqueKey } from "@/lib/utils";

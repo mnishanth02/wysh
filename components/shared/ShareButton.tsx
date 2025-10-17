@@ -5,12 +5,12 @@
  * Generates WhatsApp deep link and handles sharing with festival context
  */
 
-import { Button } from "@/components/ui/button";
-import { generateWhatsAppLink, isWhatsAppAvailable } from "@/lib/whatsapp";
-import { MessageCircle, Copy } from "lucide-react";
-import { buildGreetingUrl } from "@/lib/utils";
-import type { FestivalType } from "@/types";
+import { Copy, MessageCircle } from "lucide-react";
 import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { buildGreetingUrl } from "@/lib/utils";
+import { generateWhatsAppLink, isWhatsAppAvailable } from "@/lib/whatsapp";
+import type { FestivalType } from "@/types";
 
 interface ShareButtonProps {
   shareableId: string;
