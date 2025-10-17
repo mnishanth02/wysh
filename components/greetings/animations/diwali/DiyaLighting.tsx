@@ -5,9 +5,9 @@
  * Animated diya (oil lamps) with staggered lighting effect
  */
 
-import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 
 export interface DiyaLightingProps {
   count?: number;

@@ -6,13 +6,13 @@
  */
 
 import { useMemo } from "react";
-import type { RelationshipType } from "@/types";
-import type { AnimationContext } from "@/types/animation.types";
 import {
   getAnimationContext,
   getParticleCountForIntensity,
 } from "@/lib/animations/animation-context";
 import type { FestivalType } from "@/lib/animations/festival-themes";
+import type { RelationshipType } from "@/types";
+import type { AnimationContext } from "@/types/animation.types";
 
 export interface AnimationConfig extends AnimationContext {
   particleCount: number;

@@ -5,7 +5,7 @@
  * Shared canvas element for particle system rendering
  */
 
-import { forwardRef, useEffect, useRef, useImperativeHandle } from "react";
+import { forwardRef, useEffect, useImperativeHandle, useRef } from "react";
 import { ParticleSystem } from "@/lib/animations/particle-physics";
 import type { ParticleSystemConfig } from "@/types/particle.types";
 

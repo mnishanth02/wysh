@@ -111,13 +111,13 @@
 
 ### Diwali Template Integration
 
-- [ ] T033 [US1] Refactor existing `components/greetings/DiwaliTemplate.tsx` to use new animation components
-- [ ] T034 [US1] Create master GSAP timeline in DiwaliTemplate with phases: (0-2s) background fade + diya lighting, (2-6s) fireworks + sparkles, (6-8s) text reveal, (8-10s) finale with sparkle loop
-- [ ] T035 [US1] Integrate ContextAdapter in DiwaliTemplate to apply relationship-aware intensity and color adjustments
-- [ ] T036 [US1] Add prefers-reduced-motion detection: if enabled, render ReducedMotionVariant with simple fade-in (0-2s) and instant text display
-- [ ] T037 [US1] Wire onAnimationComplete callback to display ReplayButton (from `components/shared/ReplayButton.tsx`) after 8-10s
-- [ ] T038 [US1] Add GPU acceleration hints: transform: translate3d, will-change: transform, force3D: true in GSAP config
-- [ ] T039 [US1] Implement text reveal sequence: recipientName appears character-by-character (6-7s), senderName + message fade in (7-8s)
+- [X] T033 [US1] Refactor existing `components/greetings/DiwaliTemplate.tsx` to use new animation components
+- [X] T034 [US1] Create master GSAP timeline in DiwaliTemplate with phases: (0-2s) background fade + diya lighting, (2-6s) fireworks + sparkles, (6-8s) text reveal, (8-10s) finale with sparkle loop
+- [X] T035 [US1] Integrate ContextAdapter in DiwaliTemplate to apply relationship-aware intensity and color adjustments
+- [X] T036 [US1] Add prefers-reduced-motion detection: if enabled, render ReducedMotionVariant with simple fade-in (0-2s) and instant text display
+- [X] T037 [US1] Wire onAnimationComplete callback to display ReplayButton (from `components/shared/ReplayButton.tsx`) after 8-10s
+- [X] T038 [US1] Add GPU acceleration hints: transform: translate3d, will-change: transform, force3D: true in GSAP config
+- [X] T039 [US1] Implement text reveal sequence: recipientName appears character-by-character (6-7s), senderName + message fade in (7-8s)
 
 **Checkpoint ✅**: Diwali animation is fully functional, independently testable, and delivers MVP value
 
@@ -138,15 +138,15 @@
 
 ### New Year Animation Components
 
-- [ ] T040 [P] [US2] Create `components/greetings/animations/newyear/CountdownTimer.tsx` with SVG text elements for numbers "3", "2", "1", GSAP scale animation (scale: 0 → 1.5 → 1), burst disappear effect (scale: 1 → 2, opacity: 1 → 0)
-- [ ] T041 [P] [US2] Implement rolling digit effect in CountdownTimer using GSAP y-translate with modulo rotation for smooth transition between numbers
-- [ ] T042 [P] [US2] Create `components/greetings/animations/newyear/FireworkBurst.tsx` with ParticleCanvas, 5-7 fireworks with staggered timing (delay 0.1-0.3s between launches)
-- [ ] T043 [P] [US2] Configure FireworkBurst with 360-degree radial particle distribution, 400-500 particles total, color cycling through New Year palette (#1E90FF, #FF1493, #FFD700, #32CD32, #9370DB, #C0C0C0)
-- [ ] T044 [P] [US2] Implement gravity simulation in FireworkBurst: particles fall with vy += gravity * dt, fade as they descend (alpha = 1 - vy / maxFallSpeed)
-- [ ] T045 [P] [US2] Create `components/greetings/animations/newyear/ConfettiSystem.tsx` with 100-150 confetti pieces, random colors from New Year palette
-- [ ] T046 [P] [US2] Add 3D rotation to ConfettiSystem: GSAP animates rotateX (0-360deg), rotateY (0-360deg), rotateZ (0-360deg) with random duration (1-3s per rotation)
-- [ ] T047 [P] [US2] Implement confetti fall physics: vy += gravity * dt, slight horizontal drift (vx = sin(time) * windSpeed), realistic tumble via rotation
-- [ ] T048 [P] [US2] Create `components/greetings/animations/newyear/TextExplosion.tsx` with "Happy New Year 2026" text, each letter bounces elastically from center using GSAP elastic ease
+- [X] T040 [P] [US2] Create `components/greetings/animations/newyear/CountdownTimer.tsx` with SVG text elements for numbers "3", "2", "1", GSAP scale animation (scale: 0 → 1.5 → 1), burst disappear effect (scale: 1 → 2, opacity: 1 → 0)
+- [X] T041 [P] [US2] Implement rolling digit effect in CountdownTimer using GSAP y-translate with modulo rotation for smooth transition between numbers
+- [X] T042 [P] [US2] Create `components/greetings/animations/newyear/FireworkBurst.tsx` with ParticleCanvas, 5-7 fireworks with staggered timing (delay 0.1-0.3s between launches)
+- [X] T043 [P] [US2] Configure FireworkBurst with 360-degree radial particle distribution, 400-500 particles total, color cycling through New Year palette (#1E90FF, #FF1493, #FFD700, #32CD32, #9370DB, #C0C0C0)
+- [X] T044 [P] [US2] Implement gravity simulation in FireworkBurst: particles fall with vy += gravity * dt, fade as they descend (alpha = 1 - vy / maxFallSpeed)
+- [X] T045 [P] [US2] Create `components/greetings/animations/newyear/ConfettiSystem.tsx` with 100-150 confetti pieces, random colors from New Year palette
+- [X] T046 [P] [US2] Add 3D rotation to ConfettiSystem: GSAP animates rotateX (0-360deg), rotateY (0-360deg), rotateZ (0-360deg) with random duration (1-3s per rotation)
+- [X] T047 [P] [US2] Implement confetti fall physics: vy += gravity * dt, slight horizontal drift (vx = sin(time) * windSpeed), realistic tumble via rotation
+- [X] T048 [P] [US2] Create `components/greetings/animations/newyear/TextExplosion.tsx` with "Happy New Year 2026" text, each letter bounces elastically from center using GSAP elastic ease
 
 ### New Year SVG Assets
 

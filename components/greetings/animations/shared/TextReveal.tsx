@@ -5,8 +5,8 @@
  * Character-by-character text reveal animation using GSAP
  */
 
-import { useEffect, useRef } from "react";
 import { gsap } from "gsap";
+import { useEffect, useRef } from "react";
 
 export interface TextRevealProps {
   text: string;

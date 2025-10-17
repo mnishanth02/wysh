@@ -5,12 +5,12 @@
  * Floating golden sparkle particles for Diwali ambiance
  */
 
-import { useCallback, useRef, useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
+import type { ParticleSystem } from "@/lib/animations/particle-physics";
 import {
   ParticleCanvas,
   type ParticleCanvasRef,
 } from "../shared/ParticleCanvas";
-import type { ParticleSystem } from "@/lib/animations/particle-physics";
 
 export interface SparkleParticlesProps {
   count?: number;
