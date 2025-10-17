@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <!-- Rectangle confetti shape -->
+    <g id="rect-confetti">
+      <rect x="0" y="0" width="10" height="6" fill="currentColor" rx="1"/>
+    </g>
+
+    <!-- Circle confetti shape -->
+    <g id="circle-confetti">
+      <circle cx="5" cy="5" r="5" fill="currentColor"/>
+    </g>
+
+    <!-- Triangle confetti shape -->
+    <g id="triangle-confetti">
+      <path d="M5 0 L10 8.66 L0 8.66 Z" fill="currentColor"/>
+    </g>
+
+    <!-- Star confetti shape (4-point) -->
+    <g id="star-confetti">
+      <path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill="currentColor"/>
+    </g>
+
+    <!-- 5-point star variant -->
+    <g id="star5-confetti">
+      <path d="M5 0 L6.18 3.82 L10 4.12 L7.09 6.91 L7.94 10.71 L5 8.18 L2.06 10.71 L2.91 6.91 L0 4.12 L3.82 3.82 Z" fill="currentColor"/>
+    </g>
+  </defs>
+
+  <!-- Example usage (for reference, not rendered in actual use) -->
+  <g opacity="0.3">
+    <use href="#rect-confetti" x="10" y="10" fill="#1E90FF"/>
+    <use href="#circle-confetti" x="30" y="10" fill="#FF1493"/>
+    <use href="#triangle-confetti" x="50" y="10" fill="#FFD700"/>
+    <use href="#star-confetti" x="70" y="10" fill="#32CD32"/>
+    <use href="#star5-confetti" x="10" y="30" fill="#9370DB"/>
+  </g>
+</svg>

@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Dark gradient for night sky -->
+    <linearGradient id="night-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0e27;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#1a1f3a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2a2f4a;stop-opacity:1" />
+    </linearGradient>
+
+    <!-- Radial gradient for distant city glow -->
+    <radialGradient id="city-glow" cx="50%" cy="100%" r="50%">
+      <stop offset="0%" style="stop-color:#3a4f7a;stop-opacity:0.3" />
+      <stop offset="100%" style="stop-color:#0a0e27;stop-opacity:0" />
+    </radialGradient>
+
+    <!-- Star twinkle animation -->
+    <style>
+      @keyframes twinkle {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 1; }
+      }
+      @keyframes twinkle-slow {
+        0%, 100% { opacity: 0.2; }
+        50% { opacity: 0.8; }
+      }
+      @keyframes twinkle-fast {
+        0%, 100% { opacity: 0.4; }
+        50% { opacity: 1; }
+      }
+      .star-small { animation: twinkle 3s ease-in-out infinite; }
+      .star-medium { animation: twinkle-slow 4s ease-in-out infinite; }
+      .star-large { animation: twinkle-fast 2s ease-in-out infinite; }
+    </style>
+  </defs>
+
+  <!-- Night sky background -->
+  <rect width="1920" height="1080" fill="url(#night-gradient)"/>
+
+  <!-- City glow at horizon -->
+  <rect width="1920" height="1080" fill="url(#city-glow)"/>
+
+  <!-- Stars - scattered across the sky -->
+  <!-- Small stars (1-2px) -->
+  <g class="star-small" opacity="0.6">
+    <circle cx="150" cy="100" r="1.5" fill="#ffffff"/>
+    <circle cx="450" cy="150" r="1" fill="#ffffff"/>
+    <circle cx="750" cy="80" r="1.5" fill="#ffffff"/>
+    <circle cx="1050" cy="120" r="1" fill="#ffffff"/>
+    <circle cx="1350" cy="90" r="1.5" fill="#ffffff"/>
+    <circle cx="1650" cy="130" r="1" fill="#ffffff"/>
+    <circle cx="300" cy="250" r="1" fill="#ffffff"/>
+    <circle cx="600" cy="200" r="1.5" fill="#ffffff"/>
+    <circle cx="900" cy="280" r="1" fill="#ffffff"/>
+    <circle cx="1200" cy="220" r="1.5" fill="#ffffff"/>
+    <circle cx="1500" cy="260" r="1" fill="#ffffff"/>
+    <circle cx="1800" cy="240" r="1.5" fill="#ffffff"/>
+  </g>
+
+  <!-- Medium stars (2-3px) with slower twinkle -->
+  <g class="star-medium" opacity="0.7">
+    <circle cx="200" cy="180" r="2" fill="#ffffff"/>
+    <circle cx="500" cy="220" r="2.5" fill="#ffffff"/>
+    <circle cx="800" cy="160" r="2" fill="#ffffff"/>
+    <circle cx="1100" cy="200" r="2.5" fill="#ffffff"/>
+    <circle cx="1400" cy="180" r="2" fill="#ffffff"/>
+    <circle cx="1700" cy="190" r="2.5" fill="#ffffff"/>
+    <circle cx="350" cy="320" r="2" fill="#ffffff"/>
+    <circle cx="650" cy="350" r="2.5" fill="#ffffff"/>
+    <circle cx="950" cy="300" r="2" fill="#ffffff"/>
+    <circle cx="1250" cy="340" r="2.5" fill="#ffffff"/>
+    <circle cx="1550" cy="310" r="2" fill="#ffffff"/>
+  </g>
+
+  <!-- Large prominent stars (3-4px) with fast twinkle -->
+  <g class="star-large" opacity="0.9">
+    <circle cx="400" cy="140" r="3" fill="#ffffff"/>
+    <circle cx="700" cy="260" r="3.5" fill="#ffffff"/>
+    <circle cx="1000" cy="180" r="3" fill="#ffffff"/>
+    <circle cx="1300" cy="240" r="3.5" fill="#ffffff"/>
+    <circle cx="1600" cy="160" r="3" fill="#ffffff"/>
+  </g>
+
+  <!-- Extra bright stars with glow effect -->
+  <g opacity="0.8">
+    <circle cx="960" cy="150" r="4" fill="#ffffff" filter="url(#star-glow)"/>
+    <circle cx="500" cy="300" r="3.5" fill="#ffffff" filter="url(#star-glow)"/>
+    <circle cx="1420" cy="200" r="3.5" fill="#ffffff" filter="url(#star-glow)"/>
+  </g>
+
+  <!-- Star glow filter -->
+  <defs>
+    <filter id="star-glow">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Subtle nebula clouds -->
+  <g opacity="0.05">
+    <ellipse cx="400" cy="200" rx="200" ry="100" fill="#6495ed"/>
+    <ellipse cx="1400" cy="300" rx="250" ry="120" fill="#9370db"/>
+  </g>
+</svg>

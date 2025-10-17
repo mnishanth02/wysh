@@ -150,19 +150,19 @@
 
 ### New Year SVG Assets
 
-- [ ] T049 [P] [US2] Create SVG asset `public/festivals/newyear/confetti-shapes.svg`: collection of shapes (rectangle, circle, triangle, star) for confetti rendering
-- [ ] T050 [P] [US2] Create SVG asset `public/festivals/newyear/firework-base.svg`: star burst shape for firework particle rendering
-- [ ] T051 [P] [US2] Create SVG background `public/festivals/newyear/night-sky.svg`: dark gradient with twinkling stars (CSS animation or GSAP)
+- [X] T049 [P] [US2] Create SVG asset `public/festivals/newyear/confetti-shapes.svg`: collection of shapes (rectangle, circle, triangle, star) for confetti rendering
+- [X] T050 [P] [US2] Create SVG asset `public/festivals/newyear/firework-base.svg`: star burst shape for firework particle rendering
+- [X] T051 [P] [US2] Create SVG background `public/festivals/newyear/night-sky.svg`: dark gradient with twinkling stars (CSS animation or GSAP)
 
 ### New Year Template Integration
 
-- [ ] T052 [US2] Refactor existing `components/greetings/NewYearTemplate.tsx` to use new animation components
-- [ ] T053 [US2] Create master GSAP timeline in NewYearTemplate with phases: (0-4s) countdown with background intensity increase, (4-7s) synchronized fireworks at countdown zero, (5-10s) confetti burst from top edges, (7-10s) text explosion, (10-12s) background fireworks loop
-- [ ] T054 [US2] Implement countdown synchronization: ensure fireworks trigger exactly at "1" → "0" transition using timeline labels or absolute positioning
-- [ ] T055 [US2] Integrate ContextAdapter in NewYearTemplate for relationship-aware color and intensity adjustments
-- [ ] T056 [US2] Add prefers-reduced-motion support: countdown numbers appear instantly (no animation), text fades in immediately
-- [ ] T057 [US2] Wire onAnimationComplete callback to display ReplayButton after 10-12s
-- [ ] T058 [US2] Implement text reveal: "Happy New Year 2026" explodes from center (7-8s), recipientName + senderName appear below (8-10s)
+- [X] T052 [US2] Refactor existing `components/greetings/NewYearTemplate.tsx` to use new animation components
+- [X] T053 [US2] Create master GSAP timeline in NewYearTemplate with phases: (0-4s) countdown with background intensity increase, (4-7s) synchronized fireworks at countdown zero, (5-10s) confetti burst from top edges, (7-10s) text explosion, (10-12s) background fireworks loop
+- [X] T054 [US2] Implement countdown synchronization: ensure fireworks trigger exactly at "1" → "0" transition using timeline labels or absolute positioning
+- [X] T055 [US2] Integrate ContextAdapter in NewYearTemplate for relationship-aware color and intensity adjustments
+- [X] T056 [US2] Add prefers-reduced-motion support: countdown numbers appear instantly (no animation), text fades in immediately
+- [X] T057 [US2] Wire onAnimationComplete callback to display ReplayButton after 10-12s
+- [X] T058 [US2] Implement text reveal: "Happy New Year 2026" explodes from center (7-8s), recipientName + senderName appear below (8-10s)
 
 **Checkpoint ✅**: New Year animation is fully functional and independently testable
 
