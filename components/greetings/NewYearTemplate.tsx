@@ -129,20 +129,20 @@ export function NewYearTemplate({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="newyear-bg relative flex min-h-screen items-center justify-center p-4"
-      style={ {
+      style={{
         background: `radial-gradient(circle, ${primaryColor}22, ${colors[1]})`,
-      } }
+      }}
     >
-      {/* Decorative elements */ }
+      {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Fireworks */ }
-        { [...Array(6)].map((_, i) => (
+        {/* Fireworks */}
+        {[...Array(6)].map((_, i) => (
           <div
-            key={ `firework-${generateUniqueKey()}` }
+            key={`firework-${generateUniqueKey()}`}
             className="firework absolute rounded-full"
-            style={ {
+            style={{
               backgroundColor: colors[i % colors.length],
               width: `${100 + i * 20}px`,
               height: `${100 + i * 20}px`,
@@ -150,26 +150,26 @@ export function NewYearTemplate({
               top: `${20 + (i % 2) * 30}%`,
               opacity: 0.3,
               boxShadow: `0 0 40px ${colors[i % colors.length]}`,
-            } }
+            }}
           />
-        )) }
+        ))}
 
-        {/* Confetti */ }
-        { [...Array(30)].map((_, i) => (
+        {/* Confetti */}
+        {[...Array(30)].map((_, i) => (
           <div
-            key={ `confetti-${generateUniqueKey()}` }
+            key={`confetti-${generateUniqueKey()}`}
             className="confetti absolute h-3 w-3 rounded-sm"
-            style={ {
+            style={{
               backgroundColor: colors[i % colors.length],
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               transform: `rotate(${Math.random() * 360}deg)`,
-            } }
+            }}
           />
-        )) }
+        ))}
       </div>
 
-      {/* Content */ }
+      {/* Content */}
       <div className="relative z-10 max-w-2xl text-center space-y-6">
         <h1 className="greeting-text text-5xl sm:text-6xl md:text-7xl font-bold text-white drop-shadow-lg">
           Happy New Year!
@@ -177,18 +177,18 @@ export function NewYearTemplate({
 
         <div className="space-y-4">
           <p className="recipient-name text-3xl sm:text-4xl font-semibold text-white drop-shadow-md">
-            Dear { recipientName },
+            Dear {recipientName},
           </p>
 
           <p className="greeting-text text-lg sm:text-xl leading-relaxed px-4 text-white drop-shadow-md">
-            { message ||
-              `May this new year bring you endless opportunities and wonderful moments!` }
+            {message ||
+              `May this new year bring you endless opportunities and wonderful moments!`}
           </p>
 
           <p className="sender-name text-xl sm:text-2xl font-medium mt-8 text-white drop-shadow-md">
             Cheers to new beginnings,
             <br />
-            { senderName }
+            {senderName}
           </p>
         </div>
       </div>
