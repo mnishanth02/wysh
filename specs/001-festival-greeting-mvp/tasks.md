@@ -154,50 +154,50 @@
 
 #### Greeting View Page
 
-- [ ] T076 [US2] Create dynamic greeting view page at app/g/[id]/page.tsx
-- [ ] T077 [US2] Implement getGreetingByShareableId query with shareableId param
-- [ ] T078 [US2] Handle greeting not found error (invalid or expired URL)
-- [ ] T079 [US2] Display LoadingState while greeting fetches
-- [ ] T080 [US2] Extract greeting data (festival, relationship, names, message, template)
+- [x] T076 [US2] Create dynamic greeting view page at app/g/[id]/page.tsx
+- [x] T077 [US2] Implement getGreetingByShareableId query with shareableId param
+- [x] T078 [US2] Handle greeting not found error (invalid or expired URL)
+- [x] T079 [US2] Display LoadingState while greeting fetches
+- [x] T080 [US2] Extract greeting data (festival, relationship, names, message, template)
 
 #### Festival Templates with Animations
 
-- [ ] T081 [P] [US2] Create Diwali template in components/greetings/DiwaliTemplate.tsx with GSAP timeline
-- [ ] T082 [P] [US2] Create Holi template in components/greetings/HoliTemplate.tsx with vibrant animations
-- [ ] T083 [P] [US2] Create Christmas template in components/greetings/ChristmasTemplate.tsx
-- [ ] T084 [P] [US2] Create New Year template in components/greetings/NewYearTemplate.tsx
-- [ ] T085 [P] [US2] Create Pongal template in components/greetings/PongalTemplate.tsx
-- [ ] T086 [P] [US2] Create Generic template in components/greetings/GenericTemplate.tsx
+- [x] T081 [P] [US2] Create Diwali template in components/greetings/DiwaliTemplate.tsx with GSAP timeline
+- [x] T082 [P] [US2] Create Holi template in components/greetings/HoliTemplate.tsx with vibrant animations
+- [x] T083 [P] [US2] Create Christmas template in components/greetings/ChristmasTemplate.tsx
+- [x] T084 [P] [US2] Create New Year template in components/greetings/NewYearTemplate.tsx
+- [x] T085 [P] [US2] Create Pongal template in components/greetings/PongalTemplate.tsx
+- [x] T086 [P] [US2] Create Generic template in components/greetings/GenericTemplate.tsx
 
 #### Template Implementation Details (Diwali Example)
 
-- [ ] T087 [US2] Implement diya lighting animation sequence in DiwaliTemplate (GSAP timeline, 5-8 seconds)
-- [ ] T088 [US2] Apply Diwali color palette (#FF6B35, #FFA500, #8B0000, #FFFFFF)
+- [x] T087 [US2] Implement diya lighting animation sequence in DiwaliTemplate (GSAP timeline, 5-8 seconds)
+- [x] T088 [US2] Apply Diwali color palette (#FF6B35, #FFA500, #8B0000, #FFFFFF)
 - [ ] T089 [US2] Add Diwali symbols (diyas, rangoli, fireworks, lotus) as SVG assets in public/festivals/diwali/
-- [ ] T090 [US2] Integrate relationship context styling (muted for boss, vibrant for friends, etc.)
-- [ ] T091 [US2] Display recipient name and sender name in template
-- [ ] T092 [US2] Display custom message or generated contextual message
-- [ ] T093 [US2] Ensure animation plays at 60fps on mid-range Android (optimize transforms, opacity)
+- [x] T090 [US2] Integrate relationship context styling (muted for boss, vibrant for friends, etc.)
+- [x] T091 [US2] Display recipient name and sender name in template
+- [x] T092 [US2] Display custom message or generated contextual message
+- [x] T093 [US2] Ensure animation plays at 60fps on mid-range Android (optimize transforms, opacity)
 
 #### Auto-Play and Replay
 
-- [ ] T094 [US2] Implement auto-play animation on page load using useEffect
-- [ ] T095 [US2] Create ReplayButton component in components/shared/ReplayButton.tsx
-- [ ] T096 [US2] Display ReplayButton after animation completes
-- [ ] T097 [US2] Implement unlimited replay functionality (re-trigger GSAP timeline)
-- [ ] T098 [US2] Test replay button performance (no degradation on multiple replays)
+- [x] T094 [US2] Implement auto-play animation on page load using useEffect
+- [x] T095 [US2] Create ReplayButton component in components/shared/ReplayButton.tsx
+- [x] T096 [US2] Display ReplayButton after animation completes
+- [x] T097 [US2] Implement unlimited replay functionality (re-trigger GSAP timeline)
+- [x] T098 [US2] Test replay button performance (no degradation on multiple replays)
 
 #### View Count Tracking
 
-- [ ] T099 [US2] Call incrementViewCount mutation on greeting view page load
-- [ ] T100 [US2] Implement fire-and-forget pattern (don't block rendering)
-- [ ] T101 [US2] Handle mutation failure silently (view tracking non-critical)
+- [x] T099 [US2] Call incrementViewCount mutation on greeting view page load
+- [x] T100 [US2] Implement fire-and-forget pattern (don't block rendering)
+- [x] T101 [US2] Handle mutation failure silently (view tracking non-critical)
 
 #### Viral Growth CTA
 
-- [ ] T102 [US2] Display "Create Your Own Wysh" CTA after animation completes
-- [ ] T103 [US2] Style CTA to be subtle but prominent (bottom of screen)
-- [ ] T104 [US2] Route CTA to landing page to trigger viral loop
+- [x] T102 [US2] Display "Create Your Own Wysh" CTA after animation completes
+- [x] T103 [US2] Style CTA to be subtle but prominent (bottom of screen)
+- [x] T104 [US2] Route CTA to landing page to trigger viral loop
 
 **Checkpoint**: At this point, User Story 2 should be fully functional - recipients can view and replay animated greetings
 

@@ -20,9 +20,6 @@ const nextConfig: NextConfig = {
   compress: true,
   productionBrowserSourceMaps: false,
 
-  // SWC minification (faster than Terser)
-  swcMinify: true,
-
   // Experimental features for better performance
   experimental: {
     optimizePackageImports: ["@radix-ui/*"],
