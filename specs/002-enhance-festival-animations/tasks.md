@@ -183,35 +183,35 @@
 
 ### Pongal Animation Components
 
-- [ ] T059 [P] [US3] Create `components/greetings/animations/pongal/SunRise.tsx` with SVG circle (sun), GSAP y-translate animation (bottom → center), expanding rays via scale animation
-- [ ] T060 [P] [US3] Add continuous slow rotation to sun rays in SunRise component (rotateZ: 0 → 360deg over 8s, loop infinitely)
-- [ ] T061 [P] [US3] Create `components/greetings/animations/pongal/KolamDrawing.tsx` with SVG path for sunburst/flower mandala pattern with concentric circles, implement path animation using DrawSVG plugin (primary) or strokeDasharray fallback (hybrid strategy per clarifications)
-- [ ] T062 [P] [US3] Ensure KolamDrawing pattern is culturally authentic: sunburst mandala with radial design, concentric circles drawn outward, white/cream color (#F5F5DC)
-- [ ] T063 [P] [US3] Create `components/greetings/animations/pongal/PongalPot.tsx` with SVG pot shape (terracotta #D2691E), decorative red/yellow patterns, mask/clipping path for overflow effect
-- [ ] T064 [P] [US3] Implement boiling animation in PongalPot: contents rise vertically using GSAP y-translate, bubble effect via scale/opacity animation of small circles
-- [ ] T065 [P] [US3] Add dramatic overflow effect in PongalPot: rice/milk overflows pot sides at 5-6s mark using clipping path reveal animation, symbolizes prosperity
-- [ ] T066 [P] [US3] Create `components/greetings/animations/pongal/SteamParticles.tsx` with ParticleCanvas, 50-80 steam particles rising from pot opening
-- [ ] T067 [P] [US3] Configure SteamParticles with vertical motion path (vy = -100 to -200 px/s), slight horizontal wobble (vx = sin(time) * 20), white color with low opacity (0.3-0.6)
-- [ ] T068 [P] [US3] Create `components/greetings/animations/pongal/SugarcaneSway.tsx` with SVG sugarcane stalks on left/right sides, gentle sway animation using GSAP rotation (rotateZ: -5deg ↔ 5deg) with sine.inOut easing
-- [ ] T069 [P] [US3] Create `components/greetings/animations/pongal/RiceGrains.tsx` with small particle emitters for rice grains falling like rain throughout background, 30-50 particles, slow vertical fall (vy = 50-100 px/s)
+- [X] T059 [P] [US3] Create `components/greetings/animations/pongal/SunRise.tsx` with SVG circle (sun), GSAP y-translate animation (bottom → center), expanding rays via scale animation
+- [X] T060 [P] [US3] Add continuous slow rotation to sun rays in SunRise component (rotateZ: 0 → 360deg over 8s, loop infinitely)
+- [X] T061 [P] [US3] Create `components/greetings/animations/pongal/KolamDrawing.tsx` with SVG path for sunburst/flower mandala pattern with concentric circles, implement path animation using DrawSVG plugin (primary) or strokeDasharray fallback (hybrid strategy per clarifications)
+- [X] T062 [P] [US3] Ensure KolamDrawing pattern is culturally authentic: sunburst mandala with radial design, concentric circles drawn outward, white/cream color (#F5F5DC)
+- [X] T063 [P] [US3] Create `components/greetings/animations/pongal/PongalPot.tsx` with SVG pot shape (terracotta #D2691E), decorative red/yellow patterns, mask/clipping path for overflow effect
+- [X] T064 [P] [US3] Implement boiling animation in PongalPot: contents rise vertically using GSAP y-translate, bubble effect via scale/opacity animation of small circles
+- [X] T065 [P] [US3] Add dramatic overflow effect in PongalPot: rice/milk overflows pot sides at 5-6s mark using clipping path reveal animation, symbolizes prosperity
+- [X] T066 [P] [US3] Create `components/greetings/animations/pongal/SteamParticles.tsx` with ParticleCanvas, 50-80 steam particles rising from pot opening
+- [X] T067 [P] [US3] Configure SteamParticles with vertical motion path (vy = -100 to -200 px/s), slight horizontal wobble (vx = sin(time) * 20), white color with low opacity (0.3-0.6)
+- [X] T068 [P] [US3] Create `components/greetings/animations/pongal/SugarcaneSway.tsx` with SVG sugarcane stalks on left/right sides, gentle sway animation using GSAP rotation (rotateZ: -5deg ↔ 5deg) with sine.inOut easing
+- [X] T069 [P] [US3] Create `components/greetings/animations/pongal/RiceGrains.tsx` with small particle emitters for rice grains falling like rain throughout background, 30-50 particles, slow vertical fall (vy = 50-100 px/s)
 
 ### Pongal SVG Assets
 
-- [ ] T070 [P] [US3] Create SVG asset `public/festivals/pongal/pot.svg`: traditional pongal pot shape with terracotta texture, decorative patterns
-- [ ] T071 [P] [US3] Create SVG asset `public/festivals/pongal/kolam.svg`: sunburst/flower mandala kolam pattern with concentric circles, path data for drawing animation (validated for cultural authenticity)
-- [ ] T072 [P] [US3] Create SVG asset `public/festivals/pongal/sugarcane.svg`: sugarcane stalk with leaves, suitable for sway animation
-- [ ] T073 [P] [US3] Create SVG asset `public/festivals/pongal/sun.svg`: sun with expanding rays, suitable for rotation animation
+- [X] T070 [P] [US3] Create SVG asset `public/festivals/pongal/pot.svg`: traditional pongal pot shape with terracotta texture, decorative patterns
+- [X] T071 [P] [US3] Create SVG asset `public/festivals/pongal/kolam.svg`: sunburst/flower mandala kolam pattern with concentric circles, path data for drawing animation (validated for cultural authenticity)
+- [X] T072 [P] [US3] Create SVG asset `public/festivals/pongal/sugarcane.svg`: sugarcane stalk with leaves, suitable for sway animation
+- [X] T073 [P] [US3] Create SVG asset `public/festivals/pongal/sun.svg`: sun with expanding rays, suitable for rotation animation
 
 ### Pongal Template Integration
 
-- [ ] T074 [US3] Refactor existing `components/greetings/PongalTemplate.tsx` to use new animation components
-- [ ] T075 [US3] Create master GSAP timeline in PongalTemplate with phases: (0-2s) warm gradient background + sun rise, (2-4s) kolam drawing, (3-6s) pot appearance + boiling + steam, (5-6s) dramatic overflow moment, (4-10s) sugarcane sway + rice grains, (6-8s) text reveal "Happy Pongal", (8-10s) celebration loop
-- [ ] T076 [US3] Implement warm gradient background: linear-gradient from orange (#FF8C00) to yellow (#FFEB3B) representing dawn, animate opacity from 0 to 1 over 0-2s
-- [ ] T077 [US3] Integrate ContextAdapter in PongalTemplate for relationship-aware adjustments
-- [ ] T078 [US3] Add prefers-reduced-motion support: all elements fade in instantly, no complex animations, kolam appears immediately
-- [ ] T079 [US3] Wire onAnimationComplete callback to display ReplayButton after 8-10s
-- [ ] T080 [US3] Implement text reveal: "Happy Pongal" appears with traditional font (6-7s), recipientName + senderName fade in (7-8s)
-- [ ] T081 [US3] Add optional cattle silhouette walking animation across bottom (if specified in requirements)
+- [X] T074 [US3] Refactor existing `components/greetings/PongalTemplate.tsx` to use new animation components
+- [X] T075 [US3] Create master GSAP timeline in PongalTemplate with phases: (0-2s) warm gradient background + sun rise, (2-4s) kolam drawing, (3-6s) pot appearance + boiling + steam, (5-6s) dramatic overflow moment, (4-10s) sugarcane sway + rice grains, (6-8s) text reveal "Happy Pongal", (8-10s) celebration loop
+- [X] T076 [US3] Implement warm gradient background: linear-gradient from orange (#FF8C00) to yellow (#FFEB3B) representing dawn, animate opacity from 0 to 1 over 0-2s
+- [X] T077 [US3] Integrate ContextAdapter in PongalTemplate for relationship-aware adjustments
+- [X] T078 [US3] Add prefers-reduced-motion support: all elements fade in instantly, no complex animations, kolam appears immediately
+- [X] T079 [US3] Wire onAnimationComplete callback to display ReplayButton after 8-10s
+- [X] T080 [US3] Implement text reveal: "Happy Pongal" appears with traditional font (6-7s), recipientName + senderName fade in (7-8s)
+- [X] T081 [US3] Add optional cattle silhouette walking animation across bottom (if specified in requirements)
 
 **Checkpoint ✅**: Pongal animation is fully functional with cultural authenticity validated
 

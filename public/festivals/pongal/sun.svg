@@ -1,0 +1,88 @@
+<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <title>Rising Sun with Rays</title>
+  <defs>
+    <!-- Radial gradient for sun -->
+    <radialGradient id="sun-gradient" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" style="stop-color:#FFEB3B;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FF8C42;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF6B35;stop-opacity:0.8" />
+    </radialGradient>
+
+    <!-- Glow filter for sun -->
+    <filter id="sun-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Ray gradient -->
+    <linearGradient id="ray-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFEB3B;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FF8C42;stop-opacity:0.4" />
+    </linearGradient>
+  </defs>
+
+  <!-- Sun rays (12 rays, alternating long and short) -->
+  <g id="sun-rays">
+    <!-- Ray 0° (top) - long -->
+    <rect x="96" y="15" width="8" height="45" rx="2" fill="url(#ray-gradient)" opacity="0.7"/>
+
+    <!-- Ray 30° - short -->
+    <rect x="96" y="25" width="6" height="35" rx="2" fill="url(#ray-gradient)" opacity="0.65"
+          transform="rotate(30, 100, 100)"/>
+
+    <!-- Ray 60° - long -->
+    <rect x="96" y="15" width="8" height="45" rx="2" fill="url(#ray-gradient)" opacity="0.7"
+          transform="rotate(60, 100, 100)"/>
+
+    <!-- Ray 90° (right) - short -->
+    <rect x="96" y="25" width="6" height="35" rx="2" fill="url(#ray-gradient)" opacity="0.65"
+          transform="rotate(90, 100, 100)"/>
+
+    <!-- Ray 120° - long -->
+    <rect x="96" y="15" width="8" height="45" rx="2" fill="url(#ray-gradient)" opacity="0.7"
+          transform="rotate(120, 100, 100)"/>
+
+    <!-- Ray 150° - short -->
+    <rect x="96" y="25" width="6" height="35" rx="2" fill="url(#ray-gradient)" opacity="0.65"
+          transform="rotate(150, 100, 100)"/>
+
+    <!-- Ray 180° (bottom) - long -->
+    <rect x="96" y="15" width="8" height="45" rx="2" fill="url(#ray-gradient)" opacity="0.7"
+          transform="rotate(180, 100, 100)"/>
+
+    <!-- Ray 210° - short -->
+    <rect x="96" y="25" width="6" height="35" rx="2" fill="url(#ray-gradient)" opacity="0.65"
+          transform="rotate(210, 100, 100)"/>
+
+    <!-- Ray 240° - long -->
+    <rect x="96" y="15" width="8" height="45" rx="2" fill="url(#ray-gradient)" opacity="0.7"
+          transform="rotate(240, 100, 100)"/>
+
+    <!-- Ray 270° (left) - short -->
+    <rect x="96" y="25" width="6" height="35" rx="2" fill="url(#ray-gradient)" opacity="0.65"
+          transform="rotate(270, 100, 100)"/>
+
+    <!-- Ray 300° - long -->
+    <rect x="96" y="15" width="8" height="45" rx="2" fill="url(#ray-gradient)" opacity="0.7"
+          transform="rotate(300, 100, 100)"/>
+
+    <!-- Ray 330° - short -->
+    <rect x="96" y="25" width="6" height="35" rx="2" fill="url(#ray-gradient)" opacity="0.65"
+          transform="rotate(330, 100, 100)"/>
+  </g>
+
+  <!-- Sun circle (in front of rays) -->
+  <circle cx="100" cy="100" r="40" fill="url(#sun-gradient)" filter="url(#sun-glow)"/>
+
+  <!-- Inner glow circle for depth -->
+  <circle cx="100" cy="100" r="35" fill="#FF8C42" opacity="0.6"/>
+
+  <!-- Bright center highlight -->
+  <circle cx="95" cy="95" r="15" fill="#FFEB3B" opacity="0.8"/>
+
+  <!-- Small highlight spot (reflection) -->
+  <circle cx="90" cy="90" r="8" fill="#FFFFFF" opacity="0.6"/>
+</svg>
