@@ -16,7 +16,7 @@ const convex = new ConvexReactClient(convexUrl);
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ConvexProvider client={ convex }>
+    <ConvexProvider client={convex}>
       <NextThemesProvider
         attribute="class"
         defaultTheme="system"
@@ -24,12 +24,12 @@ export function Providers({ children }: { children: React.ReactNode }) {
         enableColorScheme
         enableSystem
       >
-        { children }
+        {children}
         <Toaster
-          duration={ 3000 }
+          duration={3000}
           position="top-center"
           richColors
-          toastOptions={ { style: { textAlign: "center" } } }
+          toastOptions={{ style: { textAlign: "center" } }}
         />
       </NextThemesProvider>
     </ConvexProvider>

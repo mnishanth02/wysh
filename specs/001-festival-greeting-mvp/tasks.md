@@ -81,64 +81,64 @@
 
 #### Landing Page
 
-- [ ] T036 [P] [US1] Create landing page at app/(main)/page.tsx with hero section and CTA
-- [ ] T037 [P] [US1] Create navigation component in components/layout/Navigation.tsx
-- [ ] T038 [P] [US1] Create footer component in components/layout/Footer.tsx
-- [ ] T039 [US1] Add "Create Your Festival Greeting" CTA button with routing to /create/festival
+- [x] T036 [P] [US1] Create landing page at app/(main)/page.tsx with hero section and CTA
+- [x] T037 [P] [US1] Create navigation component in components/layout/Navigation.tsx
+- [x] T038 [P] [US1] Create footer component in components/layout/Footer.tsx
+- [x] T039 [US1] Add "Create Your Festival Greeting" CTA button with routing to /create/festival
 
 #### Festival Selection
 
-- [ ] T040 [US1] Create festival selection page at app/create/festival/page.tsx
-- [ ] T041 [US1] Create FestivalSelector component in components/forms/FestivalSelector.tsx (grid layout)
-- [ ] T042 [US1] Fetch festivals from Convex using useQuery in FestivalSelector
-- [ ] T043 [US1] Display festival cards with colors and icons (6 festivals)
-- [ ] T044 [US1] Handle festival selection and route to /create/relationship with state
+- [x] T040 [US1] Create festival selection page at app/create/festival/page.tsx
+- [x] T041 [US1] Create FestivalSelector component in components/forms/FestivalSelector.tsx (grid layout)
+- [x] T042 [US1] Fetch festivals from Convex using useQuery in FestivalSelector
+- [x] T043 [US1] Display festival cards with colors and icons (6 festivals)
+- [x] T044 [US1] Handle festival selection and route to /create/relationship with state
 
 #### Relationship Selection
 
-- [ ] T045 [US1] Create relationship selection page at app/create/relationship/page.tsx
-- [ ] T046 [US1] Create RelationshipSelector component in components/forms/RelationshipSelector.tsx
-- [ ] T047 [US1] Display relationship categories (Family, Friends, Professional, Romantic)
-- [ ] T048 [US1] Display relationship subtypes per category (e.g., Parents, Siblings under Family)
-- [ ] T049 [US1] Handle relationship selection and route to /create/personalize with state
+- [x] T045 [US1] Create relationship selection page at app/create/relationship/page.tsx
+- [x] T046 [US1] Create RelationshipSelector component in components/forms/RelationshipSelector.tsx
+- [x] T047 [US1] Display relationship categories (Family, Friends, Professional, Romantic)
+- [x] T048 [US1] Display relationship subtypes per category (e.g., Parents, Siblings under Family)
+- [x] T049 [US1] Handle relationship selection and route to /create/personalize with state
 
 #### Personalization Form
 
-- [ ] T050 [US1] Create personalization page at app/create/personalize/page.tsx
-- [ ] T051 [US1] Create PersonalizationForm component in components/forms/PersonalizationForm.tsx
-- [ ] T052 [US1] Set up React Hook Form with zod validation (recipientName, senderName, customMessage)
-- [ ] T053 [US1] Add validation rules (max 50 chars for names, max 150 chars for message)
-- [ ] T054 [US1] Display real-time character counts for inputs
-- [ ] T055 [US1] Implement "Back" navigation preserving form data per FR-041
-- [ ] T056 [US1] Handle form submission and route to /create/template with state
+- [x] T050 [US1] Create personalization page at app/create/personalize/page.tsx
+- [x] T051 [US1] Create PersonalizationForm component in components/forms/PersonalizationForm.tsx
+- [x] T052 [US1] Set up React Hook Form with zod validation (recipientName, senderName, customMessage)
+- [x] T053 [US1] Add validation rules (max 50 chars for names, max 150 chars for message)
+- [x] T054 [US1] Display real-time character counts for inputs
+- [x] T055 [US1] Implement "Back" navigation preserving form data per FR-041
+- [x] T056 [US1] Handle form submission and route to /create/template with state
 
 #### Template Selection
 
-- [ ] T057 [US1] Create template selection page at app/create/template/page.tsx
-- [ ] T058 [US1] Create base TemplateSelector component in components/forms/TemplateSelector.tsx
-- [ ] T059 [US1] Filter templates based on selected festival and relationship context
-- [ ] T060 [US1] Display 3-4 template previews per festival with thumbnail images
-- [ ] T061 [US1] Apply relationship context styling (colors, animation hints) per context engine
+- [x] T057 [US1] Create template selection page at app/create/template/page.tsx
+- [x] T058 [US1] Create base TemplateSelector component in components/forms/TemplateSelector.tsx
+- [x] T059 [US1] Filter templates based on selected festival and relationship context
+- [x] T060 [US1] Display 3-4 template previews per festival with thumbnail images
+- [x] T061 [US1] Apply relationship context styling (colors, animation hints) per context engine
 - [ ] T062 [US1] Implement template preview modal with full animation playback
-- [ ] T063 [US1] Handle template selection and trigger greeting creation mutation
+- [x] T063 [US1] Handle template selection and trigger greeting creation mutation
 
 #### Greeting Creation & Success
 
-- [ ] T064 [US1] Call createGreeting mutation from template selection page
-- [ ] T065 [US1] Implement exponential backoff retry logic (3 attempts: 0ms, 500ms, 1.5s)
-- [ ] T066 [US1] Handle mutation success and extract shareableId
-- [ ] T067 [US1] Create success page at app/create/success/page.tsx
-- [ ] T068 [US1] Display success message with preview thumbnail
-- [ ] T069 [US1] Create ShareButton component with WhatsApp deep link in components/shared/ShareButton.tsx
-- [ ] T070 [US1] Implement "Copy Link" button with clipboard API
-- [ ] T071 [US1] Add "Create Another Greeting" button routing back to festival selection
-- [ ] T072 [US1] Display generated greeting URL (wysh.app/g/[shareableId] format)
+- [x] T064 [US1] Call createGreeting mutation from template selection page
+- [x] T065 [US1] Implement exponential backoff retry logic (3 attempts: 0ms, 500ms, 1.5s)
+- [x] T066 [US1] Handle mutation success and extract shareableId
+- [x] T067 [US1] Create success page at app/create/success/page.tsx
+- [x] T068 [US1] Display success message with preview thumbnail
+- [x] T069 [US1] Create ShareButton component with WhatsApp deep link in components/shared/ShareButton.tsx
+- [x] T070 [US1] Implement "Copy Link" button with clipboard API
+- [x] T071 [US1] Add "Create Another Greeting" button routing back to festival selection
+- [x] T072 [US1] Display generated greeting URL (wysh.app/g/[shareableId] format)
 
 #### WhatsApp Integration
 
-- [ ] T073 [US1] Generate WhatsApp deep link with pre-filled message in lib/whatsapp.ts
-- [ ] T074 [US1] Handle WhatsApp button click and open WhatsApp with link
-- [ ] T075 [US1] Implement fallback for desktop (show "Copy Link" prominently if WhatsApp not available)
+- [x] T073 [US1] Generate WhatsApp deep link with pre-filled message in lib/whatsapp.ts
+- [x] T074 [US1] Handle WhatsApp button click and open WhatsApp with link
+- [x] T075 [US1] Implement fallback for desktop (show "Copy Link" prominently if WhatsApp not available)
 
 **Checkpoint**: At this point, User Story 1 should be fully functional - creators can create and share greetings end-to-end
 
