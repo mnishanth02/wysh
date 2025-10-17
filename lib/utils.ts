@@ -5,6 +5,7 @@
  */
 
 import { type ClassValue, clsx } from "clsx";
+import DOMPurify from "dompurify";
 import { twMerge } from "tailwind-merge";
 import { VALIDATION_CONSTRAINTS } from "./constants";
 
@@ -74,17 +75,17 @@ export function toTitleCase(text: string): string {
 
 /**
  * Clean and sanitize user input
- * Removes extra whitespace and potentially dangerous characters
+ * Removes extra whitespace and potentially dangerous characters using DOMPurify
  *
  * @param input - User input string
  * @returns Sanitized string
  */
+
 export function sanitizeInput(input: string): string {
-  return input
-    .trim()
-    .replace(/\s+/g, " ") // Replace multiple spaces with single space
-    .replace(/<script[^>]*>.*?<\/script>/gi, "") // Remove script tags
-    .replace(/<[^>]+>/g, ""); // Remove HTML tags
+  // Remove extra whitespace, then sanitize with DOMPurify and strip all HTML
+  const trimmed = input.trim().replace(/\s+/g, " ");
+  // DOMPurify.sanitize returns a string with HTML tags removed if ALLOWED_TAGS is empty
+  return DOMPurify.sanitize(trimmed, { ALLOWED_TAGS: [], ALLOWED_ATTR: [] });
 }
 
 // ============================================================================

@@ -6,9 +6,7 @@
 
 import type { Id } from "../convex/_generated/dataModel";
 
-// ============================================================================
 // Greeting Types
-// ============================================================================
 
 /**
  * Festival types supported by the platform
@@ -88,9 +86,7 @@ export interface CreateGreetingResponse {
   shareableId: string;
 }
 
-// ============================================================================
 // Festival Types
-// ============================================================================
 
 /**
  * Festival category classification
@@ -121,9 +117,7 @@ export interface Festival {
   isActive: boolean;
 }
 
-// ============================================================================
 // Relationship Context Types
-// ============================================================================
 
 /**
  * Relationship category groupings
@@ -157,9 +151,7 @@ export interface RelationshipContext {
   messageTone: "formal" | "casual" | "intimate" | "professional";
 }
 
-// ============================================================================
 // Template Types
-// ============================================================================
 
 /**
  * Template metadata for festival greetings
@@ -185,9 +177,7 @@ export interface ContextualizedTemplate extends Template {
   adjustedAnimationSpeed: number;
 }
 
-// ============================================================================
 // Form Types
-// ============================================================================
 
 /**
  * Greeting creation form data
@@ -215,9 +205,7 @@ export interface GreetingCreationState {
   shareableId?: string;
 }
 
-// ============================================================================
 // Validation Types
-// ============================================================================
 
 /**
  * Validation constraints
@@ -236,9 +224,7 @@ export interface ViewCountResult {
   success: boolean;
 }
 
-// ============================================================================
 // Error Types
-// ============================================================================
 
 /**
  * Greeting-specific error types

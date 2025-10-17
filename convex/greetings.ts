@@ -42,7 +42,7 @@ export const createGreeting = mutation({
     // Generate unique shareable ID (retry if collision)
     let shareableId = "";
     let attempts = 0;
-    const maxAttempts = 5;
+    const maxAttempts = 3;
 
     while (attempts < maxAttempts) {
       shareableId = generateShareableId();
@@ -125,7 +125,14 @@ export const incrementViewCount = mutation({
       return { success: true };
     } catch (error) {
       // Log error but don't throw (non-critical operation)
-      console.error("Failed to increment view count:", error);
+      console.error(JSON.stringify({
+        level: "error",
+        message: "Failed to increment view count",
+        error: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        function: "incrementViewCount",
+        timestamp: new Date().toISOString(),
+      }));
       return { success: false };
     }
   },

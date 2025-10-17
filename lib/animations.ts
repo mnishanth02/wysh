@@ -357,8 +357,12 @@ export function supportsHardwareAcceleration(): boolean {
 
   const test = document.createElement("div");
   test.style.transform = "translate3d(0, 0, 0)";
-
-  return test.style.transform !== "";
+  const supported = test.style.transform !== "";
+  // Clean up the test element
+  if (test.parentNode) {
+    test.parentNode.removeChild(test);
+  }
+  return supported;
 }
 
 // ============================================================================

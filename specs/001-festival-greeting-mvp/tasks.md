@@ -214,30 +214,30 @@
 #### Responsive Design System
 
 - [x] T105 [P] [US3] Define mobile-first breakpoints in tailwind.config.ts (320px, 375px, 414px, 768px) - This is configured already by tailwind latest version in file globals.css - pls ignore this configuration
-- [ ] T106 [P] [US3] Create custom Tailwind utilities for touch targets (min 44px × 44px)
-- [ ] T107 [P] [US3] Add responsive spacing utilities (mobile-optimized padding/margins)
+- [x] T106 [P] [US3] Create custom Tailwind utilities for touch targets (min 44px × 44px)
+- [x] T107 [P] [US3] Add responsive spacing utilities (mobile-optimized padding/margins)
 
 #### Landing Page Responsiveness
 
-- [ ] T108 [US3] Make landing page responsive (hero scales from 320px to 768px)
-- [ ] T109 [US3] Ensure CTA button has 44px minimum touch target
-- [ ] T110 [US3] Test on 320px (iPhone SE) - verify no horizontal scroll
+- [x] T108 [US3] Make landing page responsive (hero scales from 320px to 768px)
+- [x] T109 [US3] Ensure CTA button has 44px minimum touch target
+- [x] T110 [US3] Test on 320px (iPhone SE) - verify no horizontal scroll
 
 #### Creation Flow Responsiveness
 
-- [ ] T111 [US3] Make festival selection grid responsive (2 columns on mobile, 3-4 on tablet)
-- [ ] T112 [US3] Make relationship selector responsive (stacked cards on mobile)
-- [ ] T113 [US3] Make personalization form responsive (full-width inputs, proper keyboard handling)
-- [ ] T114 [US3] Ensure virtual keyboard doesn't obscure input fields (use viewport units)
-- [ ] T115 [US3] Make template selector responsive (1 column on mobile, 2 on tablet)
+- [x] T111 [US3] Make festival selection grid responsive (2 columns on mobile, 3-4 on tablet)
+- [x] T112 [US3] Make relationship selector responsive (stacked cards on mobile)
+- [x] T113 [US3] Make personalization form responsive (full-width inputs, proper keyboard handling)
+- [x] T114 [US3] Ensure virtual keyboard doesn't obscure input fields (use viewport units)
+- [x] T115 [US3] Make template selector responsive (1 column on mobile, 2 on tablet)
 - [ ] T116 [US3] Test template preview modal on mobile (full-screen overlay)
 
 #### Greeting View Responsiveness
 
-- [ ] T117 [US3] Make greeting templates responsive (scale animations to viewport)
-- [ ] T118 [US3] Ensure text scales appropriately (recipient/sender names, message)
-- [ ] T119 [US3] Position ReplayButton responsively (bottom-right on mobile)
-- [ ] T120 [US3] Position "Create Your Own" CTA responsively (bottom of screen)
+- [x] T117 [US3] Make greeting templates responsive (scale animations to viewport)
+- [x] T118 [US3] Ensure text scales appropriately (recipient/sender names, message)
+- [x] T119 [US3] Position ReplayButton responsively (bottom-right on mobile)
+- [x] T120 [US3] Position "Create Your Own" CTA responsively (bottom of screen)
 
 #### Touch Interactions
 
