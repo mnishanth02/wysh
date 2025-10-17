@@ -118,5 +118,73 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    letter-spacing: var(--tracking-normal);
   }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Form Elements */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Focus States */
+  :focus {
+    outline: none;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    @apply h-1 w-[6px] bg-primary/20;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-primary/60 transition-colors hover:bg-primary/80;
+  }
+}
+
+/* Touch Target Utilities - Minimum 44px × 44px for accessibility */
+@utility touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+@utility touch-target-lg {
+  min-height: 48px;
+  min-width: 48px;
+}
+
+@utility touch-target-xl {
+  min-height: 56px;
+  min-width: 56px;
+}
+
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
 }
