@@ -118,5 +118,69 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    font-feature-settings:
+      "rlig" 1,
+      "calt" 1;
+    letter-spacing: var(--tracking-normal);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Form Elements */
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  /* Focus States */
+  :focus {
+    outline: none;
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar {
+    @apply h-1 w-[6px] bg-primary/20;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-primary/60 transition-colors hover:bg-primary/80;
+  }
+}
+
+@layer utilities {
+  /* Animation delay utilities */
+  .animation-delay-100 {
+    animation-delay: var(--animation-delay-100);
+  }
+  .animation-delay-200 {
+    animation-delay: var(--animation-delay-200);
+  }
+  .animation-delay-300 {
+    animation-delay: var(--animation-delay-300);
+  }
+  .animation-delay-500 {
+    animation-delay: var(--animation-delay-500);
+  }
+  .animation-delay-600 {
+    animation-delay: var(--animation-delay-600);
+  }
+  .animation-delay-700 {
+    animation-delay: var(--animation-delay-700);
   }
 }
