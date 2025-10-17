@@ -19,6 +19,7 @@ import { gsap } from "gsap";
 import { useEffect, useRef, useState } from "react";
 import { FESTIVALS } from "@/lib/constants";
 import { shouldUseReducedMotion } from "@/lib/performance";
+import { useAnimationContext } from "./animations/shared/ContextAdapter";
 import { SunRise } from "./animations/pongal/SunRise";
 import { KolamDrawing } from "./animations/pongal/KolamDrawing";
 import { PongalPot } from "./animations/pongal/PongalPot";
@@ -48,7 +49,7 @@ export function PongalTemplate({
   recipientName,
   senderName,
   message,
-  relationshipContext: _relationshipContext, // T077: Reserved for Phase 6 context adaptation
+  relationshipContext,
   onAnimationComplete,
 }: PongalTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -58,6 +59,18 @@ export function PongalTemplate({
 
   const festivalData = FESTIVALS.pongal;
   const colors = festivalData.colorPalette;
+
+  // T088: Get relationship-aware animation configuration
+  const animationConfig = useAnimationContext(
+    "pongal",
+    relationshipContext?.relationshipType || "friend",
+    65, // Base particle count for steam/rice
+  );
+
+  // Apply relationship-adjusted colors if available
+  const adjustedColors = relationshipContext
+    ? animationConfig.colors
+    : colors;
 
   // Master timeline orchestration (T074, T075)
   useEffect(() => {
@@ -160,13 +173,13 @@ export function PongalTemplate({
         ref={ containerRef }
         className="pongal-bg relative flex min-h-screen items-center justify-center p-4"
         style={ {
-          background: `linear-gradient(to bottom, ${colors[0]}, ${colors[1]})`,
+          background: `linear-gradient(to bottom, ${adjustedColors[0]}, ${adjustedColors[1]})`,
         } }
       >
         <div className="relative z-10 max-w-2xl text-center space-y-6">
           <h1
             className="text-5xl sm:text-6xl md:text-7xl font-bold drop-shadow-lg"
-            style={ { color: colors[2] } }
+            style={ { color: adjustedColors[2] } }
           >
             Pongal Vazhthukkal!
           </h1>
@@ -174,7 +187,7 @@ export function PongalTemplate({
           <div className="space-y-4">
             <p
               className="text-3xl sm:text-4xl font-semibold drop-shadow-md"
-              style={ { color: colors[3] } }
+              style={ { color: adjustedColors[3] } }
             >
               Dear { recipientName },
             </p>
@@ -188,7 +201,7 @@ export function PongalTemplate({
 
             <p
               className="text-xl sm:text-2xl font-medium mt-8 drop-shadow-md"
-              style={ { color: colors[0] } }
+              style={ { color: adjustedColors[0] } }
             >
               With best wishes,
               <br />
@@ -205,7 +218,7 @@ export function PongalTemplate({
       ref={ containerRef }
       className="pongal-bg relative flex min-h-screen items-center justify-center p-4 overflow-hidden"
       style={ {
-        background: `linear-gradient(to bottom, ${colors[0]}, ${colors[1]})`,
+        background: `linear-gradient(to bottom, ${adjustedColors[0]}, ${adjustedColors[1]})`,
       } }
     >
       {/* Animation Layers */ }
@@ -221,9 +234,9 @@ export function PongalTemplate({
       {/* Sunrise animation (0-2s) */ }
       { animationPhase === "sunrise" && (
         <SunRise
-          duration={ 2 }
-          sunColor={ colors[0] }
-          rayColor={ colors[1] }
+          duration={ 2 * (animationConfig.duration / 8000) }
+          sunColor={ adjustedColors[0] }
+          rayColor={ adjustedColors[1] }
           onComplete={ () => {
             // Sunrise complete handled by timeline
           } }
@@ -258,8 +271,8 @@ export function PongalTemplate({
 
           {/* Steam particles (4-10s) */ }
           <SteamParticles
-            particleCount={ 65 }
-            duration={ 6 }
+            particleCount={ animationConfig.particleCount }
+            duration={ 6 * (animationConfig.duration / 8000) }
             onComplete={ () => {
               // Steam complete
             } }
@@ -272,7 +285,7 @@ export function PongalTemplate({
         <div className="relative z-20 max-w-2xl text-center space-y-6">
           <h1
             className="greeting-text text-4xl sm:text-5xl md:text-6xl font-bold drop-shadow-lg"
-            style={ { color: colors[2] } }
+            style={ { color: adjustedColors[2] } }
           >
             Pongal Vazhthukkal!
           </h1>
@@ -291,7 +304,7 @@ export function PongalTemplate({
 
             <p
               className="sender-name text-lg sm:text-xl md:text-2xl font-medium mt-8 drop-shadow-md"
-              style={ { color: colors[1] } }
+              style={ { color: adjustedColors[1] } }
             >
               With best wishes,
               <br />

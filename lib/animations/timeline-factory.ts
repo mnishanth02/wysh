@@ -103,3 +103,40 @@ export function adjustAnimationDuration(
   const scale = getRelationshipDurationScale(relationshipCategory);
   return baseDuration * scale;
 }
+
+/**
+ * Get animation speed multiplier for relationship context (T084)
+ * Professional: 0.8x (faster, efficient)
+ * Family: 1.0x (traditional pace)
+ * Friends: 1.1x (energetic)
+ * Romantic: 1.2x (slower, elegant)
+ */
+export function getAnimationSpeedMultiplier(relationshipType: string): number {
+  switch (relationshipType) {
+    case "boss":
+    case "colleague":
+    case "client":
+    case "mentor":
+      return 0.8; // Professional - faster
+
+    case "parents":
+    case "children":
+    case "relatives":
+      return 1.0; // Family - traditional
+
+    case "friend":
+    case "best_friend":
+    case "neighbor":
+    case "siblings":
+      return 1.1; // Friends - energetic
+
+    case "partner":
+    case "spouse":
+    case "fiance":
+    case "crush":
+      return 1.2; // Romantic - elegant/slower
+
+    default:
+      return 1.0; // Default to family
+  }
+}

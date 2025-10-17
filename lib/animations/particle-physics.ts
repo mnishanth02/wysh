@@ -333,3 +333,43 @@ export class ParticleSystem {
     this.particlePool.push(particle);
   }
 }
+
+/**
+ * Get particle intensity scaling based on relationship context (T083)
+ * Professional: max 150 particles (conservative)
+ * Family: max 300 particles (traditional/moderate)
+ * Friends: max 500 particles (high energy)
+ * Romantic: max 250 particles (elegant/refined)
+ */
+export function getParticleIntensityScale(relationshipType: string): {
+  maxParticles: number;
+  scale: number;
+} {
+  switch (relationshipType) {
+    case "boss":
+    case "colleague":
+    case "client":
+    case "mentor":
+      return { maxParticles: 150, scale: 0.5 }; // Professional - 50% intensity
+
+    case "parents":
+    case "children":
+    case "relatives":
+      return { maxParticles: 300, scale: 1.0 }; // Family - 100% traditional
+
+    case "friend":
+    case "best_friend":
+    case "neighbor":
+    case "siblings":
+      return { maxParticles: 500, scale: 1.5 }; // Friends - 150% energy
+
+    case "partner":
+    case "spouse":
+    case "fiance":
+    case "crush":
+      return { maxParticles: 250, scale: 0.8 }; // Romantic - 80% elegant
+
+    default:
+      return { maxParticles: 300, scale: 1.0 }; // Default to family
+  }
+}
