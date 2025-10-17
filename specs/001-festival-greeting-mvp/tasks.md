@@ -22,23 +22,23 @@
 
 **Purpose**: Project initialization and basic structure
 
-- [ ] T001 Initialize Next.js 15+ project with TypeScript in root directory
-- [ ] T002 [P] Install core dependencies (React 19, Next.js 15, TypeScript) per package.json
-- [ ] T003 [P] Install Convex SDK and configure convex.json
-- [ ] T004 [P] Install Tailwind CSS, shadcnui, GSAP 3.13+, Framer Motion 12.23+
-- [ ] T005 [P] Install form libraries (React Hook Form, zod) per plan.md
-- [ ] T006 [P] Install utility libraries (nanoid for ID generation, clsx for classnames)
-- [ ] T007 Configure TypeScript with tsconfig.json (strict mode, path aliases)
+- [x] T001 Initialize Next.js 15+ project with TypeScript in root directory
+- [x] T002 [P] Install core dependencies (React 19, Next.js 15, TypeScript) per package.json
+- [x] T003 [P] Install Convex SDK and configure convex.json
+- [x] T004 [P] Install Tailwind CSS, shadcnui, GSAP 3.13+, Framer Motion 12.23+
+- [x] T005 [P] Install form libraries (React Hook Form, zod) per plan.md
+- [x] T006 [P] Install utility libraries (nanoid for ID generation, clsx for classnames)
+- [x] T007 Configure TypeScript with tsconfig.json (strict mode, path aliases)
 - [ ] T008 [P] Configure Tailwind CSS with tailwind.config.ts (mobile-first breakpoints, custom colors)
-- [ ] T009 [P] Configure Next.js with next.config.ts (image optimization, bundle analysis)
+- [x] T009 [P] Configure Next.js with next.config.ts (image optimization, bundle analysis)
 - [ ] T010 [P] Set up environment variables template in .env.local.example
-- [ ] T011 Create root app/layout.tsx with metadata and global styles
-- [ ] T012 [P] Create app/globals.css with Tailwind directives and custom animations
-- [ ] T013 [P] Initialize Convex development backend with `npx convex dev`
-- [ ] T014 Create project directory structure per plan.md (app, components, convex, lib, types)
-- [ ] T015 [P] Set up linting (ESLint) and formatting (Prettier) with Next.js defaults
-- [ ] T016 [P] Create README.md with setup instructions from quickstart.md
-- [ ] T017 Verify development server runs successfully with `npm run dev`
+- [x] T011 Create root app/layout.tsx with metadata and global styles
+- [x] T012 [P] Create app/globals.css with Tailwind directives and custom animations
+- [x] T013 [P] Initialize Convex development backend with `npx convex dev`
+- [x] T014 Create project directory structure per plan.md (app, components, convex, lib, types)
+- [x] T015 [P] Set up linting (ESLint) and formatting (Prettier) with Next.js defaults
+- [x] T016 [P] Create README.md with setup instructions from quickstart.md
+- [x] T017 Verify development server runs successfully with `npm run dev`
 
 ---
 
