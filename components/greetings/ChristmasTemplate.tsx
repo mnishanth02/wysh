@@ -32,6 +32,30 @@ export function ChristmasTemplate({
   const festivalData = FESTIVALS.christmas;
   const colors = festivalData.colorPalette;
 
+  // T134, T145: Apply context-aware animation duration
+  const animationDuration =
+    relationshipContext.animationSpeed === "slow"
+      ? 8
+      : relationshipContext.animationSpeed === "fast"
+        ? 5
+        : 6.5;
+
+  // T135, T145: Apply context-aware color intensity
+  const colorIntensity = relationshipContext.colorIntensity;
+  const primaryColor =
+    colorIntensity === "muted"
+      ? "#8B2635" // Muted red
+      : colorIntensity === "vibrant"
+        ? colors[0] // Vibrant red
+        : "#C41E3A"; // Moderate red
+
+  const secondaryColor =
+    colorIntensity === "muted"
+      ? "#0A4D2E" // Muted green
+      : colorIntensity === "vibrant"
+        ? colors[1] // Vibrant green
+        : "#0C6B2E"; // Moderate green
+
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -49,11 +73,11 @@ export function ChristmasTemplate({
         ease: "power2.out",
       });
 
-      // Snowflakes falling
+      // Snowflakes falling - duration based on context
       tl.from(".snowflake", {
         y: -100,
         opacity: 0,
-        duration: 2,
+        duration: animationDuration * 0.3,
         stagger: 0.1,
         ease: "power1.in",
       });
@@ -108,48 +132,48 @@ export function ChristmasTemplate({
     }, containerRef);
 
     return () => ctx.revert();
-  }, [onAnimationComplete]);
+  }, [onAnimationComplete, animationDuration]);
 
   return (
     <div
-      ref={containerRef}
+      ref={ containerRef }
       className="christmas-bg relative flex min-h-screen items-center justify-center p-4"
-      style={{
-        background: `linear-gradient(135deg, ${colors[1]}, ${colors[0]})`,
-      }}
+      style={ {
+        background: `linear-gradient(135deg, ${secondaryColor}, ${primaryColor})`,
+      } }
     >
-      {/* Decorative elements */}
+      {/* Decorative elements */ }
       <div className="absolute inset-0 overflow-hidden">
-        {/* Snowflakes */}
-        {[...Array(20)].map((_, i) => (
+        {/* Snowflakes */ }
+        { [...Array(20)].map(() => (
           <div
-            key={`snow-${generateUniqueKey()}`}
+            key={ `snow-${generateUniqueKey()}` }
             className="snowflake absolute text-white text-2xl opacity-70"
-            style={{
+            style={ {
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-            }}
+            } }
           >
             ❄
           </div>
-        ))}
+        )) }
 
-        {/* Twinkling lights */}
-        {[...Array(15)].map((_, i) => (
+        {/* Twinkling lights */ }
+        { [...Array(15)].map(() => (
           <div
-            key={`light-${generateUniqueKey()}`}
+            key={ `light-${generateUniqueKey()}` }
             className="light absolute h-3 w-3 rounded-full"
-            style={{
+            style={ {
               backgroundColor: colors[2],
               left: `${Math.random() * 100}%`,
-              top: `${10 + i * 5}%`,
+              top: `${10 + Math.random() * 5}%`,
               boxShadow: `0 0 15px ${colors[2]}`,
-            }}
+            } }
           />
-        ))}
+        )) }
       </div>
 
-      {/* Content */}
+      {/* Content */ }
       <div className="relative z-10 max-w-2xl text-center space-y-6">
         <h1 className="greeting-text text-5xl sm:text-6xl md:text-7xl font-bold text-white drop-shadow-lg">
           Merry Christmas!
@@ -157,18 +181,18 @@ export function ChristmasTemplate({
 
         <div className="space-y-4">
           <p className="recipient-name text-3xl sm:text-4xl font-semibold text-white drop-shadow-md">
-            Dear {recipientName},
+            Dear { recipientName },
           </p>
 
           <p className="greeting-text text-lg sm:text-xl leading-relaxed px-4 text-white drop-shadow-md">
-            {message ||
-              `Wishing you a magical Christmas filled with joy, peace, and love!`}
+            { message ||
+              `Wishing you a magical Christmas filled with joy, peace, and love!` }
           </p>
 
           <p className="sender-name text-xl sm:text-2xl font-medium mt-8 text-white drop-shadow-md">
             With warm wishes,
             <br />
-            {senderName}
+            { senderName }
           </p>
         </div>
       </div>
