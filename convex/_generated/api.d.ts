@@ -8,6 +8,10 @@
  * @module
  */
 
+import type * as festivals from "../festivals.js";
+import type * as greetings from "../greetings.js";
+import type * as seed from "../seed.js";
+
 import type {
   ApiFromModules,
   FilterApi,
@@ -22,7 +26,11 @@ import type {
  * const myFunctionReference = api.myModule.myFunction;
  * ```
  */
-declare const fullApi: ApiFromModules<{}>;
+declare const fullApi: ApiFromModules<{
+  festivals: typeof festivals;
+  greetings: typeof greetings;
+  seed: typeof seed;
+}>;
 declare const fullApiWithMounts: typeof fullApi;
 
 export declare const api: FilterApi<
