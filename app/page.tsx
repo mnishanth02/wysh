@@ -10,7 +10,7 @@ export default function Home() {
       <Navigation />
 
       <main className="flex-1">
-        {/* Hero Section */}
+        {/* Hero Section */ }
         <section className="container mx-auto px-4 py-12 sm:py-16 md:py-24">
           <div className="flex flex-col items-center text-center space-y-6 sm:space-y-8">
             <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 text-sm font-medium text-purple-900">
@@ -21,7 +21,7 @@ export default function Home() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight max-w-4xl">
               Share Joy with
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                {" "}
+                { " " }
                 Animated Greetings
               </span>
             </h1>
@@ -32,8 +32,12 @@ export default function Home() {
               with stunning animations.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button asChild size="lg" className="text-base h-12 px-8">
+            <div className="flex flex-col sm:flex-row gap-4 pt-4 w-full sm:w-auto">
+              <Button
+                asChild
+                size="lg"
+                className="touch-target-lg text-base h-12 sm:h-14 px-8 w-full sm:w-auto"
+              >
                 <Link href="/create/festival">
                   Create Your Festival Greeting
                 </Link>
@@ -42,7 +46,7 @@ export default function Home() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="text-base h-12 px-8"
+                className="touch-target-lg text-base h-12 sm:h-14 px-8 w-full sm:w-auto"
               >
                 <Link href="#how-it-works">How It Works</Link>
               </Button>
@@ -50,7 +54,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Features Section */}
+        {/* Features Section */ }
         <section
           id="how-it-works"
           className="bg-muted/50 py-12 sm:py-16 md:py-24"
@@ -95,7 +99,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CTA Section */}
+        {/* CTA Section */ }
         <section className="py-12 sm:py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="flex flex-col items-center text-center space-y-6 max-w-3xl mx-auto">
@@ -105,7 +109,11 @@ export default function Home() {
               <p className="text-lg text-muted-foreground">
                 Create your first festival greeting in under 60 seconds
               </p>
-              <Button asChild size="lg" className="text-base h-12 px-8">
+              <Button
+                asChild
+                size="lg"
+                className="touch-target-lg text-base h-12 sm:h-14 px-8 w-full sm:w-auto"
+              >
                 <Link href="/create/festival">Get Started Now</Link>
               </Button>
             </div>
