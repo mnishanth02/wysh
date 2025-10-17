@@ -5,6 +5,16 @@
 **Status**: Draft
 **Input**: User description: "Enhance Wysh greeting card animations for three festivals: Diwali, New Year, and Pongal with next-level, visually stunning animations using GSAP 3.13+ features including particle systems, motion paths, and timeline orchestration."
 
+## Clarifications
+
+### Session 2025-10-17
+
+- **Q1**: Particle rendering technology (Canvas vs SVG) → **A1**: Canvas 2D with GPU acceleration for particles; SVG reserved for static elements
+- **Q2**: DrawSVG plugin availability and licensing → **A2**: No Club GreenSock membership; use hybrid approach (attempt DrawSVG, fallback to custom strokeDasharray animation)
+- **Q3**: Autoplay behavior on greeting view page (/g/[shareableId]) → **A3**: Hybrid context-aware autoplay (autoplay on desktop, manual click required on mobile)
+- **Q4**: Animation replay behavior after completion → **A4**: One-time play with 3-second pause, then subtle background loop (sparkles/particles) with prominent replay button
+- **Q5**: Pongal kolam pattern design reference → **A5**: Sunburst/flower mandala pattern (radial design with concentric circles, most recognizable Tamil kolam)
+
 ## User Scenarios & Testing *(mandatory)*
 
 <!--
@@ -176,11 +186,12 @@ This story enables a reusable, configurable fireworks animation that can adapt t
 
 #### Animation System Core
 
-- **FR-001**: System MUST implement three distinct festival animation templates (Diwali, New Year, Pongal) using GSAP 3.12+ core library
-- **FR-002**: System MUST provide pause/play controls for animations that respect user interaction
-- **FR-003**: System MUST respect browser prefers-reduced-motion CSS media query by displaying simple fade-in animation alternative instead of complex animations
-- **FR-004**: System MUST support animation replay without page reload, allowing users to rewatch animation multiple times
+- **FR-001**: System MUST implement three distinct festival animation templates (Diwali, New Year, Pongal) using GSAP 3.13+ core library
+- **FR-002**: System MUST provide pause/play toggle controls for all animations that respect user interaction (keyboard shortcuts: Space = play/pause, R = replay)
+- **FR-003**: System MUST respect browser prefers-reduced-motion CSS media query by displaying simple 3-second linear fade-in animation alternative with no motion transforms instead of complex animations
+- **FR-004**: System MUST support animation replay without page reload. Animation behavior: (1) plays once (8-12s), (2) pauses for 3 seconds, (3) displays subtle background loop (sparkles/particles) to maintain visual interest, (4) displays prominent replay button. Users can replay animation unlimited times. *Clarification: Subtle loop pattern to prevent fatigue while maintaining engagement.*
 - **FR-005**: System MUST integrate relationship context into animation rendering, applying intensity and color adjustments based on relationship type
+- **FR-005a**: System MUST implement context-aware autoplay behavior on greeting view page (/g/[shareableId]): (1) Desktop browsers MUST autoplay animation on page load for immediate visual impact, (2) Mobile browsers MUST require manual user click to initiate autoplay to respect battery and data constraints. Device detection MUST be automatic using browser user-agent or viewport size heuristics. *Clarification: Hybrid context-aware autoplay strategy.*
 
 #### Diwali Animation Requirements
 
@@ -220,8 +231,8 @@ This story enables a reusable, configurable fireworks animation that can adapt t
 - **FR-033**: Pongal animation MUST display warm gradient background (dawn colors: orange #FF8C00 to yellow #FFEB3B) representing dawn (0-2s)
 - **FR-034**: Pongal animation MUST render sun rising from bottom with expanding rays using GSAP MotionPath (0-2s)
 - **FR-035**: Pongal animation MUST apply continuous slow rotation to sun rays throughout animation
-- **FR-036**: Pongal animation MUST draw kolam pattern using SVG path animation with GSAP DrawSVG plugin (2-4s)
-- **FR-037**: Pongal animation MUST render culturally authentic traditional geometric kolam design with white/cream color (#F5F5DC)
+- **FR-036**: Pongal animation MUST draw kolam pattern using SVG path animation. PRIMARY: Use GSAP DrawSVG plugin if available (no membership/license required). FALLBACK: If DrawSVG unavailable, use custom `strokeDasharray` animation with GSAP tween to draw SVG paths. Animation timing: 2-4 seconds. Detection method: `try { GSAP.registerPlugin(DrawSVG); useDrawSVG = true; } catch (error) { useDrawSVG = false; /* use strokeDasharray fallback */ }`. Fallback implementation: Animate `strokeDashoffset` from path length to 0 using `GSAP.to(path, { strokeDashoffset: 0, duration: 3, ease: "power2.inOut" })`. *Clarification: Hybrid approach with resilient fallback strategy and explicit detection method.*
+- **FR-037**: Pongal animation MUST render culturally authentic kolam design using sunburst/flower mandala pattern with concentric circles drawn radially outward in white/cream color (#F5F5DC). *Clarification: Specific pattern design established for cultural authenticity (Tamil sunburst mandala).*
 - **FR-038**: Pongal animation MUST display pongal pot with terracotta color (#D2691E) and decorative patterns in red (#DC143C) and yellow (#FFD700) (3-6s)
 - **FR-039**: Pongal animation MUST render steam particles rising from pot with vertical motion paths and slight horizontal wobble (50-80 particles)
 - **FR-040**: Pongal animation MUST animate pot contents bubbling and rising visibly inside pot during boiling phase
@@ -259,10 +270,8 @@ This story enables a reusable, configurable fireworks animation that can adapt t
 
 #### Accessibility Requirements
 
-- **FR-066**: System MUST provide pause/play toggle controls for all animations
-- **FR-067**: System MUST respect prefers-reduced-motion by displaying text-only or simple fade-in alternative animations
 - **FR-068**: System MUST ensure text remains readable throughout all animation phases with WCAG AA color contrast minimum
-- **FR-069**: System MUST provide keyboard navigation support for animation controls
+- **FR-069**: System MUST provide keyboard navigation support for animation controls including Tab navigation for control focus
 
 #### Integration Requirements
 
@@ -299,16 +308,19 @@ This story enables a reusable, configurable fireworks animation that can adapt t
 
 The specification makes the following informed assumptions:
 
-1. **Particle Rendering**: Canvas-based rendering will be used for particles (200-500 total) to achieve 60fps performance. DOM-based rendering would not achieve target performance.
+1. **Particle Rendering**: Canvas 2D-based rendering will be used for particles (200-500 total) to achieve 60fps performance with GPU acceleration via GSAP `force3D: true`. DOM-based rendering would not achieve target performance. *Clarification: Canvas 2D chosen over SVG for performance and particle count capacity.*
 2. **Animation Libraries**: GSAP 3.12+ will be used as specified; no alternative animation libraries will be considered during implementation.
 3. **Browser Support**: Modern browser support (last 2 versions) is acceptable; IE11 support is not required.
 4. **Mobile Testing**: Physical device testing on mid-range Android devices will be conducted; emulator-based testing alone is insufficient for validating 60fps performance.
-5. **SVG DrawSVG Plugin**: GSAP DrawSVG plugin will be available for Pongal kolam drawing animation; if unavailable, SVG.js or similar library will be used as substitute.
-6. **Relationship Context Data**: Relationship type information is already available from greeting creation flow and stored in greeting data model; no schema changes required.
-7. **Prefers-Reduced-Motion Fallback**: Simple fade-in and text reveal animations require no additional dependencies beyond CSS and basic JavaScript.
-8. **Color Accuracy**: Festival colors specified in hex values are acceptable for cultural representation; no color management system required.
-9. **Audio**: No audio/sound effects are included (explicitly out of scope for this feature).
-10. **Animation Assets**: All animations will be code-generated with GSAP; no pre-rendered video or image sequences required.
+5. **SVG Animation Strategy**: GSAP DrawSVG plugin will be attempted for Pongal kolam drawing animation. If DrawSVG is not available (licensing or membership constraints), system MUST fallback to custom `strokeDasharray` + GSAP animation approach. *Clarification: Hybrid approach selected with resilient fallback strategy; no membership/license purchases required.*
+6. **Autoplay Behavior**: Desktop browsers will autoplay animations on greeting view page (/g/[id]); mobile browsers will require manual user click for autoplay to respect battery and data constraints. *Clarification: Context-aware hybrid approach detected by device type.*
+7. **Animation Replay Pattern**: Animations will play once (8-12 seconds), pause for 3 seconds, then display a subtle background loop (sparkles/particles) to maintain visual interest while a prominent replay button is displayed. *Clarification: Subtle loop pattern to prevent fatigue while maintaining engagement.*
+8. **Kolam Design (Pongal)**: Pongal kolam animation will use sunburst/flower mandala design with concentric circles drawn radially outward. This is the most recognizable and culturally authentic Tamil kolam pattern. *Clarification: Specific pattern design established for cultural authenticity.*
+9. **Relationship Context Data**: Relationship type information is already available from greeting creation flow and stored in greeting data model; no schema changes required.
+10. **Prefers-Reduced-Motion Fallback**: Simple fade-in and text reveal animations require no additional dependencies beyond CSS and basic JavaScript.
+11. **Color Accuracy**: Festival colors specified in hex values are acceptable for cultural representation; no color management system required.
+12. **Audio**: No audio/sound effects are included (explicitly out of scope for this feature).
+13. **Animation Assets**: All animations will be code-generated with GSAP; no pre-rendered video or image sequences required.
 
 ## Out of Scope
 
