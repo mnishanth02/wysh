@@ -9,6 +9,94 @@ import { generateShareableId } from "../lib/id-generator";
 import { mutation, query } from "./_generated/server";
 
 // ============================================================================
+// Validation Constants
+// ============================================================================
+
+const VALID_FESTIVAL_TYPES = [
+  "diwali",
+  "holi",
+  "christmas",
+  "newyear",
+  "pongal",
+  "generic",
+] as const;
+
+const VALID_RELATIONSHIP_TYPES = [
+  "parents",
+  "siblings",
+  "spouse",
+  "children",
+  "relatives",
+  "friend",
+  "best_friend",
+  "neighbor",
+  "boss",
+  "colleague",
+  "client",
+  "mentor",
+  "partner",
+  "fiance",
+  "crush",
+] as const;
+
+const VALID_TEMPLATE_IDS = [
+  "diwali-1",
+  "diwali-2",
+  "diwali-3",
+  "holi-1",
+  "holi-2",
+  "holi-3",
+  "christmas-1",
+  "christmas-2",
+  "christmas-3",
+  "newyear-1",
+  "newyear-2",
+  "newyear-3",
+  "pongal-1",
+  "pongal-2",
+  "pongal-3",
+  "generic-1",
+  "generic-2",
+] as const;
+
+// Regex to detect HTML tags and script content (XSS prevention)
+const HTML_TAG_REGEX = /<[^>]*>|<script|javascript:/gi;
+const DANGEROUS_CHARS_REGEX = /[<>{}[\]\\]/g;
+
+/**
+ * Server-side validation to reject inputs containing HTML/script tags
+ * Complements client-side DOMPurify sanitization for defense-in-depth
+ */
+function validateNoHtmlContent(text: string, fieldName: string): void {
+  if (HTML_TAG_REGEX.test(text)) {
+    throw new Error(
+      `${fieldName} contains invalid characters. HTML tags are not allowed.`,
+    );
+  }
+}
+
+/**
+ * Validate name field: alphanumeric, spaces, hyphens, apostrophes only
+ * No dangerous characters that could be used for injection
+ */
+function validateName(name: string, fieldName: string): void {
+  validateNoHtmlContent(name, fieldName);
+
+  if (DANGEROUS_CHARS_REGEX.test(name)) {
+    throw new Error(
+      `${fieldName} contains invalid characters. Only letters, numbers, spaces, hyphens, and apostrophes are allowed.`,
+    );
+  }
+}
+
+/**
+ * Validate message field: allows more characters but still blocks HTML/scripts
+ */
+function validateMessage(message: string): void {
+  validateNoHtmlContent(message, "Custom message");
+}
+
+// ============================================================================
 // Mutations
 // ============================================================================
 
@@ -28,73 +116,144 @@ export const createGreeting = mutation({
     templateId: v.string(),
   },
   handler: async (ctx, args) => {
-    // Validate input lengths
-    if (args.recipientName.length > 50) {
+    // Validate festival type against whitelist
+    if (
+      !VALID_FESTIVAL_TYPES.includes(
+        args.festivalType as (typeof VALID_FESTIVAL_TYPES)[number],
+      )
+    ) {
+      throw new Error(
+        `Invalid festival type. Must be one of: ${VALID_FESTIVAL_TYPES.join(", ")}`,
+      );
+    }
+
+    // Validate relationship type against whitelist
+    if (
+      !VALID_RELATIONSHIP_TYPES.includes(
+        args.relationshipType as (typeof VALID_RELATIONSHIP_TYPES)[number],
+      )
+    ) {
+      throw new Error(
+        `Invalid relationship type. Must be one of: ${VALID_RELATIONSHIP_TYPES.join(", ")}`,
+      );
+    }
+
+    // Validate template ID against whitelist
+    if (
+      !VALID_TEMPLATE_IDS.includes(
+        args.templateId as (typeof VALID_TEMPLATE_IDS)[number],
+      )
+    ) {
+      throw new Error(
+        `Invalid template ID. Must be one of: ${VALID_TEMPLATE_IDS.join(", ")}`,
+      );
+    }
+
+    // Validate and sanitize input lengths
+    const recipientName = args.recipientName.trim();
+    const senderName = args.senderName.trim();
+
+    if (!recipientName || recipientName.length < 1) {
+      throw new Error("Recipient name is required");
+    }
+
+    if (!senderName || senderName.length < 1) {
+      throw new Error("Sender name is required");
+    }
+
+    if (recipientName.length > 50) {
       throw new Error("Recipient name must be 50 characters or less");
     }
-    if (args.senderName.length > 50) {
+
+    if (senderName.length > 50) {
       throw new Error("Sender name must be 50 characters or less");
     }
+
     if (args.customMessage && args.customMessage.length > 150) {
       throw new Error("Custom message must be 150 characters or less");
     }
 
-    // Generate unique shareable ID (retry if collision)
-    let shareableId = "";
-    let attempts = 0;
-    const maxAttempts = 3;
+    // Server-side XSS prevention: validate no HTML/script content
+    validateName(recipientName, "Recipient name");
+    validateName(senderName, "Sender name");
 
-    while (attempts < maxAttempts) {
-      shareableId = generateShareableId();
-
-      // Check for collision
-      const existing = await ctx.db
-        .query("greetings")
-        .withIndex("by_shareable_id", (q) => q.eq("shareableId", shareableId))
-        .first();
-
-      if (!existing) {
-        break; // ID is unique
-      }
-
-      attempts++;
-      if (attempts >= maxAttempts) {
-        throw new Error("Failed to generate unique ID. Please try again.");
-      }
+    if (args.customMessage) {
+      validateMessage(args.customMessage);
     }
 
-    if (!shareableId) {
-      throw new Error("Failed to generate shareable ID");
-    }
+    try {
+      // Generate unique shareable ID (retry if collision)
+      let shareableId = "";
+      let attempts = 0;
+      const maxAttempts = 3;
 
-    // Generate contextual message if custom message not provided
-    const generatedMessage = args.customMessage
-      ? undefined
-      : generateContextualMessage(
-          args.festivalType,
-          args.relationshipType,
-          args.recipientName,
+      while (attempts < maxAttempts) {
+        shareableId = generateShareableId();
+
+        // Check for collision
+        const existing = await ctx.db
+          .query("greetings")
+          .withIndex("by_shareable_id", (q) => q.eq("shareableId", shareableId))
+          .first();
+
+        if (!existing) {
+          break; // ID is unique
+        }
+
+        attempts++;
+        if (attempts >= maxAttempts) {
+          throw new Error(
+            "We're having trouble creating your greeting right now. Please try again in a moment.",
+          );
+        }
+      }
+
+      if (!shareableId) {
+        throw new Error(
+          "Unable to generate a unique link for your greeting. Please try again.",
         );
+      }
 
-    // Create greeting document
-    const greetingId = await ctx.db.insert("greetings", {
-      festivalType: args.festivalType,
-      relationshipType: args.relationshipType,
-      recipientName: args.recipientName.trim(),
-      senderName: args.senderName.trim(),
-      customMessage: args.customMessage?.trim(),
-      generatedMessage,
-      templateId: args.templateId,
-      shareableId: shareableId,
-      viewCount: 0,
-      createdAt: Date.now(),
-      status: "active",
-    });
+      // Generate contextual message if custom message not provided
+      const generatedMessage = args.customMessage
+        ? undefined
+        : generateContextualMessage(
+            args.festivalType,
+            args.relationshipType,
+            args.recipientName,
+          );
 
-    return {
-      greetingId,
-      shareableId: shareableId,
-    };
+      // Create greeting document
+      const greetingId = await ctx.db.insert("greetings", {
+        festivalType: args.festivalType,
+        relationshipType: args.relationshipType,
+        recipientName: args.recipientName.trim(),
+        senderName: args.senderName.trim(),
+        customMessage: args.customMessage?.trim(),
+        generatedMessage,
+        templateId: args.templateId,
+        shareableId: shareableId,
+        viewCount: 0,
+        createdAt: Date.now(),
+        status: "active",
+      });
+
+      return {
+        greetingId,
+        shareableId: shareableId,
+      };
+    } catch (error) {
+      // Database operation failed - provide user-friendly message
+      if (error instanceof Error && error.message.includes("try again")) {
+        // Re-throw our custom error messages
+        throw error;
+      }
+
+      // Unexpected database error
+      throw new Error(
+        "We couldn't save your greeting. Please check your connection and try again.",
+      );
+    }
   },
 });
 
@@ -125,14 +284,16 @@ export const incrementViewCount = mutation({
       return { success: true };
     } catch (error) {
       // Log error but don't throw (non-critical operation)
-      console.error(JSON.stringify({
-        level: "error",
-        message: "Failed to increment view count",
-        error: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-        function: "incrementViewCount",
-        timestamp: new Date().toISOString(),
-      }));
+      console.error(
+        JSON.stringify({
+          level: "error",
+          message: "Failed to increment view count",
+          error: error instanceof Error ? error.message : String(error),
+          stack: error instanceof Error ? error.stack : undefined,
+          function: "incrementViewCount",
+          timestamp: new Date().toISOString(),
+        }),
+      );
       return { success: false };
     }
   },
@@ -153,23 +314,38 @@ export const getGreetingByShareableId = query({
     shareableId: v.string(),
   },
   handler: async (ctx, args) => {
-    const greeting = await ctx.db
-      .query("greetings")
-      .withIndex("by_shareable_id", (q) =>
-        q.eq("shareableId", args.shareableId),
-      )
-      .first();
+    try {
+      const greeting = await ctx.db
+        .query("greetings")
+        .withIndex("by_shareable_id", (q) =>
+          q.eq("shareableId", args.shareableId),
+        )
+        .first();
 
-    if (!greeting) {
+      if (!greeting) {
+        return null;
+      }
+
+      // Only return active greetings
+      if (greeting.status !== "active") {
+        return null;
+      }
+
+      return greeting;
+    } catch (error) {
+      // Database read error - log and return null (will trigger 404)
+      console.error(
+        JSON.stringify({
+          level: "error",
+          message: "Failed to fetch greeting",
+          shareableId: args.shareableId,
+          error: error instanceof Error ? error.message : String(error),
+          function: "getGreetingByShareableId",
+          timestamp: new Date().toISOString(),
+        }),
+      );
       return null;
     }
-
-    // Only return active greetings
-    if (greeting.status !== "active") {
-      return null;
-    }
-
-    return greeting;
   },
 });
 
