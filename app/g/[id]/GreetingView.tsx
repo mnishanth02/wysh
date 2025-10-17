@@ -99,12 +99,12 @@ export function GreetingView({ shareableId }: GreetingViewProps) {
 
   return (
     <GreetingRenderer
-      festivalType={ greeting.festivalType as FestivalType }
-      relationshipType={ greeting.relationshipType as RelationshipType }
-      recipientName={ greeting.recipientName }
-      senderName={ greeting.senderName }
-      message={ greeting.customMessage || greeting.generatedMessage || "" }
-      templateId={ greeting.templateId }
+      festivalType={greeting.festivalType as FestivalType}
+      relationshipType={greeting.relationshipType as RelationshipType}
+      recipientName={greeting.recipientName}
+      senderName={greeting.senderName}
+      message={greeting.customMessage || greeting.generatedMessage || ""}
+      templateId={greeting.templateId}
     />
   );
 }
