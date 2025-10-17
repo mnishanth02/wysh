@@ -97,17 +97,17 @@
 
 ### Diwali Animation Components
 
-- [ ] T025 [P] [US1] Create `components/greetings/animations/diwali/DiyaLighting.tsx` with SVG diya shapes, GSAP scale/opacity animation staggered by 0.2s, glow effect via filter: drop-shadow
-- [ ] T026 [P] [US1] Create `components/greetings/animations/diwali/FireworkSystem.tsx` using ParticleCanvas, emitBurst() calls with Diwali colors (#FF6B35, #FFA500, #DC143C, #FFFFFF), 200-300 particles total
-- [ ] T027 [P] [US1] Implement firework launch animation in FireworkSystem: use GSAP MotionPath for particles along bezier curves, burst at apex with radial distribution
-- [ ] T028 [P] [US1] Create `components/greetings/animations/diwali/SparkleParticles.tsx` with golden floating particles (#FFA500), vertical motion path with slight horizontal drift, continuous emission during 2-6s phase
-- [ ] T029 [P] [US1] Create `components/greetings/animations/diwali/RangoliDraw.tsx` with SVG path animation (strokeDasharray technique or DrawSVG plugin if available), traditional geometric pattern in white/orange
+- [X] T025 [P] [US1] Create `components/greetings/animations/diwali/DiyaLighting.tsx` with SVG diya shapes, GSAP scale/opacity animation staggered by 0.2s, glow effect via filter: drop-shadow
+- [X] T026 [P] [US1] Create `components/greetings/animations/diwali/FireworkSystem.tsx` using ParticleCanvas, emitBurst() calls with Diwali colors (#FF6B35, #FFA500, #DC143C, #FFFFFF), 200-300 particles total
+- [X] T027 [P] [US1] Implement firework launch animation in FireworkSystem: use GSAP MotionPath for particles along bezier curves, burst at apex with radial distribution
+- [X] T028 [P] [US1] Create `components/greetings/animations/diwali/SparkleParticles.tsx` with golden floating particles (#FFA500), vertical motion path with slight horizontal drift, continuous emission during 2-6s phase
+- [X] T029 [P] [US1] Create `components/greetings/animations/diwali/RangoliDraw.tsx` with SVG path animation (strokeDasharray technique or DrawSVG plugin if available), traditional geometric pattern in white/orange
 
 ### Diwali SVG Assets
 
-- [ ] T030 [P] [US1] Create SVG asset `public/festivals/diwali/diya.svg`: traditional oil lamp shape with flame, optimized with SVGO (<2KB)
-- [ ] T031 [P] [US1] Create SVG asset `public/festivals/diwali/rangoli-pattern.svg`: circular geometric pattern, prepare for path animation
-- [ ] T032 [P] [US1] Create SVG asset `public/festivals/diwali/sparkle.svg`: 4-point star shape for particle rendering
+- [X] T030 [P] [US1] Create SVG asset `public/festivals/diwali/diya.svg`: traditional oil lamp shape with flame, optimized with SVGO (<2KB)
+- [X] T031 [P] [US1] Create SVG asset `public/festivals/diwali/rangoli-pattern.svg`: circular geometric pattern, prepare for path animation
+- [X] T032 [P] [US1] Create SVG asset `public/festivals/diwali/sparkle.svg`: 4-point star shape for particle rendering
 
 ### Diwali Template Integration
 
