@@ -1,46 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-  <defs>
-    <!-- Star burst shape for firework particles -->
-    <radialGradient id="firework-glow" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" style="stop-color:currentColor;stop-opacity:1" />
-      <stop offset="70%" style="stop-color:currentColor;stop-opacity:0.6" />
-      <stop offset="100%" style="stop-color:currentColor;stop-opacity:0" />
-    </radialGradient>
-  </defs>
-
-  <!-- 8-point star burst -->
-  <g id="firework-particle">
-    <!-- Center glow -->
-    <circle cx="12" cy="12" r="10" fill="url(#firework-glow)" opacity="0.5"/>
-
-    <!-- Star burst shape -->
-    <path d="M12 2 L13.09 8.26 L18.54 5.46 L15.73 10.91 L22 12 L15.73 13.09 L18.54 18.54 L13.09 15.73 L12 22 L10.91 15.73 L5.46 18.54 L8.27 13.09 L2 12 L8.27 10.91 L5.46 5.46 L10.91 8.26 Z"
-          fill="currentColor"
-          stroke="currentColor"
-          stroke-width="0.5"
-          stroke-linejoin="round"/>
-
-    <!-- Inner highlight -->
-    <circle cx="12" cy="12" r="2" fill="white" opacity="0.8"/>
-  </g>
-
-  <!-- Alternate: Simple 4-point star -->
-  <g id="firework-simple">
-    <path d="M12 4 L13 11 L20 12 L13 13 L12 20 L11 13 L4 12 L11 11 Z"
-          fill="currentColor"/>
-  </g>
-
-  <!-- Trail particle (for launch effect) -->
-  <g id="firework-trail">
-    <ellipse cx="12" cy="12" rx="2" ry="6" fill="currentColor" opacity="0.7">
-      <animateTransform
-        attributeName="transform"
-        attributeType="XML"
-        type="scale"
-        from="1 1"
-        to="0.5 0.3"
-        dur="0.5s"
-        repeatCount="indefinite"/>
+    <defs>
+        <radialGradient id="a" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" style="stop-color:currentColor;stop-opacity:1"/>
+            <stop offset="70%" style="stop-color:currentColor;stop-opacity:.6"/>
+            <stop offset="100%" style="stop-color:currentColor;stop-opacity:0"/>
+        </radialGradient>
+    </defs>
+    <circle cx="12" cy="12" r="10" fill="url(#a)" opacity=".5"/>
+    <path fill="currentColor" stroke="currentColor" stroke-linejoin="round" stroke-width=".5" d="m12 2 1.09 6.26 5.45-2.8-2.81 5.45L22 12l-6.27 1.09 2.81 5.45-5.45-2.81L12 22l-1.09-6.27-5.45 2.81 2.81-5.45L2 12l6.27-1.09-2.81-5.45 5.45 2.8Z"/>
+    <circle cx="12" cy="12" r="2" fill="#fff" opacity=".8"/>
+    <path fill="currentColor" d="m12 4 1 7 7 1-7 1-1 7-1-7-7-1 7-1Z"/>
+    <ellipse cx="12" cy="12" fill="currentColor" opacity=".7" rx="2" ry="6">
+        <animateTransform attributeName="transform" attributeType="XML" dur="0.5s" from="1 1" repeatCount="indefinite" to="0.5 0.3" type="scale"/>
     </ellipse>
-  </g>
 </svg>

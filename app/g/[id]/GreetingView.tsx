@@ -3,13 +3,16 @@
 /**
  * Greeting View Client Component
  * Fetches and displays the animated greeting
+ * T102: Implements context-aware autoplay (desktop vs mobile)
  */
 
 import { useMutation, useQuery } from "convex/react";
-import { useEffect } from "react";
+import { Play } from "lucide-react";
+import { useEffect, useState } from "react";
 import { GreetingRenderer } from "@/components/greetings/GreetingRenderer";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { LoadingState } from "@/components/shared/LoadingState";
+import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
 import type { FestivalType, RelationshipType } from "@/types";
 
@@ -69,6 +72,17 @@ export function GreetingView({ shareableId }: GreetingViewProps) {
   });
   const incrementViewCount = useMutation(api.greetings.incrementViewCount);
 
+  // T102: Context-aware autoplay state
+  const [shouldAutoplay, setShouldAutoplay] = useState(false);
+  const [showTapToPlay, setShowTapToPlay] = useState(false);
+
+  // T102: Detect device type on mount
+  useEffect(() => {
+    const isDesktop = window.matchMedia("(min-width: 768px)").matches;
+    setShouldAutoplay(isDesktop);
+    setShowTapToPlay(!isDesktop);
+  }, []);
+
   useEffect(() => {
     // Increment view count when greeting loads (fire-and-forget)
     // Only increment if greeting hasn't been viewed in current session
@@ -85,6 +99,11 @@ export function GreetingView({ shareableId }: GreetingViewProps) {
     }
   }, [greeting?._id, incrementViewCount]);
 
+  const handleTapToPlay = () => {
+    setShowTapToPlay(false);
+    setShouldAutoplay(true);
+  };
+
   if (greeting === undefined) {
     return <LoadingState message="Loading your greeting..." />;
   }
@@ -98,13 +117,40 @@ export function GreetingView({ shareableId }: GreetingViewProps) {
   }
 
   return (
-    <GreetingRenderer
-      festivalType={greeting.festivalType as FestivalType}
-      relationshipType={greeting.relationshipType as RelationshipType}
-      recipientName={greeting.recipientName}
-      senderName={greeting.senderName}
-      message={greeting.customMessage || greeting.generatedMessage || ""}
-      templateId={greeting.templateId}
-    />
+    <div className="relative">
+      <GreetingRenderer
+        festivalType={ greeting.festivalType as FestivalType }
+        relationshipType={ greeting.relationshipType as RelationshipType }
+        recipientName={ greeting.recipientName }
+        senderName={ greeting.senderName }
+        message={ greeting.customMessage || greeting.generatedMessage || "" }
+        templateId={ greeting.templateId }
+        autoplay={ shouldAutoplay }
+      />
+
+      {/* T102: Mobile "Tap to Play" Overlay */ }
+      { showTapToPlay && (
+        <button
+          type="button"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm cursor-pointer"
+          onClick={ handleTapToPlay }
+          onKeyDown={ (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              handleTapToPlay();
+            }
+          } }
+          aria-label="Start animation"
+        >
+          <Button
+            size="lg"
+            className="touch-target-lg gap-2 text-lg px-8 py-6 shadow-xl pointer-events-none"
+          >
+            <Play className="h-6 w-6 fill-current" />
+            Tap to Play Animation
+          </Button>
+        </button>
+      ) }
+    </div>
   );
 }

@@ -64,7 +64,7 @@ export default function TemplatePage() {
         <div className="max-w-5xl mx-auto space-y-8">
           <Button
             variant="ghost"
-            onClick={() => router.back()}
+            onClick={ () => router.back() }
             className="mb-4"
           >
             <ArrowLeft className="h-4 w-4 mr-2" />
@@ -81,11 +81,12 @@ export default function TemplatePage() {
           </div>
 
           <TemplateSelector
-            festival={festival}
-            relationship={relationship}
-            recipientName={recipientName}
-            senderName={senderName}
-            customMessage={customMessage}
+            festival={ festival }
+            relationship={ relationship }
+            recipientName={ recipientName }
+            senderName={ senderName }
+            customMessage={ customMessage }
+            enablePreview={ true }
           />
         </div>
       </main>

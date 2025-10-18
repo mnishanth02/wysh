@@ -1,37 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <defs>
-    <!-- Rectangle confetti shape -->
-    <g id="rect-confetti">
-      <rect x="0" y="0" width="10" height="6" fill="currentColor" rx="1"/>
+    <defs>
+        <path id="c" fill="currentColor" d="m5 0 5 8.66H0Z"/>
+        <path id="d" fill="currentColor" d="m5 0 1 4 4 1-4 1-1 4-1-4-4-1 4-1Z"/>
+        <path id="e" fill="currentColor" d="m5 0 1.18 3.82 3.82.3-2.91 2.79.85 3.8L5 8.18l-2.94 2.53.85-3.8L0 4.12l3.82-.3Z"/>
+        <circle id="b" cx="5" cy="5" r="5" fill="currentColor"/>
+        <rect id="a" width="10" height="6" fill="currentColor" rx="1"/>
+    </defs>
+    <g opacity=".3">
+        <use x="10" y="10" fill="#1e90ff" href="#a"/>
+        <use x="30" y="10" fill="#ff1493" href="#b"/>
+        <use x="50" y="10" fill="gold" href="#c"/>
+        <use x="70" y="10" fill="#32cd32" href="#d"/>
+        <use x="10" y="30" fill="#9370db" href="#e"/>
     </g>
-
-    <!-- Circle confetti shape -->
-    <g id="circle-confetti">
-      <circle cx="5" cy="5" r="5" fill="currentColor"/>
-    </g>
-
-    <!-- Triangle confetti shape -->
-    <g id="triangle-confetti">
-      <path d="M5 0 L10 8.66 L0 8.66 Z" fill="currentColor"/>
-    </g>
-
-    <!-- Star confetti shape (4-point) -->
-    <g id="star-confetti">
-      <path d="M5 0 L6 4 L10 5 L6 6 L5 10 L4 6 L0 5 L4 4 Z" fill="currentColor"/>
-    </g>
-
-    <!-- 5-point star variant -->
-    <g id="star5-confetti">
-      <path d="M5 0 L6.18 3.82 L10 4.12 L7.09 6.91 L7.94 10.71 L5 8.18 L2.06 10.71 L2.91 6.91 L0 4.12 L3.82 3.82 Z" fill="currentColor"/>
-    </g>
-  </defs>
-
-  <!-- Example usage (for reference, not rendered in actual use) -->
-  <g opacity="0.3">
-    <use href="#rect-confetti" x="10" y="10" fill="#1E90FF"/>
-    <use href="#circle-confetti" x="30" y="10" fill="#FF1493"/>
-    <use href="#triangle-confetti" x="50" y="10" fill="#FFD700"/>
-    <use href="#star-confetti" x="70" y="10" fill="#32CD32"/>
-    <use href="#star5-confetti" x="10" y="30" fill="#9370DB"/>
-  </g>
 </svg>

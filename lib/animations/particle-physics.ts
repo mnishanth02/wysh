@@ -258,21 +258,44 @@ export class ParticleSystem {
   }
 
   /**
-   * Render particles to canvas
+   * Render particles to canvas (T118: Optimized with batching)
    */
   render(): void {
-    this.ctx.globalCompositeOperation = this.config.blendMode ?? "source-over";
+    const { ctx } = this;
+    const globalOpacity = this.config.opacity ?? 1;
+
+    // Set blend mode once (minimize context state changes)
+    ctx.globalCompositeOperation = this.config.blendMode ?? "source-over";
+
+    // Batch particles by color to minimize fillStyle changes
+    const particlesByColor = new Map<string, ParticleInstance[]>();
 
     for (const p of this.particles) {
-      this.ctx.fillStyle = p.color;
-      this.ctx.globalAlpha = p.opacity * (this.config.opacity ?? 1);
-
-      this.ctx.beginPath();
-      this.ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
-      this.ctx.fill();
+      const color = p.color;
+      if (!particlesByColor.has(color)) {
+        particlesByColor.set(color, []);
+      }
+      const colorGroup = particlesByColor.get(color);
+      if (colorGroup) {
+        colorGroup.push(p);
+      }
     }
 
-    this.ctx.globalAlpha = 1;
+    // Render particles grouped by color
+    for (const [color, particles] of particlesByColor) {
+      ctx.fillStyle = color;
+
+      // Batch draw particles with same color
+      for (const p of particles) {
+        ctx.globalAlpha = p.opacity * globalOpacity;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size / 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    // Reset global alpha once at end
+    ctx.globalAlpha = 1;
   }
 
   /**

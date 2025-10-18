@@ -263,21 +263,21 @@
 
 ### Preview UI Components
 
-- [ ] T091 [P] [US5] Create `components/ui/AnimationControls.tsx` with play button, pause button, replay button, progress bar (0-100%), current time display
-- [ ] T092 [P] [US5] Implement play/pause toggle in AnimationControls using AnimationTemplateRef.play() and .pause() methods
-- [ ] T093 [P] [US5] Add replay functionality in AnimationControls calling AnimationTemplateRef.replay() method
-- [ ] T094 [P] [US5] Implement progress bar in AnimationControls: displays 0-100% based on currentTime / totalTime from AnimationTemplateState
-- [ ] T095 [P] [US5] Add keyboard navigation support in AnimationControls: Space = play/pause, R = replay, Left/Right arrow = seek -1s/+1s
+- [X] T091 [P] [US5] Create `components/ui/AnimationControls.tsx` with play button, pause button, replay button, progress bar (0-100%), current time display
+- [X] T092 [P] [US5] Implement play/pause toggle in AnimationControls using AnimationTemplateRef.play() and .pause() methods
+- [X] T093 [P] [US5] Add replay functionality in AnimationControls calling AnimationTemplateRef.replay() method
+- [X] T094 [P] [US5] Implement progress bar in AnimationControls: displays 0-100% based on currentTime / totalTime from AnimationTemplateState
+- [X] T095 [P] [US5] Add keyboard navigation support in AnimationControls: Space = play/pause, R = replay, Left/Right arrow = seek -1s/+1s
 
 ### Template Selection Integration
 
-- [ ] T096 [US5] Update `app/create/template/page.tsx` to render TemplateSelector with animation preview capability
-- [ ] T097 [US5] Update `components/forms/TemplateSelector.tsx` to display AnimationControls below each template preview
-- [ ] T098 [US5] Wire AnimationTemplateRef from DiwaliTemplate/NewYearTemplate/PongalTemplate to AnimationControls in TemplateSelector
-- [ ] T099 [US5] Implement keyboard shortcuts (Space = play/pause, R = replay) leveraging existing AnimationControls keyboard support from T095
-- [ ] T100 [US5] Show replay button on animation complete: onAnimationComplete callback makes replay button visible
-- [ ] T101 [US5] Test preview workflow: verify user can watch animation multiple times before finalizing greeting selection
-- [ ] T102 [US5] Implement context-aware autoplay for greeting view page (`app/g/[id]/page.tsx`): (1) Desktop browsers: autoplay animation on page load using `useEffect` with viewport width check (>768px = desktop), (2) Mobile browsers: display "Tap to Play" overlay requiring user click to start animation. Device detection using `window.matchMedia('(min-width: 768px)')` or user-agent parsing. Honors FR-005a clarification.
+- [X] T096 [US5] Update `app/create/template/page.tsx` to render TemplateSelector with animation preview capability
+- [X] T097 [US5] Update `components/forms/TemplateSelector.tsx` to display AnimationControls below each template preview
+- [X] T098 [US5] Wire AnimationTemplateRef from DiwaliTemplate/NewYearTemplate/PongalTemplate to AnimationControls in TemplateSelector
+- [X] T099 [US5] Implement keyboard shortcuts (Space = play/pause, R = replay) leveraging existing AnimationControls keyboard support from T095
+- [X] T100 [US5] Show replay button on animation complete: onAnimationComplete callback makes replay button visible
+- [X] T101 [US5] Test preview workflow: verify user can watch animation multiple times before finalizing greeting selection
+- [X] T102 [US5] Implement context-aware autoplay for greeting view page (`app/g/[id]/page.tsx`): (1) Desktop browsers: autoplay animation on page load using `useEffect` with viewport width check (>768px = desktop), (2) Mobile browsers: display "Tap to Play" overlay requiring user click to start animation. Device detection using `window.matchMedia('(min-width: 768px)')` or user-agent parsing. Honors FR-005a clarification.
 
 **Checkpoint ✅**: Preview functionality complete in creation flow, autoplay respects device context
 
@@ -326,11 +326,11 @@
 ### Performance Optimization
 
 - [ ] T115 [P] Physical device testing on mid-range Android (Snapdragon 600+ chipset, e.g., Samsung Galaxy A52, Motorola Moto G series): Install production build on device, measure FPS during all festival animations using Chrome DevTools Performance tab via USB debugging. REQUIRED: Test Diwali (200-300 particles), New Year (500-650 particles), Pongal (50-80 particles) on real device (NOT emulator). Document FPS results in `specs/002-enhance-festival-animations/PERFORMANCE-TEST-RESULTS.md`. Honors Constitution Principle II (mobile-first performance) and Quality Gate 2 (mobile device validation).
-- [ ] T116 [P] Implement quality degradation in `lib/animations/performance-monitor.ts`: if FPS drops below 45 for 2+ seconds, reduce particle count by 30%
-- [ ] T117 [P] Add aggressive quality degradation: if FPS drops below 30 for 2+ seconds, reduce particle count by 50%, disable some visual effects (e.g., shadows, glows)
-- [ ] T118 [P] Optimize Canvas rendering: use requestAnimationFrame for render loop, batch draw calls, minimize context state changes
-- [ ] T119 [P] Optimize SVG assets: run SVGO on all SVG files in `public/festivals/` to minimize file sizes, inline small SVGs (<2KB) into components
-- [ ] T120 [P] Implement lazy loading for animation assets: use next/dynamic for heavy components, load particle systems on demand
+- [X] T116 [P] Implement quality degradation in `lib/animations/performance-monitor.ts`: if FPS drops below 45 for 2+ seconds, reduce particle count by 30%
+- [X] T117 [P] Add aggressive quality degradation: if FPS drops below 30 for 2+ seconds, reduce particle count by 50%, disable some visual effects (e.g., shadows, glows)
+- [X] T118 [P] Optimize Canvas rendering: use requestAnimationFrame for render loop, batch draw calls, minimize context state changes
+- [X] T119 [P] Optimize SVG assets: run SVGO on all SVG files in `public/festivals/` to minimize file sizes, inline small SVGs (<2KB) into components
+- [X] T120 [P] Implement lazy loading for animation assets: use next/dynamic for heavy components, load particle systems on demand
 
 ### Accessibility Implementation
 
