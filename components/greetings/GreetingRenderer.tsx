@@ -13,6 +13,7 @@ import type { FestivalType, RelationshipType } from "@/types";
 import { ReplayButton } from "../shared/ReplayButton";
 import { ChristmasTemplate } from "./ChristmasTemplate";
 import { DiwaliTemplate } from "./DiwaliTemplate";
+import { FireworksTemplate } from "./FireworksTemplate";
 import { GenericTemplate } from "./GenericTemplate";
 import { HoliTemplate } from "./HoliTemplate";
 import { NewYearTemplate } from "./NewYearTemplate";
@@ -76,6 +77,9 @@ export function GreetingRenderer({
         return <NewYearTemplate { ...templateProps } />;
       case "pongal":
         return <PongalTemplate { ...templateProps } />;
+      case "fireworks":
+        // T110: Route festivalType='fireworks' to FireworksTemplate
+        return <FireworksTemplate { ...templateProps } />;
       case "generic":
         return <GenericTemplate { ...templateProps } />;
       default:

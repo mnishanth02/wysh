@@ -65,6 +65,22 @@ export const FESTIVALS = {
     animationStyle: "sequential" as const,
     description: "Harvest Festival",
   },
+  fireworks: {
+    festivalId: "fireworks" as FestivalType,
+    displayName: "Fireworks Celebration",
+    category: "cultural" as const,
+    colorPalette: [
+      "#FF6B35",
+      "#FFD700",
+      "#1E90FF",
+      "#FF1493",
+      "#32CD32",
+      "#9370DB",
+    ],
+    symbols: ["fireworks", "sparkle", "burst", "celebration"],
+    animationStyle: "burst" as const,
+    description: "Grand Celebration",
+  },
   generic: {
     festivalId: "generic" as FestivalType,
     displayName: "General Celebration",
@@ -85,6 +101,7 @@ export const FESTIVAL_TYPES: FestivalType[] = [
   "christmas",
   "newyear",
   "pongal",
+  "fireworks",
   "generic",
 ];
 
@@ -97,6 +114,7 @@ export const FESTIVAL_EMOJIS: Record<FestivalType, string> = {
   christmas: "🎄",
   newyear: "🎉",
   pongal: "🌾",
+  fireworks: "🎆",
   generic: "✨",
 };
 

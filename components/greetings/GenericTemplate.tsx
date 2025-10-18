@@ -9,6 +9,7 @@
 import { gsap } from "gsap";
 import { useEffect, useRef } from "react";
 import { FESTIVALS } from "@/lib/constants";
+import { shouldUseReducedMotion } from "@/lib/performance";
 import { generateUniqueKey } from "@/lib/utils";
 import type { RelationshipContext } from "@/types";
 
@@ -49,6 +50,9 @@ export function GenericTemplate({
         ? colors[0] // Vibrant purple
         : "#667EEA"; // Moderate purple
 
+  // T121: Check for reduced motion preference
+  const useReducedMotion = shouldUseReducedMotion();
+
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -58,6 +62,17 @@ export function GenericTemplate({
           onAnimationComplete?.();
         },
       });
+
+      // T121: Prefers-reduced-motion: simple fade-in
+      if (useReducedMotion) {
+        tl.set([".generic-bg", ".star", ".confetti", ".greeting-text", ".recipient-name", ".sender-name"], {
+          opacity: 1,
+        });
+        tl.call(() => {
+          onAnimationComplete?.();
+        }, [], 1);
+        return;
+      }
 
       // Background fade in
       tl.from(".generic-bg", {
@@ -139,49 +154,49 @@ export function GenericTemplate({
     }, containerRef);
 
     return () => ctx.revert();
-  }, [onAnimationComplete, animationDuration]);
+  }, [onAnimationComplete, animationDuration, useReducedMotion]);
 
   return (
     <div
-      ref={containerRef}
+      ref={ containerRef }
       className="generic-bg relative flex min-h-screen items-center justify-center p-4"
-      style={{
+      style={ {
         background: `linear-gradient(135deg, ${primaryColor}, ${colors[1]})`,
-      }}
+      } }
     >
-      {/* Decorative elements */}
+      {/* Decorative elements */ }
       <div className="absolute inset-0 overflow-hidden">
-        {/* Stars */}
-        {[...Array(12)].map((_, i) => (
+        {/* Stars */ }
+        { [...Array(12)].map((_, i) => (
           <div
-            key={`star-${generateUniqueKey()}`}
+            key={ `star-${generateUniqueKey()}` }
             className="star absolute text-4xl"
-            style={{
+            style={ {
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               color: colors[i % colors.length],
-            }}
+            } }
           >
             ⭐
           </div>
-        ))}
+        )) }
 
-        {/* Confetti */}
-        {[...Array(25)].map((_, i) => (
+        {/* Confetti */ }
+        { [...Array(25)].map((_, i) => (
           <div
-            key={`confetti-${generateUniqueKey()}`}
+            key={ `confetti-${generateUniqueKey()}` }
             className="confetti absolute h-3 w-3 rounded-sm"
-            style={{
+            style={ {
               backgroundColor: colors[i % colors.length],
               left: `${Math.random() * 100}%`,
               top: `${20 + Math.random() * 60}%`,
               transform: `rotate(${Math.random() * 360}deg)`,
-            }}
+            } }
           />
-        ))}
+        )) }
       </div>
 
-      {/* Content */}
+      {/* Content */ }
       <div className="relative z-10 max-w-2xl text-center space-y-6">
         <h1 className="greeting-text text-5xl sm:text-6xl md:text-7xl font-bold text-white drop-shadow-lg">
           Celebrating You!
@@ -189,17 +204,17 @@ export function GenericTemplate({
 
         <div className="space-y-4">
           <p className="recipient-name text-3xl sm:text-4xl font-semibold text-white drop-shadow-md">
-            Dear {recipientName},
+            Dear { recipientName },
           </p>
 
           <p className="greeting-text text-lg sm:text-xl leading-relaxed px-4 text-white drop-shadow-md">
-            {message || `Sending you warm wishes and lots of happiness!`}
+            { message || `Sending you warm wishes and lots of happiness!` }
           </p>
 
           <p className="sender-name text-xl sm:text-2xl font-medium mt-8 text-white drop-shadow-md">
             With love,
             <br />
-            {senderName}
+            { senderName }
           </p>
         </div>
       </div>

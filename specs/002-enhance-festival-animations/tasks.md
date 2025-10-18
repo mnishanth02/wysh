@@ -299,19 +299,19 @@
 
 ### Fireworks Template Implementation
 
-- [ ] T102 [P] [US6] Create `components/greetings/templates/FireworksTemplate.tsx` with configurable props: burstCount (5-7 default), particleCount (200-500), duration (8-12s), colorPalette
-- [ ] T103 [P] [US6] Implement firework launch animation in FireworksTemplate: particles launch from bottom using GSAP MotionPath with bezier curves (control points at 30%, 70% height)
-- [ ] T104 [P] [US6] Add 360-degree radial particle distribution on burst: particles spread in full circle using angle = (index / count) * 2π
-- [ ] T105 [P] [US6] Implement configurable easing in FireworksTemplate: launch uses power2.out, burst uses power3.out, fall uses sine.in
-- [ ] T106 [P] [US6] Add staggered burst timing: delay between fireworks = 0.15s * index for cascading effect
-- [ ] T107 [P] [US6] Implement gravity simulation: particles fall with vy += gravity * dt, fade as they descend (alpha reduces linearly with vy)
-- [ ] T108 [P] [US6] Add optional looped background fireworks: after main animation, small fireworks continue launching every 2s from random x positions
-- [ ] T109 [US6] Create festival context presets in `lib/animations/festival-themes.ts`: FIREWORKS_DIWALI_CONFIG, FIREWORKS_NEWYEAR_CONFIG with pre-configured colors, burst counts, durations
-- [ ] T110 [US6] Integrate FireworksTemplate with GreetingRenderer: route festivalType='fireworks' to FireworksTemplate component
-- [ ] T111 [US6] Support text overlay in FireworksTemplate: recipientName, senderName, message appear at configurable timing (default 6-8s)
-- [ ] T112 [US6] Add relationship context support in FireworksTemplate: apply ContextAdapter for intensity and color adjustments
-- [ ] T113 [US6] Test Fireworks with Diwali context: verify orange/gold/red/white colors, 6 bursts, 8s duration
-- [ ] T114 [US6] Test Fireworks with New Year context: verify blue/red/gold/green/purple/silver colors, 7 bursts, 10s duration
+- [X] T102 [P] [US6] Create `components/greetings/templates/FireworksTemplate.tsx` with configurable props: burstCount (5-7 default), particleCount (200-500), duration (8-12s), colorPalette
+- [X] T103 [P] [US6] Implement firework launch animation in FireworksTemplate: particles launch from bottom using GSAP MotionPath with bezier curves (control points at 30%, 70% height)
+- [X] T104 [P] [US6] Add 360-degree radial particle distribution on burst: particles spread in full circle using angle = (index / count) * 2π
+- [X] T105 [P] [US6] Implement configurable easing in FireworksTemplate: launch uses power2.out, burst uses power3.out, fall uses sine.in
+- [X] T106 [P] [US6] Add staggered burst timing: delay between fireworks = 0.15s * index for cascading effect
+- [X] T107 [P] [US6] Implement gravity simulation: particles fall with vy += gravity * dt, fade as they descend (alpha reduces linearly with vy)
+- [X] T108 [P] [US6] Add optional looped background fireworks: after main animation, small fireworks continue launching every 2s from random x positions
+- [X] T109 [US6] Create festival context presets in `lib/animations/festival-themes.ts`: FIREWORKS_DIWALI_CONFIG, FIREWORKS_NEWYEAR_CONFIG with pre-configured colors, burst counts, durations
+- [X] T110 [US6] Integrate FireworksTemplate with GreetingRenderer: route festivalType='fireworks' to FireworksTemplate component
+- [X] T111 [US6] Support text overlay in FireworksTemplate: recipientName, senderName, message appear at configurable timing (default 6-8s)
+- [X] T112 [US6] Add relationship context support in FireworksTemplate: apply ContextAdapter for intensity and color adjustments
+- [X] T113 [US6] Test Fireworks with Diwali context: verify orange/gold/red/white colors, 6 bursts, 8s duration
+- [X] T114 [US6] Test Fireworks with New Year context: verify blue/red/gold/green/purple/silver colors, 7 bursts, 10s duration
 
 **Checkpoint ✅**: Fireworks template is reusable across multiple contexts
 
@@ -334,11 +334,11 @@
 
 ### Accessibility Implementation
 
-- [ ] T121 [P] Validate prefers-reduced-motion support across all templates: Diwali, New Year, Pongal, Fireworks all render simple fade-in alternative when media query is true
-- [ ] T122 [P] Ensure WCAG AA color contrast for all text: verify recipientName, senderName, message text against animated backgrounds using contrast checker (minimum 4.5:1 ratio)
-- [ ] T123 [P] Add ARIA labels to AnimationControls: aria-label="Play animation", "Pause animation", "Replay animation" for screen reader support
-- [ ] T124 [P] Implement keyboard navigation in AnimationControls: verify Tab navigation, Space for play/pause, Enter for replay, Escape to close
-- [ ] T125 [P] Add focus indicators to all interactive elements: visible outline on AnimationControls buttons when focused
+- [X] T121 [P] Validate prefers-reduced-motion support across all templates: Diwali, New Year, Pongal, Fireworks all render simple fade-in alternative when media query is true
+- [X] T122 [P] Ensure WCAG AA color contrast for all text: verify recipientName, senderName, message text against animated backgrounds using contrast checker (minimum 4.5:1 ratio)
+- [X] T123 [P] Add ARIA labels to AnimationControls: aria-label="Play animation", "Pause animation", "Replay animation" for screen reader support
+- [X] T124 [P] Implement keyboard navigation in AnimationControls: verify Tab navigation, Space for play/pause, Enter for replay, Escape to close
+- [X] T125 [P] Add focus indicators to all interactive elements: visible outline on AnimationControls buttons when focused
 
 ### Browser Compatibility & Testing
 

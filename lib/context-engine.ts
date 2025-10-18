@@ -245,6 +245,7 @@ export function generateContextualMessage(
       christmas: `Wishing you a peaceful Christmas filled with love and warmth. May the season bring you joy and blessings.`,
       newyear: `May the new year bring you success, good health, and happiness. Wishing you prosperity in all your endeavors.`,
       pongal: `May this harvest festival bring abundance and prosperity to your life. Wishing you and your family a blessed Pongal.`,
+      fireworks: `May this celebration illuminate your path with joy and success. Wishing you a spectacular and memorable occasion.`,
       generic: `Wishing you joy and happiness on this special occasion. May all your endeavors be blessed with success.`,
     },
     professional: {
@@ -253,6 +254,7 @@ export function generateContextualMessage(
       christmas: `Season's greetings! Wishing you continued success and prosperity. May the new year bring exciting opportunities.`,
       newyear: `Wishing you a successful year ahead filled with achievements. Looking forward to continued collaboration.`,
       pongal: `Wishing you a prosperous Pongal. May this harvest festival bring abundance and growth to all your endeavors.`,
+      fireworks: `Wishing you continued success and growth. May this celebration mark the beginning of new achievements and milestones.`,
       generic: `Best wishes on this occasion. May it bring continued success and prosperity to your professional journey.`,
     },
     casual: {
@@ -261,6 +263,7 @@ export function generateContextualMessage(
       christmas: `Merry Christmas! Hope Santa brings you everything on your wishlist! Enjoy the festive vibes! 🎄🎁`,
       newyear: `Happy New Year! Here's to new adventures, crazy memories, and all the good times ahead! 🎉🥳`,
       pongal: `Happy Pongal! May your harvest be full of happiness and your year full of fun! 🌾☀️`,
+      fireworks: `Let's celebrate! Hope this occasion brings you tons of joy, laughter, and unforgettable moments! 🎆🎉`,
       generic: `Wishing you the best on this special day! Hope it's filled with joy, laughter, and amazing memories! ✨🎉`,
     },
     intimate: {
@@ -269,6 +272,7 @@ export function generateContextualMessage(
       christmas: `You're my favorite gift, today and always. Merry Christmas to us, my love. Here's to magical moments together. 🎄❤️`,
       newyear: `Cheers to another year of love, laughter, and beautiful memories with you. You make every day special. Happy New Year, darling! 💑`,
       pongal: `Grateful for our harvest of love and togetherness. Wishing us a beautiful Pongal and a lifetime of happiness. 💕`,
+      fireworks: `You make every moment sparkle like fireworks in the sky. Here's to celebrating us and our love. Forever grateful for you! 💕✨`,
       generic: `Every celebration is special because I get to share it with you. You make my life beautiful. Love you always! 💕✨`,
     },
   };
@@ -327,6 +331,7 @@ export function getClosingPhrase(
       christmas: "Wishing you peace and prosperity",
       newyear: "May the new year bring success",
       pongal: "May the harvest bring abundance",
+      fireworks: "May your celebration be spectacular",
       generic: "Wishing you happiness and success",
     },
     professional: {
@@ -335,6 +340,7 @@ export function getClosingPhrase(
       christmas: "Season's greetings and best wishes",
       newyear: "Wishing you a successful year ahead",
       pongal: "Wishing you a prosperous Pongal",
+      fireworks: "Wishing you continued success",
       generic: "Best wishes for continued success",
     },
     casual: {
@@ -343,6 +349,7 @@ export function getClosingPhrase(
       christmas: "Merry Christmas! 🎄",
       newyear: "Cheers to new adventures! 🎉",
       pongal: "Happy Pongal! 🌾",
+      fireworks: "Let's celebrate in style! 🎆",
       generic: "Wishing you joy and happiness! ✨",
     },
     intimate: {
@@ -351,6 +358,7 @@ export function getClosingPhrase(
       christmas: "You're the best gift I could ask for",
       newyear: "Can't wait to create more memories with you",
       pongal: "Grateful for our harvest of love",
+      fireworks: "You make my life sparkle",
       generic: "You make every celebration special",
     },
   };

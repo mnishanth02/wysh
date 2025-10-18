@@ -128,6 +128,23 @@ const TEMPLATE_CONFIGS: Record<
       description: "Beautiful kolam patterns",
     },
   ],
+  fireworks: [
+    {
+      id: "fireworks-template-1",
+      name: "Grand Finale",
+      description: "Spectacular fireworks display",
+    },
+    {
+      id: "fireworks-template-2",
+      name: "Celebration Burst",
+      description: "Colorful burst celebration",
+    },
+    {
+      id: "fireworks-template-3",
+      name: "Sky Show",
+      description: "Magnificent sky fireworks",
+    },
+  ],
   generic: [
     {
       id: "generic-template-1",

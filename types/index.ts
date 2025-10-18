@@ -17,6 +17,7 @@ export type FestivalType =
   | "christmas"
   | "newyear"
   | "pongal"
+  | "fireworks"
   | "generic";
 
 /**
