@@ -26,6 +26,7 @@ interface GreetingRendererProps {
   message: string;
   templateId: string;
   autoplay?: boolean; // T102: Optional autoplay for context-aware behavior
+  isPreview?: boolean; // T151: Modal preview mode - adapts layout for constrained dimensions
 }
 
 export function GreetingRenderer({
@@ -35,6 +36,7 @@ export function GreetingRenderer({
   senderName,
   message,
   templateId,
+  isPreview = false,
 }: GreetingRendererProps) {
   const [animationComplete, setAnimationComplete] = useState(false);
   const [replayKey, setReplayKey] = useState(0);
@@ -64,6 +66,7 @@ export function GreetingRenderer({
     relationshipContext,
     onAnimationComplete: handleAnimationComplete,
     variant,
+    isPreview,
     key: replayKey,
   };
 
@@ -72,36 +75,41 @@ export function GreetingRenderer({
     const { key, ...rest } = templateProps;
     switch (festivalType) {
       case "diwali":
-        return <DiwaliTemplate key={key} {...rest} />;
+        return <DiwaliTemplate key={ key } { ...rest } />;
       case "holi":
-        return <HoliTemplate key={key} {...rest} />;
+        return <HoliTemplate key={ key } { ...rest } />;
       case "christmas":
-        return <ChristmasTemplate key={key} {...rest} />;
+        return <ChristmasTemplate key={ key } { ...rest } />;
       case "newyear":
-        return <NewYearTemplate key={key} {...rest} />;
+        return <NewYearTemplate key={ key } { ...rest } />;
       case "pongal":
-        return <PongalTemplate key={key} {...rest} />;
+        return <PongalTemplate key={ key } { ...rest } />;
       case "generic":
-        return <GenericTemplate {...templateProps} />;
+        return <GenericTemplate { ...templateProps } />;
       default:
-        return <GenericTemplate {...templateProps} />;
+        return <GenericTemplate { ...templateProps } />;
     }
   };
 
+  // T151: Adaptive container for preview modal vs full screen
+  const containerClass = isPreview
+    ? "relative w-full h-full overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800"
+    : "relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800";
+
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800">
-      {/* Animated Template */}
-      <div className="relative z-10">{renderTemplate()}</div>
+    <div className={ containerClass }>
+      {/* Animated Template */ }
+      <div className="relative z-10 w-full h-full">{ renderTemplate() }</div>
 
-      {/* Replay Button */}
-      {animationComplete && (
+      {/* Replay Button - Hidden in preview */ }
+      { animationComplete && !isPreview && (
         <div className="fixed bottom-16 right-3 z-20 sm:bottom-20 sm:right-4 md:bottom-24 md:right-8">
-          <ReplayButton onClick={handleReplay} />
+          <ReplayButton onClick={ handleReplay } />
         </div>
-      )}
+      ) }
 
-      {/* Viral Growth CTA */}
-      {animationComplete && (
+      {/* Viral Growth CTA - Hidden in preview */ }
+      { animationComplete && !isPreview && (
         <div className="fixed bottom-3 left-3 right-3 z-20 flex justify-center sm:bottom-4 sm:left-4 sm:right-4">
           <Button
             asChild
@@ -111,7 +119,7 @@ export function GreetingRenderer({
             <Link href="/">Create Your Own Wysh 🎉</Link>
           </Button>
         </div>
-      )}
+      ) }
     </div>
   );
 }

@@ -29,6 +29,7 @@ interface DiwaliTemplateProps {
   relationshipContext: RelationshipContext;
   onAnimationComplete?: () => void;
   variant?: string; // "1" = Diya Lights, "2" = Rangoli Bloom, "3" = Fireworks Joy
+  isPreview?: boolean; // T151: Modal preview mode - use responsive sizing
 }
 
 export function DiwaliTemplate({
@@ -38,6 +39,7 @@ export function DiwaliTemplate({
   relationshipContext,
   onAnimationComplete,
   variant = "1", // Default to Diya Lights
+  isPreview = false,
 }: DiwaliTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
@@ -217,77 +219,91 @@ export function DiwaliTemplate({
 
   return (
     <div
-      ref={containerRef}
-      className="diwali-bg relative min-h-screen overflow-hidden"
-      style={{
+      ref={ containerRef }
+      className="diwali-bg relative w-full h-full overflow-hidden"
+      style={ {
         background: `linear-gradient(135deg, ${animationConfig.colors[2] || colors[2]}, ${animationConfig.colors[3] || colors[3]})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 2s ease-out" : "none",
-      }}
+        minHeight: isPreview ? "auto" : "100vh",
+      } }
     >
-      {/* T036: Always render content container so GSAP can target it */}
-      <div className="diwali-content absolute inset-0 flex items-center justify-center p-8">
-        <div className="max-w-2xl text-center space-y-6">
+      {/* T151: Responsive content container for preview and full-screen modes */ }
+      <div
+        className={ `diwali-content absolute inset-0 flex items-center justify-center ${isPreview ? "p-4 sm:p-6" : "p-8"
+          }` }
+      >
+        <div className="max-w-2xl text-center space-y-4 sm:space-y-6 w-full">
           <h1
-            className="greeting-title text-4xl md:text-5xl lg:text-6xl font-bold"
-            style={{ color: animationConfig.colors[0] || colors[0] }}
+            className={ `greeting-title font-bold ${isPreview
+                ? "text-2xl sm:text-3xl md:text-4xl"
+                : "text-4xl md:text-5xl lg:text-6xl"
+              }` }
+            style={ { color: animationConfig.colors[0] || colors[0] } }
           >
-            {getTemplateTitle()}
+            { getTemplateTitle() }
           </h1>
           <p
-            className="recipient-name text-3xl md:text-4xl font-semibold"
-            style={{ color: animationConfig.colors[3] || colors[3] }}
+            className={ `recipient-name font-semibold ${isPreview
+                ? "text-lg sm:text-2xl md:text-3xl"
+                : "text-3xl md:text-4xl"
+              }` }
+            style={ { color: animationConfig.colors[3] || colors[3] } }
           >
-            Dear {recipientName},
+            Dear { recipientName },
           </p>
           <p
-            className="message-body text-lg md:text-xl leading-relaxed"
-            style={{ color: animationConfig.colors[3] || colors[3] }}
+            className={ `message-body leading-relaxed ${isPreview
+                ? "text-sm sm:text-base md:text-lg"
+                : "text-lg md:text-xl"
+              }` }
+            style={ { color: animationConfig.colors[3] || colors[3] } }
           >
-            {message || defaultMessage}
+            { message || defaultMessage }
           </p>
           <p
-            className="sender-name text-xl md:text-2xl font-medium mt-8"
-            style={{ color: animationConfig.colors[1] || colors[1] }}
+            className={ `sender-name font-medium mt-6 sm:mt-8 ${isPreview ? "text-base sm:text-xl" : "text-xl md:text-2xl"
+              }` }
+            style={ { color: animationConfig.colors[1] || colors[1] } }
           >
             With love,
             <br />
-            {senderName}
+            { senderName }
           </p>
         </div>
       </div>
 
-      {/* Variant 1 (Diya Lights): Traditional diya lighting sequence */}
-      {!useReducedMotion && variant === "1" && animationPhase !== "intro" && (
+      {/* Variant 1 (Diya Lights): Traditional diya lighting sequence */ }
+      { !useReducedMotion && variant === "1" && animationPhase !== "intro" && (
         <>
-          <DiyaLighting count={7} duration={1.5} delay={0.5} stagger={0.3} />
-          {animationPhase === "main" && (
-            <SparkleParticles count={40} duration={4} delay={0} />
-          )}
+          <DiyaLighting count={ 7 } duration={ 1.5 } delay={ 0.5 } stagger={ 0.3 } />
+          { animationPhase === "main" && (
+            <SparkleParticles count={ 40 } duration={ 4 } delay={ 0 } />
+          ) }
         </>
-      )}
+      ) }
 
-      {/* Variant 2 (Rangoli Bloom): Colorful rangoli animation */}
-      {!useReducedMotion && variant === "2" && animationPhase !== "intro" && (
+      {/* Variant 2 (Rangoli Bloom): Colorful rangoli animation */ }
+      { !useReducedMotion && variant === "2" && animationPhase !== "intro" && (
         <>
           <div className="absolute inset-0 flex items-center justify-center opacity-60">
-            <RangoliDraw duration={4} delay={0} />
+            <RangoliDraw duration={ 4 } delay={ 0 } />
           </div>
-          {animationPhase === "main" && (
-            <SparkleParticles count={50} duration={4} delay={0} />
-          )}
-          {animationPhase === "main" && (
-            <DiyaLighting count={4} duration={1} delay={1} stagger={0.4} />
-          )}
+          { animationPhase === "main" && (
+            <SparkleParticles count={ 50 } duration={ 4 } delay={ 0 } />
+          ) }
+          { animationPhase === "main" && (
+            <DiyaLighting count={ 4 } duration={ 1 } delay={ 1 } stagger={ 0.4 } />
+          ) }
         </>
-      )}
+      ) }
 
-      {/* Variant 3 (Fireworks Joy): Festive fireworks display */}
-      {!useReducedMotion && variant === "3" && animationPhase !== "intro" && (
+      {/* Variant 3 (Fireworks Joy): Festive fireworks display */ }
+      { !useReducedMotion && variant === "3" && animationPhase !== "intro" && (
         <>
-          {animationPhase === "main" && (
+          { animationPhase === "main" && (
             <FireworkSystem
-              burstCount={animationConfig.intensity === "low" ? 5 : 7}
+              burstCount={ animationConfig.intensity === "low" ? 5 : 7 }
               particlesPerBurst={
                 animationConfig.intensity === "low"
                   ? 50
@@ -295,33 +311,33 @@ export function DiwaliTemplate({
                     ? 80
                     : 65
               }
-              duration={4}
-              delay={0}
-              colors={animationConfig.colors}
+              duration={ 4 }
+              delay={ 0 }
+              colors={ animationConfig.colors }
             />
-          )}
-          {animationPhase === "main" && (
-            <SparkleParticles count={60} duration={4} delay={0} />
-          )}
-          {animationPhase === "finale" && (
+          ) }
+          { animationPhase === "main" && (
+            <SparkleParticles count={ 60 } duration={ 4 } delay={ 0 } />
+          ) }
+          { animationPhase === "finale" && (
             <FireworkSystem
-              burstCount={3}
-              particlesPerBurst={40}
-              duration={2}
-              delay={0}
-              colors={animationConfig.colors}
+              burstCount={ 3 }
+              particlesPerBurst={ 40 }
+              duration={ 2 }
+              delay={ 0 }
+              colors={ animationConfig.colors }
             />
-          )}
+          ) }
         </>
-      )}
+      ) }
 
-      {/* Phase 4 (8-10s): Finale sparkles for all variants */}
-      {!useReducedMotion && animationPhase === "finale" && (
-        <SparkleParticles count={20} duration={2} delay={0} />
-      )}
+      {/* Phase 4 (8-10s): Finale sparkles for all variants */ }
+      { !useReducedMotion && animationPhase === "finale" && (
+        <SparkleParticles count={ 20 } duration={ 2 } delay={ 0 } />
+      ) }
 
-      {/* CSS for fade-in animation */}
-      <style jsx>{`
+      {/* CSS for fade-in animation */ }
+      <style jsx>{ `
         @keyframes fadeIn {
           from {
             opacity: 0;

@@ -20,6 +20,7 @@ interface HoliTemplateProps {
   relationshipContext: RelationshipContext;
   onAnimationComplete?: () => void;
   variant?: string; // "1" = Color Splash, "2" = Water Balloons, "3" = Rainbow Wave
+  isPreview?: boolean; // T151: Modal preview mode - use responsive sizing
 }
 
 export function HoliTemplate({
@@ -29,6 +30,7 @@ export function HoliTemplate({
   relationshipContext,
   onAnimationComplete,
   variant = "1",
+  isPreview = false,
 }: HoliTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [bgVisible, setBgVisible] = useState(false);
@@ -139,52 +141,78 @@ export function HoliTemplate({
 
   return (
     <div
-      ref={containerRef}
-      className="holi-bg relative flex min-h-screen items-center justify-center p-4"
-      style={{
+      ref={ containerRef }
+      className="holi-bg relative flex items-center justify-center p-4"
+      style={ {
         background: `linear-gradient(135deg, ${colors[0]}, ${colors[4]})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 0.8s ease-out" : "none",
-      }}
+        width: "100%",
+        height: "100%",
+        minHeight: isPreview ? "auto" : "100vh",
+      } }
     >
-      {/* Color splash effects */}
+      {/* Color splash effects */ }
       <div className="absolute inset-0 overflow-hidden">
-        {colors.map((color, i) => (
+        { colors.map((color, i) => (
           <div
-            key={`splash-${generateUniqueKey()}`}
+            key={ `splash-${generateUniqueKey()}` }
             className="color-splash absolute rounded-full blur-3xl"
-            style={{
+            style={ {
               backgroundColor: color,
               opacity: 0,
               width: `${200 + i * 50}px`,
               height: `${200 + i * 50}px`,
               left: `${20 + i * 15}%`,
               top: `${10 + (i % 3) * 25}%`,
-            }}
+            } }
           />
-        ))}
+        )) }
       </div>
 
-      {/* Content */}
-      <div className="relative z-10 max-w-2xl text-center space-y-6">
-        <h1 className="greeting-text text-5xl sm:text-6xl md:text-7xl font-bold text-white drop-shadow-lg opacity-0">
+      {/* T151: Responsive content for preview and full-screen modes */ }
+      <div
+        className={ `relative z-10 max-w-2xl text-center w-full ${isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
+          }` }
+      >
+        <h1
+          className={ `greeting-text font-bold text-white drop-shadow-lg opacity-0 ${isPreview
+              ? "text-3xl sm:text-4xl md:text-5xl"
+              : "text-5xl sm:text-6xl md:text-7xl"
+            }` }
+        >
           Happy Holi!
         </h1>
 
-        <div className="space-y-4">
-          <p className="recipient-name text-3xl sm:text-4xl font-semibold text-white drop-shadow-md opacity-0">
-            Dear {recipientName},
+        <div className={ isPreview ? "space-y-3 sm:space-y-4" : "space-y-4" }>
+          <p
+            className={ `recipient-name font-semibold text-white drop-shadow-md opacity-0 ${isPreview
+                ? "text-xl sm:text-2xl md:text-3xl"
+                : "text-3xl sm:text-4xl"
+              }` }
+          >
+            Dear { recipientName },
           </p>
 
-          <p className="greeting-text text-lg sm:text-xl leading-relaxed px-4 text-white drop-shadow-md opacity-0">
-            {message ||
-              `May your life be filled with colors of joy, love, and happiness!`}
+          <p
+            className={ `greeting-text leading-relaxed px-4 text-white drop-shadow-md opacity-0 ${isPreview
+                ? "text-sm sm:text-base md:text-lg"
+                : "text-lg sm:text-xl"
+              }` }
+          >
+            { message ||
+              `May your life be filled with colors of joy, love, and happiness!` }
           </p>
 
-          <p className="sender-name text-xl sm:text-2xl font-medium mt-8 text-white drop-shadow-md opacity-0">
+          <p
+            className={ `sender-name font-medium text-white drop-shadow-md opacity-0 ${isPreview
+                ? "text-base sm:text-lg md:text-xl mt-4 sm:mt-6"
+                : "text-xl sm:text-2xl mt-8"
+              }` }
+          >
             With colorful wishes,
             <br />
-            {senderName}
+            { senderName }
           </p>
         </div>
       </div>
