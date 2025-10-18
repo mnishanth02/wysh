@@ -120,7 +120,7 @@ export function PersonalizationForm() {
   };
 
   return (
-    <form onSubmit={ handleSubmit(onSubmit) } className="space-y-6 mobile-gap-4">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mobile-gap-4">
       <div className="space-y-2">
         <Label htmlFor="recipientName" className="text-sm sm:text-base">
           Recipient Name <span className="text-destructive">*</span>
@@ -128,15 +128,15 @@ export function PersonalizationForm() {
         <Input
           id="recipientName"
           placeholder="e.g., Amma, John, Sarah"
-          { ...register("recipientName") }
-          className={ `touch-target ${errors.recipientName ? "border-destructive" : ""}` }
+          {...register("recipientName")}
+          className={`touch-target ${errors.recipientName ? "border-destructive" : ""}`}
         />
         <div className="flex justify-between text-xs sm:text-sm">
-          { errors.recipientName && (
-            <p className="text-destructive">{ errors.recipientName.message }</p>
-          ) }
+          {errors.recipientName && (
+            <p className="text-destructive">{errors.recipientName.message}</p>
+          )}
           <p className="ml-auto text-muted-foreground">
-            { recipientName.length }/50
+            {recipientName.length}/50
           </p>
         </div>
       </div>
@@ -148,37 +148,37 @@ export function PersonalizationForm() {
         <Input
           id="senderName"
           placeholder="e.g., Ravi, Jane, Mike"
-          { ...register("senderName") }
-          className={ `touch-target ${errors.senderName ? "border-destructive" : ""}` }
+          {...register("senderName")}
+          className={`touch-target ${errors.senderName ? "border-destructive" : ""}`}
         />
         <div className="flex justify-between text-xs sm:text-sm">
-          { errors.senderName && (
-            <p className="text-destructive">{ errors.senderName.message }</p>
-          ) }
+          {errors.senderName && (
+            <p className="text-destructive">{errors.senderName.message}</p>
+          )}
           <p className="ml-auto text-muted-foreground">
-            { senderName.length }/50
+            {senderName.length}/50
           </p>
         </div>
       </div>
 
       <div className="space-y-2">
         <Label htmlFor="customMessage" className="text-sm sm:text-base">
-          Custom Message{ " " }
+          Custom Message{" "}
           <span className="text-muted-foreground">(Optional)</span>
         </Label>
         <Textarea
           id="customMessage"
           placeholder="Add a personal message (optional)"
-          rows={ 4 }
-          { ...register("customMessage") }
-          className={ `touch-target ${errors.customMessage ? "border-destructive" : ""}` }
+          rows={4}
+          {...register("customMessage")}
+          className={`touch-target ${errors.customMessage ? "border-destructive" : ""}`}
         />
         <div className="flex justify-between text-xs sm:text-sm">
-          { errors.customMessage && (
-            <p className="text-destructive">{ errors.customMessage.message }</p>
-          ) }
+          {errors.customMessage && (
+            <p className="text-destructive">{errors.customMessage.message}</p>
+          )}
           <p className="ml-auto text-muted-foreground">
-            { customMessage.length }/150
+            {customMessage.length}/150
           </p>
         </div>
         <p className="text-xs sm:text-sm text-muted-foreground">
@@ -190,17 +190,19 @@ export function PersonalizationForm() {
         <Button
           type="button"
           variant="outline"
-          onClick={ () => router.push(`/create/relationship?festival=${urlState.festival}`) }
+          onClick={() =>
+            router.push(`/create/relationship?festival=${urlState.festival}`)
+          }
           className="flex-1 touch-target-lg"
         >
           Back
         </Button>
         <Button
           type="submit"
-          disabled={ isSubmitting }
+          disabled={isSubmitting}
           className="flex-1 touch-target-lg"
         >
-          { isSubmitting ? "Saving..." : "Continue to Templates" }
+          {isSubmitting ? "Saving..." : "Continue to Templates"}
         </Button>
       </div>
     </form>

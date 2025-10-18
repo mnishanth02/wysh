@@ -36,7 +36,7 @@ export default function FestivalPage() {
       <Navigation />
 
       <main className="flex-1 mobile-p-4 py-6 sm:py-8 md:py-12">
-        <Suspense fallback={ <LoadingState message="Loading..." /> }>
+        <Suspense fallback={<LoadingState message="Loading..." />}>
           <FestivalContent />
         </Suspense>
       </main>

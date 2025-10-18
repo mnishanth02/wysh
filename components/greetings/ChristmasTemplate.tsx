@@ -163,100 +163,117 @@ export function ChristmasTemplate({
 
   return (
     <div
-      ref={containerRef}
+      ref={ containerRef }
       className="christmas-bg relative flex items-center justify-center p-4"
-      style={{
+      style={ {
         background: `linear-gradient(135deg, ${secondaryColor}, ${primaryColor})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 1s ease-out" : "none",
         width: "100%",
         height: "100%",
         minHeight: isPreview ? "auto" : "100vh",
-      }}
+      } }
     >
-      {/* Decorative elements */}
+      {/* Decorative elements */ }
       <div className="absolute inset-0 overflow-hidden">
-        {/* Snowflakes */}
-        {[...Array(20)].map(() => (
+        {/* Snowflakes */ }
+        { [...Array(20)].map(() => (
           <div
-            key={`snow-${generateUniqueKey()}`}
-            className={`snowflake absolute text-white opacity-70 ${
-              isPreview ? "text-lg" : "text-2xl"
-            }`}
-            style={{
+            key={ `snow-${generateUniqueKey()}` }
+            className={ `snowflake absolute text-white opacity-70 ${isPreview ? "text-lg" : "text-2xl"
+              }` }
+            style={ {
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-            }}
+            } }
           >
             ❄
           </div>
-        ))}
+        )) }
 
-        {/* Twinkling lights */}
-        {[...Array(15)].map(() => (
+        {/* Twinkling lights */ }
+        { [...Array(15)].map(() => (
           <div
-            key={`light-${generateUniqueKey()}`}
-            className={`light absolute rounded-full ${
-              isPreview ? "h-2 w-2" : "h-3 w-3"
-            }`}
-            style={{
+            key={ `light-${generateUniqueKey()}` }
+            className={ `light absolute rounded-full ${isPreview ? "h-2 w-2" : "h-3 w-3"
+              }` }
+            style={ {
               backgroundColor: colors[2],
               left: `${Math.random() * 100}%`,
               top: `${10 + Math.random() * 5}%`,
               boxShadow: `0 0 15px ${colors[2]}`,
-            }}
+            } }
           />
-        ))}
+        )) }
       </div>
 
-      {/* T151: Responsive content for preview and full-screen modes */}
+      {/* T151: Responsive content for preview and full-screen modes */ }
       <div
-        className={`relative z-10 max-w-2xl text-center w-full ${
-          isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
-        }`}
+        className={ `relative z-10 max-w-2xl text-center w-full ${isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
+          }` }
       >
         <h1
-          className={`greeting-text font-bold text-white drop-shadow-lg ${
-            isPreview
+          className={ `greeting-text font-bold ${isPreview
               ? "text-3xl sm:text-4xl md:text-5xl"
               : "text-5xl sm:text-6xl md:text-7xl"
-          }`}
+            }` }
+          style={ {
+            color: "#FFFFFF",
+            textShadow:
+              "0 3px 10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(196, 30, 58, 0.6), 0 6px 15px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 1)",
+          } }
         >
           Merry Christmas!
         </h1>
 
-        <div className={isPreview ? "space-y-3 sm:space-y-4" : "space-y-4"}>
+        <div className={ isPreview ? "space-y-3 sm:space-y-4" : "space-y-4" }>
           <p
-            className={`recipient-name font-semibold text-white drop-shadow-md ${
-              isPreview
+            className={ `recipient-name font-semibold ${isPreview
                 ? "text-xl sm:text-2xl md:text-3xl"
                 : "text-3xl sm:text-4xl"
-            }`}
+              }` }
+            style={ {
+              color: "#FFFFFF",
+              textShadow:
+                "0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 1)",
+            } }
           >
-            Dear {recipientName},
+            Dear { recipientName },
           </p>
 
           <p
-            className={`greeting-text leading-relaxed px-4 text-white drop-shadow-md ${
-              isPreview
+            className={ `greeting-text leading-relaxed px-4 ${isPreview
                 ? "text-sm sm:text-base md:text-lg"
                 : "text-lg sm:text-xl"
-            }`}
+              }` }
+            style={ {
+              color: "#FFFFFF",
+              textShadow:
+                "0 2px 6px rgba(0, 0, 0, 0.95), 0 3px 10px rgba(0, 0, 0, 0.8)",
+              backgroundColor: "rgba(0, 0, 0, 0.25)",
+              padding: "0.75rem 1rem",
+              borderRadius: "0.5rem",
+              backdropFilter: "blur(6px)",
+            } }
           >
-            {message ||
-              `Wishing you a magical Christmas filled with joy, peace, and love!`}
+            { message ||
+              `Wishing you a magical Christmas filled with joy, peace, and love!` }
           </p>
 
           <p
-            className={`sender-name font-medium text-white drop-shadow-md ${
-              isPreview
+            className={ `sender-name font-medium ${isPreview
                 ? "text-base sm:text-lg md:text-xl mt-4 sm:mt-6"
                 : "text-xl sm:text-2xl mt-8"
-            }`}
+              }` }
+            style={ {
+              color: "#FFD700",
+              textShadow:
+                "0 2px 8px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.8), 0 4px 12px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)",
+            } }
           >
             With warm wishes,
             <br />
-            {senderName}
+            { senderName }
           </p>
         </div>
       </div>

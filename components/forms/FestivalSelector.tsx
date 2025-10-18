@@ -43,34 +43,34 @@ export function FestivalSelector() {
   return (
     <div className="w-full px-4">
       <div className="grid gap-4 sm:gap-5 grid-cols-2 lg:grid-cols-4 auto-rows-max">
-        { filteredFestivals.map((festival) => {
+        {filteredFestivals.map((festival) => {
           const festivalData = FESTIVALS[festival.festivalId as FestivalType];
 
           return (
             <Card
-              key={ festival._id }
+              key={festival._id}
               className="group touch-target gap-0 p-0 cursor-pointer overflow-hidden border border-border shadow-sm transition-all duration-200 hover:shadow-md hover:scale-105 active:scale-95"
-              onClick={ () =>
+              onClick={() =>
                 handleFestivalSelect(festival.festivalId as FestivalType)
               }
             >
               <div
                 className="h-28 sm:h-36 transition-transform group-hover:brightness-110 duration-200"
-                style={ {
+                style={{
                   background: `linear-gradient(135deg, ${festivalData.colorPalette[0]}, ${festivalData.colorPalette[1]})`,
-                } }
+                }}
               />
               <div className="p-4 sm:p-4 space-y-2">
                 <h3 className="text-base sm:text-lg font-semibold leading-tight">
-                  { festival.displayName }
+                  {festival.displayName}
                 </h3>
                 <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">
-                  { festivalData.description }
+                  {festivalData.description}
                 </p>
               </div>
             </Card>
           );
-        }) }
+        })}
       </div>
     </div>
   );

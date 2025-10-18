@@ -21,7 +21,6 @@ export function ShareButton({
   festivalType,
   senderName,
 }: ShareButtonProps) {
-
   const handleWhatsAppShare = () => {
     const whatsappUrl = generateWhatsAppLink(
       shareableId,
@@ -31,12 +30,10 @@ export function ShareButton({
     window.open(whatsappUrl, "_blank");
   };
 
-
-
   return (
     <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
       <Button
-        onClick={ handleWhatsAppShare }
+        onClick={handleWhatsAppShare}
         className="touch-target-lg h-auto py-3 sm:py-4 bg-green-600 hover:bg-green-700 active:scale-95 w-full sm:w-auto"
       >
         <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />

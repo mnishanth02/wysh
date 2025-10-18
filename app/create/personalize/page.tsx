@@ -38,7 +38,11 @@ function PersonalizeContent() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
-      <Button variant="ghost" onClick={ () => router.push(`/create/relationship?festival=${festival}`) } className="mb-4">
+      <Button
+        variant="ghost"
+        onClick={() => router.push(`/create/relationship?festival=${festival}`)}
+        className="mb-4"
+      >
         <ArrowLeft className="h-4 w-4 mr-2" />
         Back
       </Button>
@@ -63,7 +67,7 @@ export default function PersonalizePage() {
       <Navigation />
 
       <main className="flex-1 container mx-auto px-4 py-8 sm:py-12">
-        <Suspense fallback={ <LoadingState message="Loading..." /> }>
+        <Suspense fallback={<LoadingState message="Loading..." />}>
           <PersonalizeContent />
         </Suspense>
       </main>

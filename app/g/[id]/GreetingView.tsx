@@ -119,38 +119,41 @@ export function GreetingView({ shareableId }: GreetingViewProps) {
   return (
     <div className="relative">
       <GreetingRenderer
-        festivalType={greeting.festivalType as FestivalType}
-        relationshipType={greeting.relationshipType as RelationshipType}
-        recipientName={greeting.recipientName}
-        senderName={greeting.senderName}
-        message={greeting.customMessage || greeting.generatedMessage || ""}
-        templateId={greeting.templateId}
-        autoplay={shouldAutoplay}
+        festivalType={ greeting.festivalType as FestivalType }
+        relationshipType={ greeting.relationshipType as RelationshipType }
+        recipientName={ greeting.recipientName }
+        senderName={ greeting.senderName }
+        message={ greeting.customMessage || greeting.generatedMessage || "" }
+        templateId={ greeting.templateId }
+        autoplay={ shouldAutoplay }
       />
 
-      {/* T102: Mobile "Tap to Play" Overlay */}
-      {showTapToPlay && (
+      {/* T102: Mobile "Tap to Play" Overlay */ }
+      { showTapToPlay && (
         <button
           type="button"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm cursor-pointer"
-          onClick={handleTapToPlay}
-          onKeyDown={(e) => {
+          onClick={ handleTapToPlay }
+          onKeyDown={ (e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               handleTapToPlay();
             }
-          }}
+          } }
           aria-label="Start animation"
         >
           <Button
+            asChild
             size="lg"
             className="touch-target-lg gap-2 text-lg px-8 py-6 shadow-xl pointer-events-none"
           >
-            <Play className="h-6 w-6 fill-current" />
-            Tap to Play Animation
+            <span className="inline-flex items-center justify-center gap-2">
+              <Play className="h-6 w-6 fill-current" />
+              Tap to Play Animation
+            </span>
           </Button>
         </button>
-      )}
+      ) }
     </div>
   );
 }

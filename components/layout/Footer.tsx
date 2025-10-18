@@ -85,14 +85,9 @@ export function Footer() {
 
         <div className="mt-6 pt-4 border-t text-center text-sm text-muted-foreground">
           <p>
-            © { new Date().getFullYear() } Wysh. All rights reserved. <br />
-            Built with{ " " }
-            <span
-              className="inline-block text-red-500"
-            >
-              ❤️
-            </span>{ " " }
-            by Nishanth.
+            © {new Date().getFullYear()} Wysh. All rights reserved. <br />
+            Built with <span className="inline-block text-red-500">❤️</span> by
+            Nishanth.
           </p>
         </div>
       </div>
