@@ -19,6 +19,7 @@ interface HoliTemplateProps {
   message: string;
   relationshipContext: RelationshipContext;
   onAnimationComplete?: () => void;
+  variant?: string; // "1" = Color Splash, "2" = Water Balloons, "3" = Rainbow Wave
 }
 
 export function HoliTemplate({
@@ -27,6 +28,7 @@ export function HoliTemplate({
   message,
   relationshipContext,
   onAnimationComplete,
+  variant = "1",
 }: HoliTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [bgVisible, setBgVisible] = useState(false);

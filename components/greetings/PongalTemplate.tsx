@@ -35,6 +35,7 @@ interface PongalTemplateProps {
   /** T077: Relationship context for future context-aware adjustments */
   relationshipContext?: RelationshipContext;
   onAnimationComplete?: () => void;
+  variant?: string; // "1" = Harvest Sun, "2" = Boiling Pot, "3" = Kolam Art
 }
 
 type AnimationPhase =
@@ -51,6 +52,7 @@ export function PongalTemplate({
   message,
   relationshipContext,
   onAnimationComplete,
+  variant = "1",
 }: PongalTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [animationPhase, setAnimationPhase] =

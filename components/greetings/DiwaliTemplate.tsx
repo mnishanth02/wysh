@@ -28,6 +28,7 @@ interface DiwaliTemplateProps {
   message: string;
   relationshipContext: RelationshipContext;
   onAnimationComplete?: () => void;
+  variant?: string; // "1" = Diya Lights, "2" = Rangoli Bloom, "3" = Fireworks Joy
 }
 
 export function DiwaliTemplate({
@@ -36,6 +37,7 @@ export function DiwaliTemplate({
   message,
   relationshipContext,
   onAnimationComplete,
+  variant = "1", // Default to Diya Lights
 }: DiwaliTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
@@ -161,6 +163,20 @@ export function DiwaliTemplate({
   const defaultMessage =
     "May this Diwali bring light, prosperity, and joy to your life! Wishing you a festival filled with happiness and blessings.";
 
+  // Template titles based on variant
+  const getTemplateTitle = () => {
+    switch (variant) {
+      case "1":
+        return "Happy Diwali!"; // Diya Lights - Traditional
+      case "2":
+        return "Happy Diwali!"; // Rangoli Bloom - Artistic
+      case "3":
+        return "Happy Diwali!"; // Fireworks Joy - Celebratory
+      default:
+        return "Happy Diwali!";
+    }
+  };
+
   return (
     <div
       ref={ containerRef }
@@ -178,7 +194,7 @@ export function DiwaliTemplate({
             className="greeting-title text-4xl md:text-5xl lg:text-6xl font-bold"
             style={ { color: animationConfig.colors[0] || colors[0] } }
           >
-            Happy Diwali!
+            { getTemplateTitle() }
           </h1>
           <p
             className="recipient-name text-3xl md:text-4xl font-semibold"
@@ -203,41 +219,75 @@ export function DiwaliTemplate({
         </div>
       </div>
 
-      {/* Phase 1 (0-2s): Diya lighting */ }
-      { !useReducedMotion && animationPhase !== "intro" && (
-        <DiyaLighting count={ 5 } duration={ 1 } delay={ 0.5 } stagger={ 0.2 } />
+      {/* Variant 1 (Diya Lights): Traditional diya lighting sequence */ }
+      { !useReducedMotion && variant === "1" && animationPhase !== "intro" && (
+        <>
+          <DiyaLighting
+            count={ 7 }
+            duration={ 1.5 }
+            delay={ 0.5 }
+            stagger={ 0.3 }
+          />
+          { animationPhase === "main" && (
+            <SparkleParticles count={ 40 } duration={ 4 } delay={ 0 } />
+          ) }
+        </>
       ) }
 
-      {/* Phase 2 (2-6s): Fireworks */ }
-      { !useReducedMotion && animationPhase === "main" && (
-        <FireworkSystem
-          burstCount={ animationConfig.intensity === "low" ? 3 : 5 }
-          particlesPerBurst={
-            animationConfig.intensity === "low"
-              ? 40
-              : animationConfig.intensity === "high"
-                ? 60
-                : 50
-          }
-          duration={ 4 }
-          delay={ 0 }
-          colors={ animationConfig.colors }
-        />
+      {/* Variant 2 (Rangoli Bloom): Colorful rangoli animation */ }
+      { !useReducedMotion && variant === "2" && animationPhase !== "intro" && (
+        <>
+          <div className="absolute inset-0 flex items-center justify-center opacity-60">
+            <RangoliDraw duration={ 4 } delay={ 0 } />
+          </div>
+          { animationPhase === "main" && (
+            <SparkleParticles count={ 50 } duration={ 4 } delay={ 0 } />
+          ) }
+          { animationPhase === "main" && (
+            <DiyaLighting
+              count={ 4 }
+              duration={ 1 }
+              delay={ 1 }
+              stagger={ 0.4 }
+            />
+          ) }
+        </>
       ) }
 
-      {/* Phase 2 (2-6s): Sparkles */ }
-      { !useReducedMotion && animationPhase === "main" && (
-        <SparkleParticles count={ 30 } duration={ 4 } delay={ 0 } />
+      {/* Variant 3 (Fireworks Joy): Festive fireworks display */ }
+      { !useReducedMotion && variant === "3" && animationPhase !== "intro" && (
+        <>
+          { animationPhase === "main" && (
+            <FireworkSystem
+              burstCount={ animationConfig.intensity === "low" ? 5 : 7 }
+              particlesPerBurst={
+                animationConfig.intensity === "low"
+                  ? 50
+                  : animationConfig.intensity === "high"
+                    ? 80
+                    : 65
+              }
+              duration={ 4 }
+              delay={ 0 }
+              colors={ animationConfig.colors }
+            />
+          ) }
+          { animationPhase === "main" && (
+            <SparkleParticles count={ 60 } duration={ 4 } delay={ 0 } />
+          ) }
+          { animationPhase === "finale" && (
+            <FireworkSystem
+              burstCount={ 3 }
+              particlesPerBurst={ 40 }
+              duration={ 2 }
+              delay={ 0 }
+              colors={ animationConfig.colors }
+            />
+          ) }
+        </>
       ) }
 
-      {/* Rangoli (appears subtly in background) */ }
-      { !useReducedMotion && animationPhase === "text" && (
-        <div className="absolute inset-0 flex items-end justify-center pb-20 opacity-20">
-          <RangoliDraw duration={ 3 } delay={ 0 } />
-        </div>
-      ) }
-
-      {/* Phase 4 (8-10s): Finale sparkles */ }
+      {/* Phase 4 (8-10s): Finale sparkles for all variants */ }
       { !useReducedMotion && animationPhase === "finale" && (
         <SparkleParticles count={ 20 } duration={ 2 } delay={ 0 } />
       ) }

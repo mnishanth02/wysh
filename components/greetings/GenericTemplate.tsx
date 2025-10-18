@@ -19,6 +19,7 @@ interface GenericTemplateProps {
   message: string;
   relationshipContext: RelationshipContext;
   onAnimationComplete?: () => void;
+  variant?: string; // "1" = Celebration, "2" = Confetti Joy
 }
 
 export function GenericTemplate({
@@ -27,6 +28,7 @@ export function GenericTemplate({
   message,
   relationshipContext,
   onAnimationComplete,
+  variant = "1",
 }: GenericTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [bgVisible, setBgVisible] = useState(false);

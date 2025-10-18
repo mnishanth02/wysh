@@ -34,15 +34,11 @@ export function GreetingRenderer({
   recipientName,
   senderName,
   message,
-  templateId: _templateId, // Prefix with underscore to indicate intentionally unused
+  templateId,
 }: GreetingRendererProps) {
   const [animationComplete, setAnimationComplete] = useState(false);
   const [replayKey, setReplayKey] = useState(0);
   const relationshipContext = getRelationshipContext(relationshipType);
-
-  // Note: templateId is currently not used as templates are selected purely by festival type
-  // In future iterations, this could be used for template-specific variants within a festival
-  // For now, keeping in interface for API consistency and future extensibility
 
   const handleReplay = () => {
     setAnimationComplete(false);
@@ -53,16 +49,25 @@ export function GreetingRenderer({
     setAnimationComplete(true);
   };
 
+  // Extract template variant from templateId (e.g., "diwali-1" -> "1")
+  const getTemplateVariant = (id: string): string => {
+    const parts = id.split("-");
+    return parts[parts.length - 1] || "1"; // Default to variant "1"
+  };
+
+  const variant = getTemplateVariant(templateId);
+
   const templateProps = {
     recipientName,
     senderName,
     message,
     relationshipContext,
     onAnimationComplete: handleAnimationComplete,
+    variant,
     key: replayKey,
   };
 
-  // Render the appropriate template based on festival type
+  // Render the appropriate template based on festival type with variant
   const renderTemplate = () => {
     const { key, ...rest } = templateProps;
     switch (festivalType) {

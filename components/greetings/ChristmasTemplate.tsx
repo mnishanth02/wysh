@@ -19,6 +19,7 @@ interface ChristmasTemplateProps {
   message: string;
   relationshipContext: RelationshipContext;
   onAnimationComplete?: () => void;
+  variant?: string; // "1" = Snow Globe, "2" = Tree Lights, "3" = Gift Unwrap
 }
 
 export function ChristmasTemplate({
@@ -27,6 +28,7 @@ export function ChristmasTemplate({
   message,
   relationshipContext,
   onAnimationComplete,
+  variant = "1",
 }: ChristmasTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 

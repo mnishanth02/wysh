@@ -29,6 +29,7 @@ interface NewYearTemplateProps {
   message: string;
   relationshipContext: RelationshipContext;
   onAnimationComplete?: () => void;
+  variant?: string; // "1" = Countdown, "2" = Champagne Pop, "3" = Fireworks Sky
 }
 
 export function NewYearTemplate({
@@ -37,6 +38,7 @@ export function NewYearTemplate({
   message,
   relationshipContext,
   onAnimationComplete,
+  variant = "1",
 }: NewYearTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
