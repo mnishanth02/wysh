@@ -239,8 +239,8 @@ export function DiwaliTemplate({
         <div className="max-w-2xl text-center space-y-4 sm:space-y-6 w-full relative z-10">
           <h1
             className={ `greeting-title font-bold ${isPreview
-                ? "text-2xl sm:text-3xl md:text-4xl"
-                : "text-4xl md:text-5xl lg:text-6xl"
+              ? "text-2xl sm:text-3xl md:text-4xl"
+              : "text-4xl md:text-5xl lg:text-6xl"
               }` }
             style={ {
               color: "#FFFFFF",
@@ -252,8 +252,8 @@ export function DiwaliTemplate({
           </h1>
           <p
             className={ `recipient-name font-semibold ${isPreview
-                ? "text-lg sm:text-2xl md:text-3xl"
-                : "text-3xl md:text-4xl"
+              ? "text-lg sm:text-2xl md:text-3xl"
+              : "text-3xl md:text-4xl"
               }` }
             style={ {
               color: "#FFFFFF",
@@ -265,14 +265,14 @@ export function DiwaliTemplate({
           </p>
           <p
             className={ `message-body leading-relaxed ${isPreview
-                ? "text-sm sm:text-base md:text-lg"
-                : "text-lg md:text-xl"
+              ? "text-sm sm:text-base md:text-lg"
+              : "text-lg md:text-xl"
               }` }
             style={ {
               color: "#FFFFFF",
               textShadow:
                 "0 1px 4px rgba(0, 0, 0, 0.8), 0 2px 8px rgba(0, 0, 0, 0.6)",
-              backgroundColor: "rgba(0, 0, 0, 0.15)",
+              backgroundColor: "rgba(0, 0, 0, 0.10)",
               padding: "0.75rem 1rem",
               borderRadius: "0.5rem",
               backdropFilter: "blur(4px)",
