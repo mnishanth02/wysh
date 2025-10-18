@@ -7,7 +7,7 @@
  */
 
 import { gsap } from "gsap";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FESTIVALS } from "@/lib/constants";
 import { shouldUseReducedMotion } from "@/lib/performance";
 import { generateUniqueKey } from "@/lib/utils";
@@ -29,6 +29,7 @@ export function GenericTemplate({
   onAnimationComplete,
 }: GenericTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [bgVisible, setBgVisible] = useState(false);
 
   const festivalData = FESTIVALS.generic;
   const colors = festivalData.colorPalette;
@@ -65,9 +66,9 @@ export function GenericTemplate({
 
       // T121: Prefers-reduced-motion: simple fade-in
       if (useReducedMotion) {
+        setBgVisible(true);
         tl.set(
           [
-            ".generic-bg",
             ".star",
             ".confetti",
             ".greeting-text",
@@ -88,12 +89,8 @@ export function GenericTemplate({
         return;
       }
 
-      // Background fade in
-      tl.from(".generic-bg", {
-        opacity: 0,
-        duration: 1,
-        ease: "power2.out",
-      });
+      // Trigger background fade via React state
+      setBgVisible(true);
 
       // Stars twinkling - duration based on context
       tl.from(".star", {
@@ -103,20 +100,6 @@ export function GenericTemplate({
         stagger: 0.1,
         ease: "elastic.out(1, 0.5)",
       });
-
-      tl.to(
-        ".star",
-        {
-          scale: 1.2,
-          opacity: 0.7,
-          duration: 0.5,
-          stagger: 0.1,
-          yoyo: true,
-          repeat: -1,
-          ease: "sine.inOut",
-        },
-        "-=0.5",
-      );
 
       // Confetti burst
       tl.from(
@@ -165,6 +148,17 @@ export function GenericTemplate({
         },
         "-=0.5",
       );
+
+      // T121: Infinite star sparkle animation (outside main timeline so it doesn't block onComplete)
+      gsap.to(".star", {
+        scale: 1.2,
+        opacity: 0.7,
+        duration: 0.5,
+        stagger: 0.1,
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut",
+      });
     }, containerRef);
 
     return () => ctx.revert();
@@ -172,63 +166,65 @@ export function GenericTemplate({
 
   return (
     <div
-      ref={containerRef}
+      ref={ containerRef }
       className="generic-bg relative flex min-h-screen items-center justify-center p-4"
-      style={{
+      style={ {
         background: `linear-gradient(135deg, ${primaryColor}, ${colors[1]})`,
-      }}
+        opacity: bgVisible ? 1 : 0,
+        transition: bgVisible ? "opacity 1s ease-out" : "none",
+      } }
     >
-      {/* Decorative elements */}
+      {/* Decorative elements */ }
       <div className="absolute inset-0 overflow-hidden">
-        {/* Stars */}
-        {[...Array(12)].map((_, i) => (
+        {/* Stars */ }
+        { [...Array(12)].map((_, i) => (
           <div
-            key={`star-${generateUniqueKey()}`}
-            className="star absolute text-4xl"
-            style={{
+            key={ `star-${generateUniqueKey()}` }
+            className="star absolute text-4xl opacity-0"
+            style={ {
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               color: colors[i % colors.length],
-            }}
+            } }
           >
             ⭐
           </div>
-        ))}
+        )) }
 
-        {/* Confetti */}
-        {[...Array(25)].map((_, i) => (
+        {/* Confetti */ }
+        { [...Array(25)].map((_, i) => (
           <div
-            key={`confetti-${generateUniqueKey()}`}
-            className="confetti absolute h-3 w-3 rounded-sm"
-            style={{
+            key={ `confetti-${generateUniqueKey()}` }
+            className="confetti absolute h-3 w-3 rounded-sm opacity-0"
+            style={ {
               backgroundColor: colors[i % colors.length],
               left: `${Math.random() * 100}%`,
               top: `${20 + Math.random() * 60}%`,
               transform: `rotate(${Math.random() * 360}deg)`,
-            }}
+            } }
           />
-        ))}
+        )) }
       </div>
 
-      {/* Content */}
+      {/* Content */ }
       <div className="relative z-10 max-w-2xl text-center space-y-6">
-        <h1 className="greeting-text text-5xl sm:text-6xl md:text-7xl font-bold text-white drop-shadow-lg">
+        <h1 className="greeting-text text-5xl sm:text-6xl md:text-7xl font-bold text-white drop-shadow-lg opacity-0">
           Celebrating You!
         </h1>
 
         <div className="space-y-4">
-          <p className="recipient-name text-3xl sm:text-4xl font-semibold text-white drop-shadow-md">
-            Dear {recipientName},
+          <p className="recipient-name text-3xl sm:text-4xl font-semibold text-white drop-shadow-md opacity-0">
+            Dear { recipientName },
           </p>
 
-          <p className="greeting-text text-lg sm:text-xl leading-relaxed px-4 text-white drop-shadow-md">
-            {message || `Sending you warm wishes and lots of happiness!`}
+          <p className="greeting-text text-lg sm:text-xl leading-relaxed px-4 text-white drop-shadow-md opacity-0">
+            { message || `Sending you warm wishes and lots of happiness!` }
           </p>
 
-          <p className="sender-name text-xl sm:text-2xl font-medium mt-8 text-white drop-shadow-md">
+          <p className="sender-name text-xl sm:text-2xl font-medium mt-8 text-white drop-shadow-md opacity-0">
             With love,
             <br />
-            {senderName}
+            { senderName }
           </p>
         </div>
       </div>

@@ -22,7 +22,6 @@ import { CountdownTimer } from "./animations/newyear/CountdownTimer";
 import { FireworkBurst } from "./animations/newyear/FireworkBurst";
 import { TextExplosion } from "./animations/newyear/TextExplosion";
 import { useAnimationContext } from "./animations/shared/ContextAdapter";
-import { TextReveal } from "./animations/shared/TextReveal";
 
 interface NewYearTemplateProps {
   recipientName: string;
@@ -57,6 +56,9 @@ export function NewYearTemplate({
   // T056: Check for reduced motion preference
   const useReducedMotion = shouldUseReducedMotion();
 
+  // Track if animation has started (for background opacity)
+  const [bgVisible, setBgVisible] = useState(useReducedMotion);
+
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -81,27 +83,16 @@ export function NewYearTemplate({
 
       // T056: Prefers-reduced-motion: simple fade-in
       if (useReducedMotion) {
-        tl.set([".newyear-bg", ".newyear-content"], {
-          opacity: 1,
-        });
         setAnimationPhase("complete");
         tl.play();
         return;
       }
 
-      // GPU acceleration hints
-      gsap.set(".newyear-content", {
-        force3D: true,
-        transformOrigin: "center center",
-      });
-
       // T053: Phase 1 (0-4s): Countdown with background intensity increase
-      tl.to(".newyear-bg", {
-        opacity: 1,
-        duration: 1,
-        ease: "power2.out",
-        onStart: () => setAnimationPhase("countdown"),
-      });
+      tl.call(() => {
+        setBgVisible(true);
+        setAnimationPhase("countdown");
+      }, [], 0);
 
       // T054: Phase 2 (4-7s): Fireworks - synchronized with countdown completion
       tl.addLabel("countdownComplete", 4); // Timeline label for synchronization
@@ -110,8 +101,30 @@ export function NewYearTemplate({
       // T053: Phase 3 (5-10s): Confetti burst from top
       tl.call(() => setAnimationPhase("confetti"), [], 5);
 
-      // T053: Phase 4 (7-10s): Text explosion
+      // T053: Phase 4 (7-10s): Text explosion and text reveal
       tl.call(() => setAnimationPhase("text"), [], 7);
+
+      // Animate text elements (8-10s)
+      tl.to(".newyear-recipient", {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+      }, 8);
+
+      tl.to(".newyear-message", {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+      }, 8.5);
+
+      tl.to(".newyear-sender", {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out",
+      }, 9);
 
       timelineRef.current = tl;
     }, containerRef);
@@ -124,14 +137,15 @@ export function NewYearTemplate({
 
   return (
     <div
-      ref={containerRef}
+      ref={ containerRef }
       className="newyear-bg relative min-h-screen overflow-hidden"
-      style={{
+      style={ {
         background: `linear-gradient(135deg, ${animationConfig.colors[2] || colors[2]}, ${animationConfig.colors[3] || colors[3]})`,
-        opacity: useReducedMotion ? 1 : 0,
-      }}
+        opacity: bgVisible ? 1 : 0,
+        transition: bgVisible ? "opacity 1s ease-out" : "none",
+      } }
     >
-      {/* Night sky background */}
+      {/* Night sky background */ }
       <div className="absolute inset-0">
         <Image
           src="/festivals/newyear/night-sky.svg"
@@ -142,55 +156,57 @@ export function NewYearTemplate({
         />
       </div>
 
-      {/* T056: Reduced motion variant - simple fade */}
-      {useReducedMotion ? (
+      {/* T056: Reduced motion variant - simple fade */ }
+      { useReducedMotion ? (
         <div className="newyear-content absolute inset-0 flex items-center justify-center p-8">
           <div className="max-w-2xl text-center space-y-6">
             <h1
               className="text-5xl md:text-6xl lg:text-7xl font-bold"
-              style={{ color: animationConfig.colors[0] || colors[0] }}
+              style={ { color: animationConfig.colors[0] || colors[0] } }
             >
               Happy New Year 2026!
             </h1>
             <p
               className="text-3xl md:text-4xl font-semibold"
-              style={{ color: animationConfig.colors[4] || colors[4] }}
+              style={ { color: animationConfig.colors[4] || colors[4] } }
             >
-              Dear {recipientName},
+              Dear { recipientName },
             </p>
             <p
               className="text-lg md:text-xl leading-relaxed"
-              style={{ color: animationConfig.colors[4] || colors[4] }}
+              style={ { color: animationConfig.colors[4] || colors[4] } }
             >
-              {message || defaultMessage}
+              { message || defaultMessage }
             </p>
             <p
               className="text-xl md:text-2xl font-medium mt-8"
-              style={{ color: animationConfig.colors[1] || colors[1] }}
+              style={ { color: animationConfig.colors[1] || colors[1] } }
             >
               Cheers to new beginnings,
               <br />
-              {senderName}
+              { senderName }
             </p>
           </div>
         </div>
       ) : (
         <>
-          {/* T053: Phase 1 (0-4s): Countdown */}
-          {animationPhase === "countdown" && (
-            <CountdownTimer
-              startFrom={3}
-              durationPerNumber={1.3}
-              delay={0.5}
-              onComplete={() => {
-                // Countdown complete triggers fireworks phase
-              }}
-              colors={animationConfig.colors}
-            />
-          )}
+          {/* All animation components always mounted for GSAP targeting, visibility controlled by opacity/pointer-events */ }
 
-          {/* T053, T054: Phase 2 (4-7s): Fireworks (synchronized with countdown) */}
-          {animationPhase === "fireworks" && (
+          {/* T053: Phase 1 (0-4s): Countdown */ }
+          <div className={ `absolute inset-0 ${animationPhase === "countdown" ? "opacity-100" : "opacity-0 pointer-events-none"}` }>
+            <CountdownTimer
+              startFrom={ 3 }
+              durationPerNumber={ 1.3 }
+              delay={ 0.5 }
+              onComplete={ () => {
+                // Countdown complete triggers fireworks phase
+              } }
+              colors={ animationConfig.colors }
+            />
+          </div>
+
+          {/* T053, T054: Phase 2 (4-7s): Fireworks */ }
+          <div className={ `absolute inset-0 ${(animationPhase === "fireworks" || animationPhase === "confetti" || animationPhase === "text" || animationPhase === "complete") ? "opacity-100" : "opacity-0 pointer-events-none"}` }>
             <FireworkBurst
               burstCount={
                 animationConfig.intensity === "low"
@@ -206,14 +222,14 @@ export function NewYearTemplate({
                     ? 90
                     : 80
               }
-              duration={3}
-              delay={0}
-              colors={animationConfig.colors}
+              duration={ 3 }
+              delay={ 0 }
+              colors={ animationConfig.colors }
             />
-          )}
+          </div>
 
-          {/* T053: Phase 3 (5-10s): Confetti */}
-          {animationPhase === "confetti" && (
+          {/* T053: Phase 3 (5-10s): Confetti */ }
+          <div className={ `absolute inset-0 ${(animationPhase === "confetti" || animationPhase === "text" || animationPhase === "complete") ? "opacity-100" : "opacity-0 pointer-events-none"}` }>
             <ConfettiSystem
               count={
                 animationConfig.intensity === "low"
@@ -222,78 +238,69 @@ export function NewYearTemplate({
                     ? 150
                     : 120
               }
-              duration={5}
-              delay={0}
-              colors={animationConfig.colors}
+              duration={ 5 }
+              delay={ 0 }
+              colors={ animationConfig.colors }
             />
-          )}
+          </div>
 
-          {/* T053, T058: Phase 4 (7-10s): Text explosion + reveal */}
-          {animationPhase === "text" && (
-            <>
-              {/* Main "Happy New Year 2026!" text explosion */}
-              <TextExplosion
-                text="Happy New Year 2026!"
-                duration={1.5}
-                delay={0}
-                color={animationConfig.colors[2] || colors[2]}
-                fontSize={{ mobile: 3, desktop: 5 }}
-              />
+          {/* T053, T058: Phase 4 (7-10s): Text explosion */ }
+          <div className={ `absolute inset-0 ${(animationPhase === "text" || animationPhase === "complete") ? "opacity-100" : "opacity-0 pointer-events-none"}` }>
+            <TextExplosion
+              text="Happy New Year 2026!"
+              duration={ 1.5 }
+              delay={ 0 }
+              color={ animationConfig.colors[2] || colors[2] }
+              fontSize={ { mobile: 3, desktop: 5 } }
+            />
+          </div>
 
-              {/* T058: Text reveal sequence - recipient name + message + sender */}
-              <div className="newyear-content absolute inset-0 flex items-center justify-center p-8 pointer-events-none">
-                <div className="max-w-2xl text-center space-y-6">
-                  {/* Spacer for main text */}
-                  <div className="h-32" />
+          {/* T058: Text reveal sequence - recipient name + message + sender - Always rendered */ }
+          <div className={ `newyear-content absolute inset-0 flex items-center justify-center p-8 pointer-events-none ${animationPhase !== "text" && animationPhase !== "complete" ? "opacity-0" : ""}` }>
+            <div className="max-w-2xl text-center space-y-6">
+              {/* Spacer for main text */ }
+              <div className="h-32" />
 
-                  {/* Recipient name appears (8-9s) */}
-                  <div
-                    className="opacity-0"
-                    style={{
-                      color: animationConfig.colors[4] || colors[4],
-                      animation: "fadeIn 0.8s ease-out 1s forwards",
-                    }}
-                  >
-                    <TextReveal
-                      text={`Dear ${recipientName},`}
-                      duration={0.8}
-                      delay={1}
-                      stagger={0.05}
-                    />
-                  </div>
-
-                  {/* Message body (8.5-9.5s) */}
-                  <p
-                    className="text-lg md:text-xl leading-relaxed opacity-0"
-                    style={{
-                      color: animationConfig.colors[4] || colors[4],
-                      animation: "fadeIn 0.8s ease-out 1.5s forwards",
-                    }}
-                  >
-                    {message || defaultMessage}
-                  </p>
-
-                  {/* Sender name (9-10s) */}
-                  <p
-                    className="text-xl md:text-2xl font-medium mt-8 opacity-0"
-                    style={{
-                      color: animationConfig.colors[1] || colors[1],
-                      animation: "fadeIn 0.8s ease-out 2s forwards",
-                    }}
-                  >
-                    Cheers to new beginnings,
-                    <br />
-                    {senderName}
-                  </p>
-                </div>
+              {/* Recipient name appears (8-9s) */ }
+              <div
+                className="newyear-recipient opacity-0"
+                style={ {
+                  color: animationConfig.colors[4] || colors[4],
+                } }
+              >
+                <p className="text-2xl md:text-3xl lg:text-4xl font-semibold">
+                  Dear { recipientName },
+                </p>
               </div>
-            </>
-          )}
-        </>
-      )}
 
-      {/* CSS for fade-in animation */}
-      <style jsx>{`
+              {/* Message body (8.5-9.5s) */ }
+              <p
+                className="newyear-message text-lg md:text-xl leading-relaxed opacity-0"
+                style={ {
+                  color: animationConfig.colors[4] || colors[4],
+                } }
+              >
+                { message || defaultMessage }
+              </p>
+
+              {/* Sender name (9-10s) */ }
+              <p
+                className="newyear-sender text-xl md:text-2xl font-medium mt-8 opacity-0"
+                style={ {
+                  color: animationConfig.colors[1] || colors[1],
+                } }
+              >
+                Cheers to new beginnings,
+                <br />
+                { senderName }
+              </p>
+            </div>
+          </div>
+        </>
+      ) }
+
+      {/* CSS for fade-in animation */ }
+      <style jsx>{ `
         @keyframes fadeIn {
           from {
             opacity: 0;

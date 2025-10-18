@@ -51,7 +51,6 @@ export function isDrawSVGAvailable(): boolean {
  */
 gsap.defaults({
   ease: "power2.out",
-  force3D: true, // GPU acceleration
 });
 
 export function animateSVGPath(
@@ -91,9 +90,9 @@ export function animateSVGPath(
 
 /**
  * GPU-accelerated transform properties
+ * GSAP 3.x handles GPU acceleration automatically via will-change CSS
  */
 export const GPU_PROPS = {
-  force3D: true,
   transformOrigin: "50% 50%",
   transformPerspective: 1000,
 };

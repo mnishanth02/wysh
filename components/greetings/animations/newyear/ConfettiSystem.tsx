@@ -9,7 +9,7 @@
  */
 
 import { gsap } from "gsap";
-import { useEffect, useRef } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { NEWYEAR_COLORS } from "@/lib/animations/festival-themes";
 
 interface ConfettiSystemProps {
@@ -67,8 +67,12 @@ export function ConfettiSystem({
     }));
   }, [count, colors]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!containerRef.current) return;
+
+    // Check if confetti elements are rendered before animating
+    const firstConfetti = containerRef.current.querySelector('.confetti-0');
+    if (!firstConfetti || confettiRef.current.length === 0) return;
 
     const ctx = gsap.context(() => {
       // T045-T047: Animate each confetti piece
@@ -125,48 +129,48 @@ export function ConfettiSystem({
       case "rect":
         return (
           <div
-            style={{
+            style={ {
               width: size,
               height: size * 0.6,
               backgroundColor: color,
-            }}
+            } }
           />
         );
       case "circle":
         return (
           <div
-            style={{
+            style={ {
               width: size,
               height: size,
               backgroundColor: color,
               borderRadius: "50%",
-            }}
+            } }
           />
         );
       case "triangle":
         return (
           <div
-            style={{
+            style={ {
               width: 0,
               height: 0,
               borderLeft: `${size / 2}px solid transparent`,
               borderRight: `${size / 2}px solid transparent`,
               borderBottom: `${size}px solid ${color}`,
-            }}
+            } }
           />
         );
       case "star":
         return (
           <svg
-            width={size}
-            height={size}
+            width={ size }
+            height={ size }
             viewBox="0 0 24 24"
             role="img"
             aria-label="star confetti"
           >
             <path
               d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
-              fill={color}
+              fill={ color }
             />
           </svg>
         );
@@ -177,24 +181,24 @@ export function ConfettiSystem({
 
   return (
     <div
-      ref={containerRef}
+      ref={ containerRef }
       className="absolute inset-0 overflow-hidden pointer-events-none"
       aria-hidden="true"
     >
-      {confettiRef.current.map((piece) => (
+      { confettiRef.current.map((piece) => (
         <div
-          key={piece.id}
-          className={`confetti-${piece.id} absolute`}
-          style={{
+          key={ piece.id }
+          className={ `confetti-${piece.id} absolute` }
+          style={ {
             left: `${piece.x}%`,
             top: `${piece.y}vh`,
             transform: `rotate(${piece.rotation}deg)`,
             transformStyle: "preserve-3d",
-          }}
+          } }
         >
-          {renderShape(piece)}
+          { renderShape(piece) }
         </div>
-      ))}
+      )) }
     </div>
   );
 }

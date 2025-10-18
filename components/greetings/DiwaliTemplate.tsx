@@ -21,7 +21,6 @@ import { FireworkSystem } from "./animations/diwali/FireworkSystem";
 import { RangoliDraw } from "./animations/diwali/RangoliDraw";
 import { SparkleParticles } from "./animations/diwali/SparkleParticles";
 import { useAnimationContext } from "./animations/shared/ContextAdapter";
-import { TextReveal } from "./animations/shared/TextReveal";
 
 interface DiwaliTemplateProps {
   recipientName: string;
@@ -40,6 +39,7 @@ export function DiwaliTemplate({
 }: DiwaliTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const [bgVisible, setBgVisible] = useState(false);
   const [animationPhase, setAnimationPhase] = useState<
     "intro" | "main" | "text" | "finale" | "complete"
   >("intro");
@@ -80,7 +80,8 @@ export function DiwaliTemplate({
 
       // T036: Prefers-reduced-motion: simple fade-in
       if (useReducedMotion) {
-        tl.set([".diwali-bg", ".diwali-content"], {
+        setBgVisible(true);
+        tl.set([".diwali-content", ".greeting-title", ".recipient-name", ".message-body", ".sender-name"], {
           opacity: 1,
         });
         setAnimationPhase("complete");
@@ -88,28 +89,68 @@ export function DiwaliTemplate({
         return;
       }
 
-      // T038: GPU acceleration hints
-      gsap.set(".diwali-content", {
-        force3D: true,
-        transformOrigin: "center center",
+      // Set initial opacity for animated elements
+      gsap.set([".diwali-content", ".greeting-title", ".recipient-name", ".message-body", ".sender-name"], {
+        opacity: 0,
       });
 
-      // Phase 1 (0-2s): Background fade + diya lighting
-      tl.to(".diwali-bg", {
-        opacity: 1,
-        duration: 2,
-        ease: "power2.out",
-        onStart: () => setAnimationPhase("intro"),
+      // Set initial transform states
+      gsap.set(".greeting-title", {
+        scale: 0.8,
       });
+
+      gsap.set([".recipient-name", ".message-body", ".sender-name"], {
+        y: 20,
+      });
+
+      // Phase 1 (0-2s): Background fade via React state + diya lighting
+      setBgVisible(true);
+      tl.call(() => setAnimationPhase("intro"), [], 0);
 
       // Phase 2 (2-6s): Fireworks + sparkles
       tl.call(() => setAnimationPhase("main"), [], 2);
 
-      // Phase 3 (6-8s): Text reveal
+      // Phase 3 (6-8s): Text reveal with character animations
       tl.call(() => setAnimationPhase("text"), [], 6);
 
-      // Phase 4 (8-10s): Finale with sparkle loop
-      tl.call(() => setAnimationPhase("finale"), [], 8);
+      // Fade in content container first
+      tl.to(".diwali-content", {
+        opacity: 1,
+        duration: 0.5,
+        ease: "power2.out",
+      }, 6);
+
+      // Text reveal animations (6-10s)
+      tl.to(".greeting-title", {
+        scale: 1,
+        opacity: 1,
+        duration: 1,
+        ease: "back.out(1.5)",
+      }, 6.5);
+
+      tl.to(".recipient-name", {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out",
+      }, 7);
+
+      tl.to(".message-body", {
+        y: 0,
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+      }, 7.5);
+
+      tl.to(".sender-name", {
+        y: 0,
+        opacity: 1,
+        duration: 0.8,
+        ease: "power2.out",
+      }, 8.5);
+
+      // Phase 4 (9-10s): Finale with sparkle loop
+      tl.call(() => setAnimationPhase("finale"), [], 9);
 
       timelineRef.current = tl;
     }, containerRef);
@@ -126,80 +167,38 @@ export function DiwaliTemplate({
       className="diwali-bg relative min-h-screen overflow-hidden"
       style={ {
         background: `linear-gradient(135deg, ${animationConfig.colors[2] || colors[2]}, ${animationConfig.colors[3] || colors[3]})`,
-        opacity: useReducedMotion ? 1 : 0,
+        opacity: bgVisible ? 1 : 0,
+        transition: bgVisible ? "opacity 2s ease-out" : "none",
       } }
     >
       {/* T036: Always render content container so GSAP can target it */ }
-      <div
-        className={ `diwali-content absolute inset-0 flex items-center justify-center p-8 ${useReducedMotion || animationPhase === "text" ? "opacity-100" : "opacity-0"
-          }` }
-      >
+      <div className="diwali-content absolute inset-0 flex items-center justify-center p-8">
         <div className="max-w-2xl text-center space-y-6">
           <h1
-            className="text-4xl md:text-5xl lg:text-6xl font-bold"
+            className="greeting-title text-4xl md:text-5xl lg:text-6xl font-bold"
             style={ { color: animationConfig.colors[0] || colors[0] } }
           >
-            { useReducedMotion || animationPhase === "text" ? (
-              animationPhase === "text" ? (
-                <TextReveal
-                  text="Happy Diwali!"
-                  duration={ 1 }
-                  delay={ 0 }
-                  stagger={ 0.08 }
-                />
-              ) : (
-                "Happy Diwali!"
-              )
-            ) : null }
+            Happy Diwali!
           </h1>
           <p
-            className="text-3xl md:text-4xl font-semibold"
+            className="recipient-name text-3xl md:text-4xl font-semibold"
             style={ { color: animationConfig.colors[3] || colors[3] } }
           >
-            { useReducedMotion || animationPhase === "text" ? (
-              animationPhase === "text" ? (
-                <TextReveal
-                  text={ `Dear ${recipientName},` }
-                  duration={ 0.8 }
-                  delay={ 1 }
-                  stagger={ 0.05 }
-                />
-              ) : (
-                `Dear ${recipientName},`
-              )
-            ) : null }
+            Dear { recipientName },
           </p>
           <p
-            className="text-lg md:text-xl leading-relaxed"
-            style={ {
-              color: animationConfig.colors[3] || colors[3],
-              animation:
-                !useReducedMotion && animationPhase === "text"
-                  ? "fadeIn 0.8s ease-out 2s forwards"
-                  : "none",
-            } }
+            className="message-body text-lg md:text-xl leading-relaxed"
+            style={ { color: animationConfig.colors[3] || colors[3] } }
           >
-            { useReducedMotion || animationPhase === "text"
-              ? message || defaultMessage
-              : null }
+            { message || defaultMessage }
           </p>
           <p
-            className="text-xl md:text-2xl font-medium mt-8"
-            style={ {
-              color: animationConfig.colors[1] || colors[1],
-              animation:
-                !useReducedMotion && animationPhase === "text"
-                  ? "fadeIn 0.8s ease-out 2.5s forwards"
-                  : "none",
-            } }
+            className="sender-name text-xl md:text-2xl font-medium mt-8"
+            style={ { color: animationConfig.colors[1] || colors[1] } }
           >
-            { useReducedMotion || animationPhase === "text" ? (
-              <>
-                With love,
-                <br />
-                { senderName }
-              </>
-            ) : null }
+            With love,
+            <br />
+            { senderName }
           </p>
         </div>
       </div>

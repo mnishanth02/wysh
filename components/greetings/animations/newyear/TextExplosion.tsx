@@ -7,7 +7,7 @@
  */
 
 import { gsap } from "gsap";
-import { useEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { NEWYEAR_COLORS } from "@/lib/animations/festival-themes";
 
 interface TextExplosionProps {
@@ -32,12 +32,12 @@ export function TextExplosion({
 }: TextExplosionProps) {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!containerRef.current) return;
 
     const ctx = gsap.context(() => {
       const letters = containerRef.current?.querySelectorAll(".letter");
-      if (!letters) return;
+      if (!letters || letters.length === 0) return;
 
       gsap.set(letters, {
         scale: 0,
@@ -99,30 +99,30 @@ export function TextExplosion({
 
   return (
     <div
-      ref={containerRef}
+      ref={ containerRef }
       className="absolute inset-0 flex items-center justify-center px-4 pointer-events-none"
     >
       <h1
         className="font-bold text-center"
-        style={{
+        style={ {
           color,
           fontSize: `${fontSize.mobile}rem`,
           textShadow: `0 0 20px ${color}, 0 0 30px ${color}`,
-        }}
+        } }
       >
-        {text.split("").map((char, i) => (
+        { text.split("").map((char, i) => (
           <span
-            key={`char-${i}-${char}`}
+            key={ `char-${i}-${char}` }
             className="letter inline-block"
-            style={{ whiteSpace: char === " " ? "pre" : "normal" }}
+            style={ { whiteSpace: char === " " ? "pre" : "normal" } }
           >
-            {char === " " ? "\u00A0" : char}
+            { char === " " ? "\u00A0" : char }
           </span>
-        ))}
+        )) }
       </h1>
 
-      {/* Desktop size using CSS media query */}
-      <style jsx>{`
+      {/* Desktop size using CSS media query */ }
+      <style jsx>{ `
         @media (min-width: 768px) {
           h1 {
             font-size: ${fontSize.desktop}rem;

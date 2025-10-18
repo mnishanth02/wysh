@@ -7,7 +7,7 @@
  */
 
 import { gsap } from "gsap";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { FESTIVALS } from "@/lib/constants";
 import { shouldUseReducedMotion } from "@/lib/performance";
 import { generateUniqueKey } from "@/lib/utils";
@@ -29,6 +29,7 @@ export function HoliTemplate({
   onAnimationComplete,
 }: HoliTemplateProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [bgVisible, setBgVisible] = useState(false);
 
   const festivalData = FESTIVALS.holi;
   const colors = festivalData.colorPalette;
@@ -55,9 +56,9 @@ export function HoliTemplate({
 
       // T121: Prefers-reduced-motion: simple fade-in
       if (useReducedMotion) {
+        setBgVisible(true);
         tl.set(
           [
-            ".holi-bg",
             ".color-splash",
             ".greeting-text",
             ".recipient-name",
@@ -77,12 +78,8 @@ export function HoliTemplate({
         return;
       }
 
-      // Background fade in
-      tl.from(".holi-bg", {
-        opacity: 0,
-        duration: 0.8,
-        ease: "power2.out",
-      });
+      // Trigger background fade via React state
+      setBgVisible(true);
 
       // Color splashes burst from center
       tl.from(".color-splash", {
@@ -91,7 +88,15 @@ export function HoliTemplate({
         duration: 1.2,
         stagger: 0.1,
         ease: "back.out(2)",
-      });
+      })
+        .to(
+          ".color-splash",
+          {
+            opacity: 0.3,
+            duration: 0,
+          },
+          "<",
+        );
 
       // Text animations
       tl.from(
@@ -133,50 +138,52 @@ export function HoliTemplate({
 
   return (
     <div
-      ref={containerRef}
+      ref={ containerRef }
       className="holi-bg relative flex min-h-screen items-center justify-center p-4"
-      style={{
+      style={ {
         background: `linear-gradient(135deg, ${colors[0]}, ${colors[4]})`,
-      }}
+        opacity: bgVisible ? 1 : 0,
+        transition: bgVisible ? "opacity 0.8s ease-out" : "none",
+      } }
     >
-      {/* Color splash effects */}
+      {/* Color splash effects */ }
       <div className="absolute inset-0 overflow-hidden">
-        {colors.map((color, i) => (
+        { colors.map((color, i) => (
           <div
-            key={`splash-${generateUniqueKey()}`}
+            key={ `splash-${generateUniqueKey()}` }
             className="color-splash absolute rounded-full blur-3xl"
-            style={{
+            style={ {
               backgroundColor: color,
-              opacity: 0.3,
+              opacity: 0,
               width: `${200 + i * 50}px`,
               height: `${200 + i * 50}px`,
               left: `${20 + i * 15}%`,
               top: `${10 + (i % 3) * 25}%`,
-            }}
+            } }
           />
-        ))}
+        )) }
       </div>
 
-      {/* Content */}
+      {/* Content */ }
       <div className="relative z-10 max-w-2xl text-center space-y-6">
-        <h1 className="greeting-text text-5xl sm:text-6xl md:text-7xl font-bold text-white drop-shadow-lg">
+        <h1 className="greeting-text text-5xl sm:text-6xl md:text-7xl font-bold text-white drop-shadow-lg opacity-0">
           Happy Holi!
         </h1>
 
         <div className="space-y-4">
-          <p className="recipient-name text-3xl sm:text-4xl font-semibold text-white drop-shadow-md">
-            Dear {recipientName},
+          <p className="recipient-name text-3xl sm:text-4xl font-semibold text-white drop-shadow-md opacity-0">
+            Dear { recipientName },
           </p>
 
-          <p className="greeting-text text-lg sm:text-xl leading-relaxed px-4 text-white drop-shadow-md">
-            {message ||
-              `May your life be filled with colors of joy, love, and happiness!`}
+          <p className="greeting-text text-lg sm:text-xl leading-relaxed px-4 text-white drop-shadow-md opacity-0">
+            { message ||
+              `May your life be filled with colors of joy, love, and happiness!` }
           </p>
 
-          <p className="sender-name text-xl sm:text-2xl font-medium mt-8 text-white drop-shadow-md">
+          <p className="sender-name text-xl sm:text-2xl font-medium mt-8 text-white drop-shadow-md opacity-0">
             With colorful wishes,
             <br />
-            {senderName}
+            { senderName }
           </p>
         </div>
       </div>
