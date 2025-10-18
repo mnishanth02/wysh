@@ -318,22 +318,22 @@ export function FireworksTemplate({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
     >
-      {/* Background */ }
+      {/* Background */}
       <div
         className="fireworks-bg absolute inset-0 opacity-0"
-        style={ {
+        style={{
           background:
             "radial-gradient(ellipse at center, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 1) 100%)",
-        } }
+        }}
       />
 
-      {/* T107: Particle Canvas with Gravity Simulation */ }
+      {/* T107: Particle Canvas with Gravity Simulation */}
       <ParticleCanvas
-        ref={ canvasRef }
-        config={ {
+        ref={canvasRef}
+        config={{
           maxParticles: particleCount,
           colors: colors,
           particleSize: 3,
@@ -343,45 +343,45 @@ export function FireworksTemplate({
           velocityVariation: 0.2,
           opacity: 1,
           blendMode: "screen",
-        } }
+        }}
         className="absolute inset-0 pointer-events-none"
-        autoStart={ true }
+        autoStart={true}
       />
 
-      {/* T111: Text Overlay */ }
+      {/* T111: Text Overlay */}
       <div className="fireworks-content absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="text-center space-y-4 sm:space-y-6 px-4">
-          {/* Recipient Name */ }
+          {/* Recipient Name */}
           <div className="fireworks-recipient opacity-0">
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white drop-shadow-2xl">
-              { recipientName }
+              {recipientName}
             </h1>
           </div>
 
-          {/* Message */ }
-          { message && (
+          {/* Message */}
+          {message && (
             <div className="fireworks-message opacity-0">
               <p className="text-lg sm:text-xl md:text-2xl text-white/90 drop-shadow-lg max-w-2xl mx-auto">
-                { message }
+                {message}
               </p>
             </div>
-          ) }
+          )}
 
-          {/* Sender Name */ }
+          {/* Sender Name */}
           <div className="fireworks-sender opacity-0">
             <p className="text-base sm:text-lg md:text-xl text-white/80 drop-shadow-lg">
-              From { senderName }
+              From {senderName}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Animation Phase Indicator (dev only) */ }
-      { process.env.NODE_ENV === "development" && (
+      {/* Animation Phase Indicator (dev only) */}
+      {process.env.NODE_ENV === "development" && (
         <div className="absolute top-4 left-4 bg-black/50 text-white text-xs px-3 py-1 rounded">
-          Phase: { animationPhase }
+          Phase: {animationPhase}
         </div>
-      ) }
+      )}
     </div>
   );
 }

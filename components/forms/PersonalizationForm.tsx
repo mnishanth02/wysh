@@ -4,10 +4,17 @@
  * Personalization Form Component
  * Collects recipient name, sender name, and custom message
  * Validates input and navigates to template selection
+ *
+ * Following nuqs best practices:
+ * - URL state is the single source of truth
+ * - No redundant useEffect for syncing
+ * - Form reads from URL state via defaultValues
+ * - Updates happen on submit only
  */
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
+import { useQueryStates } from "nuqs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -15,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { sanitizeMessage, sanitizeName } from "@/lib/sanitize";
+import { greetingParsers } from "@/lib/url-state-parsers";
 
 // Validation schema
 const personalizationSchema = z.object({
@@ -40,6 +48,15 @@ type PersonalizationFormData = z.infer<typeof personalizationSchema>;
 export function PersonalizationForm() {
   const router = useRouter();
 
+  // Read all URL state parameters
+  const [urlState] = useQueryStates({
+    festival: greetingParsers.festival,
+    relationship: greetingParsers.relationship,
+    recipientName: greetingParsers.recipientName,
+    senderName: greetingParsers.senderName,
+    customMessage: greetingParsers.customMessage,
+  });
+
   const {
     register,
     handleSubmit,
@@ -47,13 +64,15 @@ export function PersonalizationForm() {
     formState: { errors, isSubmitting },
   } = useForm<PersonalizationFormData>({
     resolver: zodResolver(personalizationSchema),
+    // URL state is single source of truth - read once on mount
     defaultValues: {
-      recipientName: "",
-      senderName: "",
-      customMessage: "",
+      recipientName: urlState.recipientName,
+      senderName: urlState.senderName,
+      customMessage: urlState.customMessage,
     },
   });
 
+  // Watch for character count display only
   const customMessage = watch("customMessage") || "";
   const recipientName = watch("recipientName") || "";
   const senderName = watch("senderName") || "";
@@ -67,13 +86,10 @@ export function PersonalizationForm() {
       ? sanitizeMessage(data.customMessage)
       : "";
 
-    // Store sanitized form data in session storage
-    sessionStorage.setItem("greeting_recipientName", sanitizedRecipientName);
-    sessionStorage.setItem("greeting_senderName", sanitizedSenderName);
-    sessionStorage.setItem("greeting_customMessage", sanitizedCustomMessage);
-
-    // Navigate to template selection
-    router.push("/create/template");
+    // Navigate to template selection with all parameters in URL
+    router.push(
+      `/create/template?festival=${urlState.festival}&relationship=${urlState.relationship}&recipientName=${encodeURIComponent(sanitizedRecipientName)}&senderName=${encodeURIComponent(sanitizedSenderName)}&customMessage=${encodeURIComponent(sanitizedCustomMessage)}`,
+    );
   };
 
   return (

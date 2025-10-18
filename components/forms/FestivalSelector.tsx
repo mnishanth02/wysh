@@ -4,6 +4,8 @@
  * Festival Selector Component
  * Displays festival cards in a grid layout
  * Fetches festivals from Convex and handles selection
+ *
+ * Using nuqs with URL key remapping for cleaner URLs
  */
 
 import { useQuery } from "convex/react";
@@ -20,9 +22,8 @@ export function FestivalSelector() {
   const festivals = useQuery(api.festivals.listFestivals);
 
   const handleFestivalSelect = (festivalType: FestivalType) => {
-    // Store selection in session storage for the creation flow
-    sessionStorage.setItem("greeting_festival", festivalType);
-    router.push("/create/relationship");
+    // Navigation with festival parameter in the URL
+    router.push(`/create/relationship?festival=${festivalType}`);
   };
 
   if (festivals === undefined) {

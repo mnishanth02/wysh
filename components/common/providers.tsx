@@ -2,6 +2,7 @@
 
 import { ConvexProvider, ConvexReactClient } from "convex/react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import type * as React from "react";
 import { Toaster } from "../ui/sonner";
 
@@ -24,13 +25,15 @@ export function Providers({ children }: { children: React.ReactNode }) {
         enableColorScheme
         enableSystem
       >
-        {children}
-        <Toaster
-          duration={3000}
-          position="top-center"
-          richColors
-          toastOptions={{ style: { textAlign: "center" } }}
-        />
+        <NuqsAdapter>
+          {children}
+          <Toaster
+            duration={3000}
+            position="top-center"
+            richColors
+            toastOptions={{ style: { textAlign: "center" } }}
+          />
+        </NuqsAdapter>
       </NextThemesProvider>
     </ConvexProvider>
   );

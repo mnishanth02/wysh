@@ -71,17 +71,17 @@ export function TextReveal({
   }, [text, duration, delay, stagger, ease, onComplete]);
 
   return (
-    <span ref={ containerRef } className={ className }>
-      { text.split("").map((char, index) => (
+    <span ref={containerRef} className={className}>
+      {text.split("").map((char, index) => (
         <span
           // biome-ignore lint/suspicious/noArrayIndexKey: Character position is stable and unique
-          key={ index }
+          key={index}
           className="char inline-block"
-          style={ { opacity: 0 } }
+          style={{ opacity: 0 }}
         >
-          { char === " " ? "\u00A0" : char }
+          {char === " " ? "\u00A0" : char}
         </span>
-      )) }
+      ))}
     </span>
   );
 }

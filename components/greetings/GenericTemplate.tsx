@@ -168,47 +168,47 @@ export function GenericTemplate({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="generic-bg relative flex min-h-screen items-center justify-center p-4"
-      style={ {
+      style={{
         background: `linear-gradient(135deg, ${primaryColor}, ${colors[1]})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 1s ease-out" : "none",
-      } }
+      }}
     >
-      {/* Decorative elements */ }
+      {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Stars */ }
-        { [...Array(12)].map((_, i) => (
+        {/* Stars */}
+        {[...Array(12)].map((_, i) => (
           <div
-            key={ `star-${generateUniqueKey()}` }
+            key={`star-${generateUniqueKey()}`}
             className="star absolute text-4xl opacity-0"
-            style={ {
+            style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               color: colors[i % colors.length],
-            } }
+            }}
           >
             ⭐
           </div>
-        )) }
+        ))}
 
-        {/* Confetti */ }
-        { [...Array(25)].map((_, i) => (
+        {/* Confetti */}
+        {[...Array(25)].map((_, i) => (
           <div
-            key={ `confetti-${generateUniqueKey()}` }
+            key={`confetti-${generateUniqueKey()}`}
             className="confetti absolute h-3 w-3 rounded-sm opacity-0"
-            style={ {
+            style={{
               backgroundColor: colors[i % colors.length],
               left: `${Math.random() * 100}%`,
               top: `${20 + Math.random() * 60}%`,
               transform: `rotate(${Math.random() * 360}deg)`,
-            } }
+            }}
           />
-        )) }
+        ))}
       </div>
 
-      {/* Content */ }
+      {/* Content */}
       <div className="relative z-10 max-w-2xl text-center space-y-6">
         <h1 className="greeting-text text-5xl sm:text-6xl md:text-7xl font-bold text-white drop-shadow-lg opacity-0">
           Celebrating You!
@@ -216,17 +216,17 @@ export function GenericTemplate({
 
         <div className="space-y-4">
           <p className="recipient-name text-3xl sm:text-4xl font-semibold text-white drop-shadow-md opacity-0">
-            Dear { recipientName },
+            Dear {recipientName},
           </p>
 
           <p className="greeting-text text-lg sm:text-xl leading-relaxed px-4 text-white drop-shadow-md opacity-0">
-            { message || `Sending you warm wishes and lots of happiness!` }
+            {message || `Sending you warm wishes and lots of happiness!`}
           </p>
 
           <p className="sender-name text-xl sm:text-2xl font-medium mt-8 text-white drop-shadow-md opacity-0">
             With love,
             <br />
-            { senderName }
+            {senderName}
           </p>
         </div>
       </div>

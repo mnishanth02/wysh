@@ -4,12 +4,16 @@
  * Relationship Selector Component
  * Displays relationship categories and types
  * Handles relationship selection for greeting personalization
+ *
+ * Using nuqs with improved parsers that include history management
  */
 
 import { Briefcase, Heart, UserCircle, Users } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useQueryState } from "nuqs";
 import { Card } from "@/components/ui/card";
 import { RELATIONSHIP_TYPES } from "@/lib/constants";
+import { greetingParsers } from "@/lib/url-state-parsers";
 import type { RelationshipType } from "@/types";
 
 const CATEGORY_ICONS = {
@@ -28,11 +32,13 @@ const CATEGORY_LABELS = {
 
 export function RelationshipSelector() {
   const router = useRouter();
+  const [festival] = useQueryState("festival", greetingParsers.festival);
 
   const handleRelationshipSelect = (relationshipType: RelationshipType) => {
-    // Store selection in session storage
-    sessionStorage.setItem("greeting_relationship", relationshipType);
-    router.push("/create/personalize");
+    // Navigate with both festival and relationship parameters already in the URL
+    router.push(
+      `/create/personalize?festival=${festival}&relationship=${relationshipType}`,
+    );
   };
 
   return (
