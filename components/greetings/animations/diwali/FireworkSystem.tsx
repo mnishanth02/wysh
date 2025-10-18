@@ -149,10 +149,10 @@ export function FireworkSystem({
   }, []);
 
   return (
-    <div ref={ containerRef } className="absolute inset-0">
+    <div ref={containerRef} className="absolute inset-0">
       <ParticleCanvas
-        ref={ canvasRef }
-        config={ {
+        ref={canvasRef}
+        config={{
           colors,
           particleSize: 4,
           gravity: 150,
@@ -160,12 +160,12 @@ export function FireworkSystem({
           maxParticles: burstCount * particlesPerBurst + 50,
           lifespan: 2000,
           blendMode: "screen",
-        } }
+        }}
         className="absolute inset-0"
-        width={ canvasDimensions.width }
-        height={ canvasDimensions.height }
-        autoStart={ true }
-        onSystemReady={ handleSystemReady }
+        width={canvasDimensions.width}
+        height={canvasDimensions.height}
+        autoStart={true}
+        onSystemReady={handleSystemReady}
       />
     </div>
   );

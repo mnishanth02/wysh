@@ -403,16 +403,6 @@ export const SAMPLE_GREETINGS = [
     description: "Warm festival wishes for colleagues",
   },
   {
-    id: "sample-holi-friends",
-    festivalType: "holi" as const,
-    relationshipType: "best_friend" as const,
-    recipientName: "Raj",
-    senderName: "Amit",
-    message: "",
-    label: "Holi • Friends",
-    description: "Colorful celebration with friends",
-  },
-  {
     id: "sample-christmas-family",
     festivalType: "christmas" as const,
     relationshipType: "parents" as const,
@@ -421,5 +411,15 @@ export const SAMPLE_GREETINGS = [
     message: "",
     label: "Christmas • Family",
     description: "Heartfelt wishes for loved ones",
+  },
+  {
+    id: "sample-newyear-friends",
+    festivalType: "newyear" as const,
+    relationshipType: "best_friend" as const,
+    recipientName: "Alex",
+    senderName: "Jordan",
+    message: "",
+    label: "New Year • Friends",
+    description: "Exciting new year wishes with friends",
   },
 ] as const;

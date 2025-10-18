@@ -36,36 +36,42 @@ export function FestivalSelector() {
     );
   }
 
-  return (
-    <div className="grid gap-4 mobile-gap-4 sm:grid-cols-2 lg:grid-cols-3">
-      {festivals.map((festival) => {
-        const festivalData = FESTIVALS[festival.festivalId as FestivalType];
+  const filteredFestivals = festivals.filter(
+    (f) => f.festivalId !== "holi" && f.festivalId !== "pongal", // Temporarily hide Holi and Pongal from the UI
+  );
 
-        return (
-          <Card
-            key={festival._id}
-            className="group touch-target cursor-pointer overflow-hidden border-2 transition-all hover:border-primary hover:shadow-lg active:scale-95"
-            onClick={() =>
-              handleFestivalSelect(festival.festivalId as FestivalType)
-            }
-          >
-            <div
-              className="h-24 sm:h-32 transition-transform group-hover:scale-105"
-              style={{
-                background: `linear-gradient(135deg, ${festivalData.colorPalette[0]}, ${festivalData.colorPalette[1]})`,
-              }}
-            />
-            <div className="p-4 mobile-p-4 sm:p-6 space-y-2">
-              <h3 className="text-lg sm:text-xl font-semibold">
-                {festival.displayName}
-              </h3>
-              <p className="text-xs sm:text-sm text-muted-foreground">
-                {festivalData.description}
-              </p>
-            </div>
-          </Card>
-        );
-      })}
+  return (
+    <div className="w-full px-4">
+      <div className="grid gap-4 sm:gap-5 grid-cols-2 lg:grid-cols-4 auto-rows-max">
+        { filteredFestivals.map((festival) => {
+          const festivalData = FESTIVALS[festival.festivalId as FestivalType];
+
+          return (
+            <Card
+              key={ festival._id }
+              className="group touch-target gap-0 p-0 cursor-pointer overflow-hidden border border-border shadow-sm transition-all duration-200 hover:shadow-md hover:scale-105 active:scale-95"
+              onClick={ () =>
+                handleFestivalSelect(festival.festivalId as FestivalType)
+              }
+            >
+              <div
+                className="h-28 sm:h-36 transition-transform group-hover:brightness-110 duration-200"
+                style={ {
+                  background: `linear-gradient(135deg, ${festivalData.colorPalette[0]}, ${festivalData.colorPalette[1]})`,
+                } }
+              />
+              <div className="p-4 sm:p-4 space-y-2">
+                <h3 className="text-base sm:text-lg font-semibold leading-tight">
+                  { festival.displayName }
+                </h3>
+                <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">
+                  { festivalData.description }
+                </p>
+              </div>
+            </Card>
+          );
+        }) }
+      </div>
     </div>
   );
 }
