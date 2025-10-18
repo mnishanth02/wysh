@@ -36,7 +36,6 @@ export function GreetingRenderer({
   senderName,
   message,
   templateId: _templateId, // Prefix with underscore to indicate intentionally unused
-  autoplay = true, // T102: Default to true for backward compatibility
 }: GreetingRendererProps) {
   const [animationComplete, setAnimationComplete] = useState(false);
   const [replayKey, setReplayKey] = useState(0);
@@ -66,41 +65,42 @@ export function GreetingRenderer({
 
   // Render the appropriate template based on festival type
   const renderTemplate = () => {
+    const { key, ...rest } = templateProps;
     switch (festivalType) {
       case "diwali":
-        return <DiwaliTemplate {...templateProps} />;
+        return <DiwaliTemplate key={ key } { ...rest } />;
       case "holi":
-        return <HoliTemplate {...templateProps} />;
+        return <HoliTemplate key={ key } { ...rest } />;
       case "christmas":
-        return <ChristmasTemplate {...templateProps} />;
+        return <ChristmasTemplate key={ key } { ...rest } />;
       case "newyear":
-        return <NewYearTemplate {...templateProps} />;
+        return <NewYearTemplate key={ key } { ...rest } />;
       case "pongal":
-        return <PongalTemplate {...templateProps} />;
+        return <PongalTemplate key={ key } { ...rest } />;
       case "fireworks":
         // T110: Route festivalType='fireworks' to FireworksTemplate
-        return <FireworksTemplate {...templateProps} />;
+        return <FireworksTemplate { ...templateProps } />;
       case "generic":
-        return <GenericTemplate {...templateProps} />;
+        return <GenericTemplate { ...templateProps } />;
       default:
-        return <GenericTemplate {...templateProps} />;
+        return <GenericTemplate { ...templateProps } />;
     }
   };
 
   return (
     <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800">
-      {/* Animated Template */}
-      <div className="relative z-10">{renderTemplate()}</div>
+      {/* Animated Template */ }
+      <div className="relative z-10">{ renderTemplate() }</div>
 
-      {/* Replay Button */}
-      {animationComplete && (
+      {/* Replay Button */ }
+      { animationComplete && (
         <div className="fixed bottom-16 right-3 z-20 sm:bottom-20 sm:right-4 md:bottom-24 md:right-8">
-          <ReplayButton onClick={handleReplay} />
+          <ReplayButton onClick={ handleReplay } />
         </div>
-      )}
+      ) }
 
-      {/* Viral Growth CTA */}
-      {animationComplete && (
+      {/* Viral Growth CTA */ }
+      { animationComplete && (
         <div className="fixed bottom-3 left-3 right-3 z-20 flex justify-center sm:bottom-4 sm:left-4 sm:right-4">
           <Button
             asChild
@@ -110,7 +110,7 @@ export function GreetingRenderer({
             <Link href="/">Create Your Own Wysh 🎉</Link>
           </Button>
         </div>
-      )}
+      ) }
     </div>
   );
 }

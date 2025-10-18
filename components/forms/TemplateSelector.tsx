@@ -44,85 +44,85 @@ const TEMPLATE_CONFIGS: Record<
 > = {
   diwali: [
     {
-      id: "diwali-template-1",
+      id: "diwali-1",
       name: "Diya Lights",
       description: "Traditional diyas lighting sequence",
     },
     {
-      id: "diwali-template-2",
+      id: "diwali-2",
       name: "Rangoli Bloom",
       description: "Colorful rangoli animation",
     },
     {
-      id: "diwali-template-3",
+      id: "diwali-3",
       name: "Fireworks Joy",
       description: "Festive fireworks display",
     },
   ],
   holi: [
     {
-      id: "holi-template-1",
+      id: "holi-1",
       name: "Color Splash",
       description: "Vibrant color powder burst",
     },
     {
-      id: "holi-template-2",
+      id: "holi-2",
       name: "Water Balloons",
       description: "Playful water balloon animation",
     },
     {
-      id: "holi-template-3",
+      id: "holi-3",
       name: "Rainbow Wave",
       description: "Flowing rainbow colors",
     },
   ],
   christmas: [
     {
-      id: "christmas-template-1",
+      id: "christmas-1",
       name: "Snow Globe",
       description: "Magical snow globe scene",
     },
     {
-      id: "christmas-template-2",
+      id: "christmas-2",
       name: "Tree Lights",
       description: "Twinkling Christmas tree",
     },
     {
-      id: "christmas-template-3",
+      id: "christmas-3",
       name: "Gift Unwrap",
       description: "Surprise gift reveal",
     },
   ],
   newyear: [
     {
-      id: "newyear-template-1",
+      id: "newyear-1",
       name: "Countdown",
       description: "New Year countdown timer",
     },
     {
-      id: "newyear-template-2",
+      id: "newyear-2",
       name: "Champagne Pop",
       description: "Celebratory champagne toast",
     },
     {
-      id: "newyear-template-3",
+      id: "newyear-3",
       name: "Fireworks Sky",
       description: "Midnight fireworks spectacle",
     },
   ],
   pongal: [
     {
-      id: "pongal-template-1",
+      id: "pongal-1",
       name: "Harvest Sun",
       description: "Rising sun with sugarcane",
     },
     {
-      id: "pongal-template-2",
+      id: "pongal-2",
       name: "Boiling Pot",
       description: "Traditional Pongal pot",
     },
     {
-      id: "pongal-template-3",
+      id: "pongal-3",
       name: "Kolam Art",
       description: "Beautiful kolam patterns",
     },
@@ -146,20 +146,16 @@ const TEMPLATE_CONFIGS: Record<
   ],
   generic: [
     {
-      id: "generic-template-1",
+      id: "generic-1",
       name: "Celebration",
       description: "General celebration theme",
     },
     {
-      id: "generic-template-2",
+      id: "generic-2",
       name: "Confetti Joy",
       description: "Colorful confetti burst",
     },
-    {
-      id: "generic-template-3",
-      name: "Star Sparkle",
-      description: "Sparkling star animation",
-    },
+    // generic-3 is not in backend's allowed list, so remove it
   ],
 };
 
@@ -246,81 +242,81 @@ export function TemplateSelector({
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Context Indicator */}
+      {/* Context Indicator */ }
       <div className="text-center p-3 sm:p-4 bg-muted/50 rounded-lg">
         <p className="text-xs sm:text-sm text-muted-foreground">
-          Templates styled for{" "}
+          Templates styled for{ " " }
           <span className="font-semibold">
-            {relationshipContext.visualTone}
-          </span>{" "}
+            { relationshipContext.visualTone }
+          </span>{ " " }
           tone
         </p>
       </div>
 
-      {/* Template Grid */}
+      {/* Template Grid */ }
       <div className="grid gap-4 mobile-gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {templates.map((template) => (
+        { templates.map((template) => (
           <Card
-            key={template.id}
+            key={ template.id }
             className="group touch-target overflow-hidden border-2 transition-all hover:border-primary hover:shadow-lg"
           >
-            {/* Template Preview */}
+            {/* Template Preview */ }
             <div
               className="h-32 sm:h-48 flex items-center justify-center transition-transform group-hover:scale-105"
-              style={{
+              style={ {
                 background: `linear-gradient(135deg, ${festivalData.colorPalette[0]}, ${festivalData.colorPalette[1]})`,
-              }}
+              } }
             >
               <div className="text-center text-white space-y-1 sm:space-y-2 p-3 sm:p-4">
-                <p className="text-lg sm:text-xl font-bold">{recipientName}</p>
+                <p className="text-lg sm:text-xl font-bold">{ recipientName }</p>
                 <p className="text-xs sm:text-sm opacity-90">
-                  From {senderName}
+                  From { senderName }
                 </p>
               </div>
             </div>
 
-            {/* Template Info */}
+            {/* Template Info */ }
             <div className="p-3 sm:p-4 space-y-2">
               <h3 className="text-base sm:text-lg font-semibold">
-                {template.name}
+                { template.name }
               </h3>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                {template.description}
+                { template.description }
               </p>
 
-              {/* Action Buttons */}
+              {/* Action Buttons */ }
               <div className="flex gap-2 mt-2">
-                {enablePreview && (
+                { enablePreview && (
                   <Button
                     variant="outline"
                     size="sm"
                     className="flex-1 touch-target"
-                    onClick={() => handlePreview(template.id)}
+                    onClick={ () => handlePreview(template.id) }
                   >
                     <Eye className="h-4 w-4 mr-1" />
                     Preview
                   </Button>
-                )}
+                ) }
                 <Button
-                  variant={enablePreview ? "default" : "outline"}
+                  variant={ enablePreview ? "default" : "outline" }
                   size="sm"
-                  className={`${enablePreview ? "flex-1" : "w-full"} touch-target`}
-                  disabled={selectedTemplate === template.id}
-                  onClick={() => handleTemplateSelect(template.id)}
+                  className={ `${enablePreview ? "flex-1" : "w-full"} touch-target` }
+                  disabled={ selectedTemplate === template.id }
+                  onClick={ () => handleTemplateSelect(template.id) }
                 >
-                  {selectedTemplate === template.id
+                  { selectedTemplate === template.id
                     ? "Creating..."
-                    : "Select Template"}
+                    : "Select Template" }
                 </Button>
               </div>
             </div>
           </Card>
-        ))}
+        )) }
       </div>
 
-      {/* T097: Preview Dialog with Animation */}
-      {enablePreview && (
-        <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+      {/* T097: Preview Dialog with Animation */ }
+      { enablePreview && (
+        <Dialog open={ isPreviewOpen } onOpenChange={ setIsPreviewOpen }>
           <DialogContent className="max-w-4xl max-h-[90vh] p-0">
             <DialogHeader className="p-4 sm:p-6">
               <DialogTitle>Preview Animation</DialogTitle>
@@ -330,32 +326,32 @@ export function TemplateSelector({
             </DialogHeader>
 
             <div className="relative h-[60vh] min-h-[400px] overflow-hidden rounded-b-lg">
-              {previewTemplate && (
+              { previewTemplate && (
                 <GreetingRenderer
-                  festivalType={festival}
-                  relationshipType={relationship}
-                  recipientName={recipientName}
-                  senderName={senderName}
+                  festivalType={ festival }
+                  relationshipType={ relationship }
+                  recipientName={ recipientName }
+                  senderName={ senderName }
                   message={
                     customMessage || `Happy ${festivalData.displayName}!`
                   }
-                  templateId={previewTemplate}
+                  templateId={ previewTemplate }
                 />
-              )}
+              ) }
             </div>
 
             <div className="p-4 sm:p-6 border-t">
               <div className="flex gap-2 justify-end">
-                <Button variant="outline" onClick={handleClosePreview}>
+                <Button variant="outline" onClick={ handleClosePreview }>
                   Close
                 </Button>
                 <Button
-                  onClick={() => {
+                  onClick={ () => {
                     if (previewTemplate) {
                       handleClosePreview();
                       handleTemplateSelect(previewTemplate);
                     }
-                  }}
+                  } }
                 >
                   Select This Template
                 </Button>
@@ -363,7 +359,7 @@ export function TemplateSelector({
             </div>
           </DialogContent>
         </Dialog>
-      )}
+      ) }
     </div>
   );
 }
