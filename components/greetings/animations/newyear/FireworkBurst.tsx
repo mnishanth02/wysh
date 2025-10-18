@@ -73,10 +73,9 @@ export function FireworkBurst({
     if (!particleSystem) return;
 
     // Get canvas dimensions for firework positioning
-    const canvas = canvasRef.current?.getSystem()?.canvas;
-    if (!canvas) return;
-    const canvasWidth = canvas.width || window.innerWidth;
-    const canvasHeight = canvas.height || window.innerHeight;
+    const { width, height } = particleSystem.getCanvasDimensions();
+    const canvasWidth = width || window.innerWidth;
+    const canvasHeight = height || window.innerHeight;
 
     const tl = gsap.timeline({ delay });
 

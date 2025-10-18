@@ -33,11 +33,8 @@ export function SparkleParticles({
 
   const handleSystemReady = useCallback(
     (system: ParticleSystem) => {
-      const canvas = canvasRef.current?.getSystem()?.canvas;
-      if (!canvas) return;
-
-      const width = canvas.width;
-      const height = canvas.height;
+      // Get canvas dimensions from the particle system
+      const { width, height } = system.getCanvasDimensions();
 
       // Start after delay
       setTimeout(() => {

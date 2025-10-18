@@ -170,10 +170,15 @@ export function FireworksTemplate({
     const fpsMonitor =
       process.env.NODE_ENV === "development" ? startFPSMonitor() : null;
 
-    const canvas = canvasRef.current?.getSystem()?.canvas;
-    if (!canvas) return;
-    const canvasWidth = canvas.width || window.innerWidth;
-    const canvasHeight = canvas.height || window.innerHeight;
+    // Get canvas element from particle system
+    const particleSystem = canvasRef.current?.getSystem();
+    if (!particleSystem) return;
+
+    // Access canvas dimensions from the particle system
+    const { width, height } = particleSystem.getCanvasDimensions();
+
+    const canvasWidth = width || window.innerWidth;
+    const canvasHeight = height || window.innerHeight;
 
     const ctx = gsap.context(() => {
       // Main animation timeline

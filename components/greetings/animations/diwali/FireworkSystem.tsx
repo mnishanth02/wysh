@@ -94,12 +94,8 @@ export function FireworkSystem({
         onComplete,
       });
 
-      // Calculate canvas dimensions
-      const canvas = canvasRef.current?.getSystem()?.canvas;
-      if (!canvas) return;
-
-      const width = canvas.width;
-      const height = canvas.height;
+      // Get canvas dimensions from the particle system
+      const { width, height } = system.getCanvasDimensions();
 
       // Launch fireworks with staggered timing
       for (let i = 0; i < burstCount; i++) {

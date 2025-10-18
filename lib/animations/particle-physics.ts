@@ -131,6 +131,17 @@ export class ParticleSystem {
   }
 
   /**
+   * Get canvas dimensions
+   * @returns Object with width and height of the canvas
+   */
+  getCanvasDimensions(): { width: number; height: number } {
+    return {
+      width: this.canvas.width,
+      height: this.canvas.height,
+    };
+  }
+
+  /**
    * Emit burst of particles
    */
   emitBurst(x: number, y: number, burstConfig: BurstConfig): void {
