@@ -17,6 +17,9 @@ import {
   startFPSMonitor,
 } from "@/lib/performance";
 import type { RelationshipContext } from "@/types";
+import { ChampagneBottle } from "./animations/newyear/ChampagneBottle";
+import { ChampagneBurst } from "./animations/newyear/ChampagneBurst";
+import { ChampagneSparkles } from "./animations/newyear/ChampagneSparkles";
 import { ConfettiSystem } from "./animations/newyear/ConfettiSystem";
 import { CountdownTimer } from "./animations/newyear/CountdownTimer";
 import { FireworkBurst } from "./animations/newyear/FireworkBurst";
@@ -45,8 +48,22 @@ export function NewYearTemplate({
   const containerRef = useRef<HTMLDivElement>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
   const [animationPhase, setAnimationPhase] = useState<
-    "countdown" | "fireworks" | "confetti" | "text" | "complete"
-  >("countdown");
+    | "countdown"
+    | "fireworks"
+    | "confetti"
+    | "text"
+    | "complete"
+    | "champagne"
+    | "champagne-pop"
+    | "champagne-sparkles"
+    | "champagne-burst"
+  >(
+    variant === "1"
+      ? "countdown"
+      : variant === "2"
+        ? "champagne"
+        : "fireworks",
+  );
 
   const festivalData = FESTIVALS.newyear;
   const colors = festivalData.colorPalette;
@@ -92,65 +109,180 @@ export function NewYearTemplate({
         return;
       }
 
-      // T053: Phase 1 (0-4s): Countdown with background intensity increase
-      tl.call(
-        () => {
-          setBgVisible(true);
-          setAnimationPhase("countdown");
-        },
-        [],
-        0,
-      );
+      // Variant-specific animation timelines
+      if (variant === "1") {
+        // VARIANT 1: Countdown to Fireworks
+        // T053: Phase 1 (0-4s): Countdown with background intensity increase
+        tl.call(
+          () => {
+            setBgVisible(true);
+            setAnimationPhase("countdown");
+          },
+          [],
+          0,
+        );
 
-      // T054: Phase 2 (4-7s): Fireworks - synchronized with countdown completion
-      tl.addLabel("countdownComplete", 4); // Timeline label for synchronization
-      tl.call(() => setAnimationPhase("fireworks"), [], "countdownComplete");
+        // T054: Phase 2 (4-7s): Fireworks - synchronized with countdown completion
+        tl.addLabel("countdownComplete", 4); // Timeline label for synchronization
+        tl.call(() => setAnimationPhase("fireworks"), [], "countdownComplete");
 
-      // T053: Phase 3 (5-10s): Confetti burst from top
-      tl.call(() => setAnimationPhase("confetti"), [], 5);
+        // T053: Phase 3 (5-10s): Confetti burst from top
+        tl.call(() => setAnimationPhase("confetti"), [], 5);
 
-      // T053: Phase 4 (7-10s): Text explosion and text reveal
-      tl.call(() => setAnimationPhase("text"), [], 7);
+        // T053: Phase 4 (7-10s): Text explosion and text reveal
+        tl.call(() => setAnimationPhase("text"), [], 7);
 
-      // Animate text elements (8-10s)
-      tl.to(
-        ".newyear-recipient",
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        },
-        8,
-      );
+        // Animate text elements (8-10s)
+        tl.to(
+          ".newyear-recipient",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          8,
+        );
 
-      tl.to(
-        ".newyear-message",
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        },
-        8.5,
-      );
+        tl.to(
+          ".newyear-message",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          8.5,
+        );
 
-      tl.to(
-        ".newyear-sender",
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: "power2.out",
-        },
-        9,
-      );
+        tl.to(
+          ".newyear-sender",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          9,
+        );
+      } else if (variant === "2") {
+        // VARIANT 2: Champagne Pop Celebration
+        // New champagne-specific animation sequence
+        tl.call(
+          () => {
+            setBgVisible(true);
+            setAnimationPhase("champagne"); // Show bottle
+          },
+          [],
+          0,
+        );
+
+        // Phase 1 (0-1s): Bottle shake and cork pop
+        // ChampagneBottle will call onPopComplete at 1s
+
+        // Phase 2 (1-2.5s): Sparkles shoot upward
+        tl.call(() => setAnimationPhase("champagne-sparkles"), [], 1);
+
+        // Phase 3 (2.5-3.5s): Burst explosion at top
+        tl.call(() => setAnimationPhase("champagne-burst"), [], 2.5);
+
+        // Phase 4 (3.5s+): Text explosion reveals "Happy New Year 2026!"
+        tl.call(() => setAnimationPhase("text"), [], 3.5);
+
+        // Phase 5: Animate text elements (4.5-7s)
+        tl.to(
+          ".newyear-recipient",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          4.5,
+        );
+
+        tl.to(
+          ".newyear-message",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          5,
+        );
+
+        tl.to(
+          ".newyear-sender",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          5.5,
+        );
+      } else if (variant === "3") {
+        // VARIANT 3: Fireworks Sky Spectacular
+        // Emphasis on fireworks with minimal countdown
+        tl.call(
+          () => {
+            setBgVisible(true);
+            setAnimationPhase("fireworks");
+          },
+          [],
+          0,
+        );
+
+        // Extended fireworks display (0-5s)
+        tl.call(() => setAnimationPhase("fireworks"), [], 0);
+
+        // Confetti complement (3-8s)
+        tl.call(() => setAnimationPhase("confetti"), [], 3);
+
+        // Text reveal (5-10s)
+        tl.call(() => setAnimationPhase("text"), [], 5);
+
+        // Animate text elements (6-10s)
+        tl.to(
+          ".newyear-recipient",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          6,
+        );
+
+        tl.to(
+          ".newyear-message",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          6.5,
+        );
+
+        tl.to(
+          ".newyear-sender",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+          },
+          7,
+        );
+      }
 
       timelineRef.current = tl;
     }, containerRef);
 
     return () => ctx.revert();
-  }, [onAnimationComplete, useReducedMotion]);
+  }, [onAnimationComplete, useReducedMotion, variant]);
 
   const defaultMessage =
     "May this new year bring you endless opportunities, joy, and wonderful moments! Wishing you success and happiness in all your endeavors.";
@@ -189,8 +321,8 @@ export function NewYearTemplate({
           >
             <h1
               className={ `font-bold ${isPreview
-                  ? "text-2xl sm:text-3xl md:text-4xl"
-                  : "text-5xl md:text-6xl lg:text-7xl"
+                ? "text-2xl sm:text-3xl md:text-4xl"
+                : "text-5xl md:text-6xl lg:text-7xl"
                 }` }
               style={ { color: animationConfig.colors[0] || colors[0] } }
             >
@@ -198,8 +330,8 @@ export function NewYearTemplate({
             </h1>
             <p
               className={ `font-semibold ${isPreview
-                  ? "text-lg sm:text-2xl md:text-3xl"
-                  : "text-3xl md:text-4xl"
+                ? "text-lg sm:text-2xl md:text-3xl"
+                : "text-3xl md:text-4xl"
                 }` }
               style={ { color: animationConfig.colors[4] || colors[4] } }
             >
@@ -207,8 +339,8 @@ export function NewYearTemplate({
             </p>
             <p
               className={ `leading-relaxed ${isPreview
-                  ? "text-sm sm:text-base md:text-lg"
-                  : "text-lg md:text-xl"
+                ? "text-sm sm:text-base md:text-lg"
+                : "text-lg md:text-xl"
                 }` }
               style={ { color: animationConfig.colors[4] || colors[4] } }
             >
@@ -216,8 +348,8 @@ export function NewYearTemplate({
             </p>
             <p
               className={ `font-medium mt-6 sm:mt-8 ${isPreview
-                  ? "text-base sm:text-lg md:text-xl"
-                  : "text-xl md:text-2xl"
+                ? "text-base sm:text-lg md:text-xl"
+                : "text-xl md:text-2xl"
                 }` }
               style={ { color: animationConfig.colors[1] || colors[1] } }
             >
@@ -231,7 +363,55 @@ export function NewYearTemplate({
         <>
           {/* All animation components always mounted for GSAP targeting, visibility controlled by opacity/pointer-events */ }
 
-          {/* T053: Phase 1 (0-4s): Countdown */ }
+          {/* VARIANT 2: Champagne Pop Animation Sequence */ }
+          { variant === "2" && (
+            <>
+              {/* Champagne Bottle (visible during champagne phase) */ }
+              <div
+                className={ `absolute inset-0 ${animationPhase === "champagne" || animationPhase === "champagne-sparkles" ? "opacity-100" : "opacity-0 pointer-events-none"}` }
+              >
+                <ChampagneBottle
+                  delay={ 0 }
+                  onPopComplete={ () => {
+                    // Bottle pop complete - sparkles phase already triggered by timeline
+                  } }
+                  colors={ animationConfig.colors }
+                />
+              </div>
+
+              {/* Champagne Sparkles shooting upward (1-2.5s) */ }
+              <div
+                className={ `absolute inset-0 ${animationPhase === "champagne-sparkles" || animationPhase === "champagne-burst" || animationPhase === "text" || animationPhase === "complete" ? "opacity-100" : "opacity-0 pointer-events-none"}` }
+              >
+                <ChampagneSparkles
+                  particleCount={ 70 }
+                  duration={ 1.5 }
+                  delay={ 0 }
+                  colors={ animationConfig.colors }
+                  onReachTop={ () => {
+                    // Sparkles reached top - burst phase already triggered by timeline
+                  } }
+                />
+              </div>
+
+              {/* Champagne Burst at top (2.5-3.5s) */ }
+              <div
+                className={ `absolute inset-0 ${animationPhase === "champagne-burst" || animationPhase === "text" || animationPhase === "complete" ? "opacity-100" : "opacity-0 pointer-events-none"}` }
+              >
+                <ChampagneBurst
+                  particleCount={ 180 }
+                  duration={ 1.2 }
+                  delay={ 0 }
+                  colors={ animationConfig.colors }
+                  onBurstComplete={ () => {
+                    // Burst complete - text phase already triggered by timeline
+                  } }
+                />
+              </div>
+            </>
+          ) }
+
+          {/* T053: Phase 1 (0-4s): Countdown (VARIANT 1 only) */ }
           <div
             className={ `absolute inset-0 ${animationPhase === "countdown" ? "opacity-100" : "opacity-0 pointer-events-none"}` }
           >
@@ -320,8 +500,8 @@ export function NewYearTemplate({
               {/* Recipient name appears (8-9s) */ }
               <div
                 className={ `newyear-recipient opacity-0 ${isPreview
-                    ? "text-lg sm:text-2xl md:text-3xl"
-                    : "text-2xl md:text-3xl lg:text-4xl"
+                  ? "text-lg sm:text-2xl md:text-3xl"
+                  : "text-2xl md:text-3xl lg:text-4xl"
                   } font-semibold` }
                 style={ {
                   color: "#FFFFFF",
@@ -335,8 +515,8 @@ export function NewYearTemplate({
               {/* Message body (8.5-9.5s) */ }
               <p
                 className={ `newyear-message opacity-0 leading-relaxed ${isPreview
-                    ? "text-sm sm:text-base md:text-lg"
-                    : "text-lg md:text-xl"
+                  ? "text-sm sm:text-base md:text-lg"
+                  : "text-lg md:text-xl"
                   }` }
                 style={ {
                   color: "#FFFFFF",
@@ -354,8 +534,8 @@ export function NewYearTemplate({
               {/* Sender name (9-10s) */ }
               <p
                 className={ `newyear-sender opacity-0 font-medium mt-4 sm:mt-6 ${isPreview
-                    ? "text-base sm:text-lg md:text-xl"
-                    : "text-xl md:text-2xl"
+                  ? "text-base sm:text-lg md:text-xl"
+                  : "text-xl md:text-2xl"
                   }` }
                 style={ {
                   color: "#FFD700",
