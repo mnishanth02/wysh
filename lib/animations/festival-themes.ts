@@ -173,7 +173,6 @@ function adjustColorForVariant(
       newG = Math.floor(g * 0.6 + 255 * 0.4);
       newB = Math.floor(b * 0.6 + 255 * 0.4);
       break;
-    case "traditional":
     default:
       // No adjustment
       break;

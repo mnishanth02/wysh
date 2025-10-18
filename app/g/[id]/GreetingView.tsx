@@ -119,27 +119,27 @@ export function GreetingView({ shareableId }: GreetingViewProps) {
   return (
     <div className="relative">
       <GreetingRenderer
-        festivalType={ greeting.festivalType as FestivalType }
-        relationshipType={ greeting.relationshipType as RelationshipType }
-        recipientName={ greeting.recipientName }
-        senderName={ greeting.senderName }
-        message={ greeting.customMessage || greeting.generatedMessage || "" }
-        templateId={ greeting.templateId }
-        autoplay={ shouldAutoplay }
+        festivalType={greeting.festivalType as FestivalType}
+        relationshipType={greeting.relationshipType as RelationshipType}
+        recipientName={greeting.recipientName}
+        senderName={greeting.senderName}
+        message={greeting.customMessage || greeting.generatedMessage || ""}
+        templateId={greeting.templateId}
+        autoplay={shouldAutoplay}
       />
 
-      {/* T102: Mobile "Tap to Play" Overlay */ }
-      { showTapToPlay && (
+      {/* T102: Mobile "Tap to Play" Overlay */}
+      {showTapToPlay && (
         <button
           type="button"
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm cursor-pointer"
-          onClick={ handleTapToPlay }
-          onKeyDown={ (e) => {
+          onClick={handleTapToPlay}
+          onKeyDown={(e) => {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               handleTapToPlay();
             }
-          } }
+          }}
           aria-label="Start animation"
         >
           <Button
@@ -150,7 +150,7 @@ export function GreetingView({ shareableId }: GreetingViewProps) {
             Tap to Play Animation
           </Button>
         </button>
-      ) }
+      )}
     </div>
   );
 }

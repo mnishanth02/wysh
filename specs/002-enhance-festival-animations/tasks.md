@@ -357,12 +357,12 @@
 
 ### Documentation & Code Quality
 
-- [ ] T135 [P] Add JSDoc comments to all animation classes and functions in `lib/animations/`: ParticleSystem, createAnimationTimeline, festival-themes functions
-- [ ] T136 [P] Add inline comments explaining complex GSAP timeline sequencing in DiwaliTemplate, NewYearTemplate, PongalTemplate
-- [ ] T137 [P] Create developer guide in `specs/002-enhance-festival-animations/DEVELOPER-GUIDE.md`: how to create new festival animation, ParticleSystem usage, timeline patterns
-- [ ] T138 [P] Update `specs/002-enhance-festival-animations/quickstart.md` with final setup instructions, testing commands, performance validation steps
-- [ ] T139 [P] Add performance budgets to documentation: max 500KB per template code+assets, max 500 particles, min 45fps on mid-range devices
-- [ ] T140 [P] Run biome linter and fix all errors: `bun run lint` in repo root, fix any animation-related linting issues
+- [x] T135 [P] Add JSDoc comments to all animation classes and functions in `lib/animations/`: ParticleSystem, createAnimationTimeline, festival-themes functions (✅ Already comprehensive - all 7 files have JSDoc with cultural symbolism)
+- [x] T136 [P] Add inline comments explaining complex GSAP timeline sequencing in DiwaliTemplate, NewYearTemplate, PongalTemplate (✅ Complete - templates have T-numbered comments and phase documentation)
+- [x] T137 [P] Create developer guide in `specs/002-enhance-festival-animations/DEVELOPER-GUIDE.md`: how to create new festival animation, ParticleSystem usage, timeline patterns (✅ 1250-line comprehensive guide created)
+- [x] T138 [P] Update `specs/002-enhance-festival-animations/quickstart.md` with final setup instructions, testing commands, performance validation steps (✅ Updated with Bun commands, device testing, budgets table)
+- [x] T139 [P] Add performance budgets to documentation: max 500KB per template code+assets, max 500 particles, min 45fps on mid-range devices (✅ Created PERFORMANCE-BUDGETS.md with 450 lines of budget details)
+- [x] T140 [P] Run biome linter and fix all errors: `bun run lint` in repo root, fix any animation-related linting issues (✅ Biome schema updated to 2.2.6, formatting applied, unsafe fixes applied - remaining warnings in shadcn/ui and convex/_generated only)
 
 ### Cultural Review & Constitution Compliance
 

@@ -72,12 +72,26 @@ export function ChristmasTemplate({
 
       // T121: Prefers-reduced-motion: simple fade-in
       if (useReducedMotion) {
-        tl.set([".christmas-bg", ".greeting-text", ".recipient-name", ".sender-name", ".snowflake", ".light"], {
-          opacity: 1,
-        });
-        tl.call(() => {
-          onAnimationComplete?.();
-        }, [], 1);
+        tl.set(
+          [
+            ".christmas-bg",
+            ".greeting-text",
+            ".recipient-name",
+            ".sender-name",
+            ".snowflake",
+            ".light",
+          ],
+          {
+            opacity: 1,
+          },
+        );
+        tl.call(
+          () => {
+            onAnimationComplete?.();
+          },
+          [],
+          1,
+        );
         return;
       }
 
@@ -151,44 +165,44 @@ export function ChristmasTemplate({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="christmas-bg relative flex min-h-screen items-center justify-center p-4"
-      style={ {
+      style={{
         background: `linear-gradient(135deg, ${secondaryColor}, ${primaryColor})`,
-      } }
+      }}
     >
-      {/* Decorative elements */ }
+      {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Snowflakes */ }
-        { [...Array(20)].map(() => (
+        {/* Snowflakes */}
+        {[...Array(20)].map(() => (
           <div
-            key={ `snow-${generateUniqueKey()}` }
+            key={`snow-${generateUniqueKey()}`}
             className="snowflake absolute text-white text-2xl opacity-70"
-            style={ {
+            style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-            } }
+            }}
           >
             ❄
           </div>
-        )) }
+        ))}
 
-        {/* Twinkling lights */ }
-        { [...Array(15)].map(() => (
+        {/* Twinkling lights */}
+        {[...Array(15)].map(() => (
           <div
-            key={ `light-${generateUniqueKey()}` }
+            key={`light-${generateUniqueKey()}`}
             className="light absolute h-3 w-3 rounded-full"
-            style={ {
+            style={{
               backgroundColor: colors[2],
               left: `${Math.random() * 100}%`,
               top: `${10 + Math.random() * 5}%`,
               boxShadow: `0 0 15px ${colors[2]}`,
-            } }
+            }}
           />
-        )) }
+        ))}
       </div>
 
-      {/* Content */ }
+      {/* Content */}
       <div className="relative z-10 max-w-2xl text-center space-y-6">
         <h1 className="greeting-text text-5xl sm:text-6xl md:text-7xl font-bold text-white drop-shadow-lg">
           Merry Christmas!
@@ -196,18 +210,18 @@ export function ChristmasTemplate({
 
         <div className="space-y-4">
           <p className="recipient-name text-3xl sm:text-4xl font-semibold text-white drop-shadow-md">
-            Dear { recipientName },
+            Dear {recipientName},
           </p>
 
           <p className="greeting-text text-lg sm:text-xl leading-relaxed px-4 text-white drop-shadow-md">
-            { message ||
-              `Wishing you a magical Christmas filled with joy, peace, and love!` }
+            {message ||
+              `Wishing you a magical Christmas filled with joy, peace, and love!`}
           </p>
 
           <p className="sender-name text-xl sm:text-2xl font-medium mt-8 text-white drop-shadow-md">
             With warm wishes,
             <br />
-            { senderName }
+            {senderName}
           </p>
         </div>
       </div>

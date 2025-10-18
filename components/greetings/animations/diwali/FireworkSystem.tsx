@@ -95,7 +95,7 @@ export function FireworkSystem({
       });
 
       // Calculate canvas dimensions
-      const canvas = canvasRef.current?.getSystem()?.["canvas"];
+      const canvas = canvasRef.current?.getSystem()?.canvas;
       if (!canvas) return;
 
       const width = canvas.width;

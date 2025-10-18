@@ -33,7 +33,7 @@ export function SparkleParticles({
 
   const handleSystemReady = useCallback(
     (system: ParticleSystem) => {
-      const canvas = canvasRef.current?.getSystem()?.["canvas"];
+      const canvas = canvasRef.current?.getSystem()?.canvas;
       if (!canvas) return;
 
       const width = canvas.width;

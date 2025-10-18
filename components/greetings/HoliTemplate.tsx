@@ -55,12 +55,25 @@ export function HoliTemplate({
 
       // T121: Prefers-reduced-motion: simple fade-in
       if (useReducedMotion) {
-        tl.set([".holi-bg", ".color-splash", ".greeting-text", ".recipient-name", ".sender-name"], {
-          opacity: 1,
-        });
-        tl.call(() => {
-          onAnimationComplete?.();
-        }, [], 1);
+        tl.set(
+          [
+            ".holi-bg",
+            ".color-splash",
+            ".greeting-text",
+            ".recipient-name",
+            ".sender-name",
+          ],
+          {
+            opacity: 1,
+          },
+        );
+        tl.call(
+          () => {
+            onAnimationComplete?.();
+          },
+          [],
+          1,
+        );
         return;
       }
 
@@ -120,31 +133,31 @@ export function HoliTemplate({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="holi-bg relative flex min-h-screen items-center justify-center p-4"
-      style={ {
+      style={{
         background: `linear-gradient(135deg, ${colors[0]}, ${colors[4]})`,
-      } }
+      }}
     >
-      {/* Color splash effects */ }
+      {/* Color splash effects */}
       <div className="absolute inset-0 overflow-hidden">
-        { colors.map((color, i) => (
+        {colors.map((color, i) => (
           <div
-            key={ `splash-${generateUniqueKey()}` }
+            key={`splash-${generateUniqueKey()}`}
             className="color-splash absolute rounded-full blur-3xl"
-            style={ {
+            style={{
               backgroundColor: color,
               opacity: 0.3,
               width: `${200 + i * 50}px`,
               height: `${200 + i * 50}px`,
               left: `${20 + i * 15}%`,
               top: `${10 + (i % 3) * 25}%`,
-            } }
+            }}
           />
-        )) }
+        ))}
       </div>
 
-      {/* Content */ }
+      {/* Content */}
       <div className="relative z-10 max-w-2xl text-center space-y-6">
         <h1 className="greeting-text text-5xl sm:text-6xl md:text-7xl font-bold text-white drop-shadow-lg">
           Happy Holi!
@@ -152,18 +165,18 @@ export function HoliTemplate({
 
         <div className="space-y-4">
           <p className="recipient-name text-3xl sm:text-4xl font-semibold text-white drop-shadow-md">
-            Dear { recipientName },
+            Dear {recipientName},
           </p>
 
           <p className="greeting-text text-lg sm:text-xl leading-relaxed px-4 text-white drop-shadow-md">
-            { message ||
-              `May your life be filled with colors of joy, love, and happiness!` }
+            {message ||
+              `May your life be filled with colors of joy, love, and happiness!`}
           </p>
 
           <p className="sender-name text-xl sm:text-2xl font-medium mt-8 text-white drop-shadow-md">
             With colorful wishes,
             <br />
-            { senderName }
+            {senderName}
           </p>
         </div>
       </div>
