@@ -26,6 +26,6 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": ["./**/*", "../types/**/*", "../lib/**/*"],
-  "exclude": ["./_generated"]
+  "include": ["./**/*", "../types/**/*"],
+  "exclude": ["./_generated", "../lib/**/*"]
 }
