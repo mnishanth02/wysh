@@ -1,4 +1,4 @@
-# PLANNING PHASE COMPLETE# Planning Phase Complete# Planning Phase Complete: Enhanced Festival Greeting Animations# Planning Phase Complete: Enhanced Festival Greeting Animations
+# Planning Phase Complete: Enhanced Festival Greeting Animations
 
 
 

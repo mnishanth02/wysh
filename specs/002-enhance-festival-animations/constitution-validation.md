@@ -1,4 +1,4 @@
-# Phase 1 Constitution Validation# Phase 1 Constitution Validation# Phase 1 Constitution Validation
+# Phase 1 Constitution Validation
 
 
 

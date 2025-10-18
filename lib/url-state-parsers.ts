@@ -104,6 +104,12 @@ export const greetingUrlKeys: UrlKeys<typeof greetingParsers> = {
  */
 export const festivalParser = greetingParsers.festival;
 export const relationshipParser = greetingParsers.relationship;
+
+/**
+ * Generic string parser for single-key URL state usage.
+ * Use this when you need a type-safe, non-nullable string parser outside the main greeting flow.
+ * Mirrors the configuration in greetingParsers for consistency.
+ */
 export const stringParser = parseAsString.withDefault("").withOptions({
   clearOnDefault: false,
 });

@@ -33,7 +33,9 @@ export async function registerGSAPPlugins(): Promise<GSAPPluginConfig> {
       return { useDrawSVG: true };
     }
   } catch {
-    console.warn("DrawSVG plugin unavailable, using strokeDasharray fallback");
+    console.warn(
+      "DrawSVG plugin unavailable. To enable advanced SVG drawing animations, obtain DrawSVG from https://greensock.com/drawsvg/ and follow the installation instructions. Falling back to strokeDasharray technique.",
+    );
   }
 
   return { useDrawSVG: false };
