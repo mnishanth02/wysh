@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+    <title>Kolam Sunburst Mandala Pattern</title>
+    <defs>
+        <filter id="a" width="200%" height="200%" x="-50%" y="-50%">
+            <feGaussianBlur result="coloredBlur" stdDeviation="1.5"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+    <g fill="none" stroke="beige" stroke-linecap="round" stroke-width="1.5" filter="url(#a)">
+        <circle cx="100" cy="100" r="2" fill="beige" stroke="none"/>
+        <circle cx="100" cy="100" r="10" opacity=".95"/>
+        <circle cx="100" cy="100" r="20" opacity=".9"/>
+        <circle cx="100" cy="100" r="30" opacity=".85"/>
+        <circle cx="100" cy="100" r="40" opacity=".8"/>
+        <circle cx="100" cy="100" r="50" opacity=".75"/>
+        <circle cx="100" cy="100" r="60" opacity=".7"/>
+        <path d="M100 85q-10-10 0-45m0 45q10-10 0-45m10.6 49.4Q117 82 142 58" opacity=".85"/>
+        <path d="M110.6 89.4Q103 82 142 58m-27 42q10-10 45 0m-45 0q10 10 45 0m-49.4 10.6Q117 118 142 142" opacity=".85"/>
+        <path d="M110.6 110.6Q103 118 142 142m-42-27q-10 10 0 45" opacity=".85"/>
+        <path d="M100 115q10 10 0 45m-10.6-49.4L58 142m31.4-31.4Q82 103 58 142m27-42q-10-10-45 0" opacity=".85"/>
+        <path d="M85 100q-10 10-45 0m49.4-10.6L58 58m31.4 31.4Q82 97 58 58" opacity=".85"/>
+        <circle cx="100" cy="35" r="2.5" fill="beige" stroke="none" opacity=".9"/>
+        <circle cx="145" cy="55" r="2.5" fill="beige" stroke="none" opacity=".9"/>
+        <circle cx="165" cy="100" r="2.5" fill="beige" stroke="none" opacity=".9"/>
+        <circle cx="145" cy="145" r="2.5" fill="beige" stroke="none" opacity=".9"/>
+        <circle cx="100" cy="165" r="2.5" fill="beige" stroke="none" opacity=".9"/>
+        <circle cx="55" cy="145" r="2.5" fill="beige" stroke="none" opacity=".9"/>
+        <circle cx="35" cy="100" r="2.5" fill="beige" stroke="none" opacity=".9"/>
+        <circle cx="55" cy="55" r="2.5" fill="beige" stroke="none" opacity=".9"/>
+        <path stroke-width="1" d="M90 100h20m-10-10v20m-7-17 14 14m0-14-14 14" opacity=".7"/>
+    </g>
+</svg>

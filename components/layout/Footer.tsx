@@ -9,8 +9,8 @@ import Link from "next/link";
 export function Footer() {
   return (
     <footer className="border-t bg-muted/50">
-      <div className="container mx-auto px-4 py-8 sm:py-12">
-        <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="container mx-auto px-4 py-4 sm:py-8">
+        <div className="grid gap-6 grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col space-y-3">
             <Link href="/" className="flex items-center gap-2 font-semibold">
               <Sparkles className="h-5 w-5 text-purple-600" />
@@ -83,8 +83,12 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-8 pt-8 border-t text-center text-sm text-muted-foreground">
-          <p>© {new Date().getFullYear()} Wysh. All rights reserved.</p>
+        <div className="mt-6 pt-4 border-t text-center text-sm text-muted-foreground">
+          <p>
+            © {new Date().getFullYear()} Wysh. All rights reserved. <br />
+            Built with <span className="inline-block text-red-500">❤️</span> by
+            Nishanth.
+          </p>
         </div>
       </div>
     </footer>

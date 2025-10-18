@@ -10,7 +10,6 @@ import { gsap } from "gsap";
 import { useEffect, useRef, useState } from "react";
 import { FESTIVALS } from "@/lib/constants";
 import { getRelationshipContext } from "@/lib/context-engine";
-import { generateUniqueKey } from "@/lib/utils";
 import type { FestivalType, RelationshipType } from "@/types";
 
 interface SampleGreetingProps {
@@ -35,6 +34,13 @@ export function SampleGreeting({
   const containerRef = useRef<HTMLDivElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  // Generate deterministic decorator colors based on festival type to avoid hydration mismatch
+  const [decoratorColors] = useState(() => {
+    const festivalData = FESTIVALS[festivalType];
+    const colors = festivalData.colorPalette;
+    // Use a deterministic approach: cycle through colors instead of random
+    return [...Array(6)].map((_, index) => colors[index % colors.length]);
+  });
 
   const festivalData = FESTIVALS[festivalType];
   const relationshipContext = getRelationshipContext(relationshipType);
@@ -145,13 +151,12 @@ export function SampleGreeting({
         {/* Decorative elements */}
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="grid grid-cols-3 gap-4 sm:gap-6 opacity-20">
-            {[...Array(6)].map(() => (
+            {decoratorColors.map((color, index) => (
               <div
-                key={generateUniqueKey()}
+                key={`${festivalType}-decor-${index}-${color}`}
                 className="sample-decor h-8 w-8 sm:h-12 sm:w-12 rounded-full"
                 style={{
-                  backgroundColor:
-                    colors[Math.floor(Math.random() * colors.length)],
+                  backgroundColor: color,
                 }}
               />
             ))}

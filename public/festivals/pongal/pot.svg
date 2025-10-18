@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120">
+    <title>Traditional Pongal Pot</title>
+    <defs>
+        <linearGradient id="a" x1="0%" x2="100%" y1="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#e07a5f;stop-opacity:1"/>
+            <stop offset="50%" style="stop-color:#d2691e;stop-opacity:1"/>
+            <stop offset="100%" style="stop-color:#c05a40;stop-opacity:1"/>
+        </linearGradient>
+        <pattern id="b" width="10" height="10" x="0" y="0" patternUnits="userSpaceOnUse">
+            <circle cx="5" cy="5" r="1.5" fill="#ff6b35" opacity=".5"/>
+        </pattern>
+    </defs>
+    <path fill="url(#a)" stroke="#8b4513" stroke-width="1.5" d="m30 40-5 55q0 10 10 10h30q10 0 10-10l-5-55Z"/>
+    <path fill="#ff6b35" d="M28 43h44v3H28z" opacity=".9"/>
+    <path fill="#fdee00" d="M28 49h44v2.5H28z" opacity=".8"/>
+    <path fill="url(#b)" d="M28 55h44v35H28z"/>
+    <path fill="#ff8c42" d="M28 67h44v1.5H28zm0 8h44v1.5H28zm0 8h44v1.5H28z" opacity=".6"/>
+    <ellipse cx="50" cy="40" fill="#d2691e" rx="20" ry="4"/>
+    <ellipse cx="50" cy="40" fill="none" stroke="#8b4513" stroke-width="1.5" rx="20" ry="4"/>
+    <ellipse cx="50" cy="39.5" fill="#e89b7e" opacity=".6" rx="18" ry="3"/>
+    <ellipse cx="50" cy="105" opacity=".2" rx="25" ry="3"/>
+</svg>

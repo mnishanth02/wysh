@@ -25,6 +25,8 @@ interface GreetingRendererProps {
   senderName: string;
   message: string;
   templateId: string;
+  autoplay?: boolean; // T102: Optional autoplay for context-aware behavior
+  isPreview?: boolean; // T151: Modal preview mode - adapts layout for constrained dimensions
 }
 
 export function GreetingRenderer({
@@ -33,15 +35,12 @@ export function GreetingRenderer({
   recipientName,
   senderName,
   message,
-  templateId: _templateId, // Prefix with underscore to indicate intentionally unused
+  templateId,
+  isPreview = false,
 }: GreetingRendererProps) {
   const [animationComplete, setAnimationComplete] = useState(false);
   const [replayKey, setReplayKey] = useState(0);
   const relationshipContext = getRelationshipContext(relationshipType);
-
-  // Note: templateId is currently not used as templates are selected purely by festival type
-  // In future iterations, this could be used for template-specific variants within a festival
-  // For now, keeping in interface for API consistency and future extensibility
 
   const handleReplay = () => {
     setAnimationComplete(false);
@@ -52,49 +51,65 @@ export function GreetingRenderer({
     setAnimationComplete(true);
   };
 
+  // Extract template variant from templateId (e.g., "diwali-1" -> "1")
+  const getTemplateVariant = (id: string): string => {
+    const parts = id.split("-");
+    return parts[parts.length - 1] || "1"; // Default to variant "1"
+  };
+
+  const variant = getTemplateVariant(templateId);
+
   const templateProps = {
     recipientName,
     senderName,
     message,
     relationshipContext,
     onAnimationComplete: handleAnimationComplete,
+    variant,
+    isPreview,
     key: replayKey,
   };
 
-  // Render the appropriate template based on festival type
+  // Render the appropriate template based on festival type with variant
   const renderTemplate = () => {
+    const { key, ...rest } = templateProps;
     switch (festivalType) {
       case "diwali":
-        return <DiwaliTemplate { ...templateProps } />;
+        return <DiwaliTemplate key={key} {...rest} />;
       case "holi":
-        return <HoliTemplate { ...templateProps } />;
+        return <HoliTemplate key={key} {...rest} />;
       case "christmas":
-        return <ChristmasTemplate { ...templateProps } />;
+        return <ChristmasTemplate key={key} {...rest} />;
       case "newyear":
-        return <NewYearTemplate { ...templateProps } />;
+        return <NewYearTemplate key={key} {...rest} />;
       case "pongal":
-        return <PongalTemplate { ...templateProps } />;
+        return <PongalTemplate key={key} {...rest} />;
       case "generic":
-        return <GenericTemplate { ...templateProps } />;
+        return <GenericTemplate {...templateProps} />;
       default:
-        return <GenericTemplate { ...templateProps } />;
+        return <GenericTemplate {...templateProps} />;
     }
   };
 
+  // T151: Adaptive container for preview modal vs full screen
+  const containerClass = isPreview
+    ? "relative w-full h-full overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800"
+    : "relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800";
+
   return (
-    <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-slate-900 to-slate-800">
-      {/* Animated Template */ }
-      <div className="relative z-10">{ renderTemplate() }</div>
+    <div className={containerClass}>
+      {/* Animated Template */}
+      <div className="relative z-10 w-full h-full">{renderTemplate()}</div>
 
-      {/* Replay Button */ }
-      { animationComplete && (
+      {/* Replay Button - Hidden in preview */}
+      {animationComplete && !isPreview && (
         <div className="fixed bottom-16 right-3 z-20 sm:bottom-20 sm:right-4 md:bottom-24 md:right-8">
-          <ReplayButton onClick={ handleReplay } />
+          <ReplayButton onClick={handleReplay} />
         </div>
-      ) }
+      )}
 
-      {/* Viral Growth CTA */ }
-      { animationComplete && (
+      {/* Viral Growth CTA - Hidden in preview */}
+      {animationComplete && !isPreview && (
         <div className="fixed bottom-3 left-3 right-3 z-20 flex justify-center sm:bottom-4 sm:left-4 sm:right-4">
           <Button
             asChild
@@ -104,7 +119,7 @@ export function GreetingRenderer({
             <Link href="/">Create Your Own Wysh 🎉</Link>
           </Button>
         </div>
-      ) }
+      )}
     </div>
   );
 }

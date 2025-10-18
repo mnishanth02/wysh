@@ -110,12 +110,13 @@ The following technology choices are fixed and MUST NOT be deviated from without
 - **React Version**: React 19+
 - **Language**: TypeScript (strict mode enabled)
 - **Database**: Convex (Convex client for real-time, Convex backend for mutations)
-- **Animation - Timeline**: GSAP (for sequential, timeline-based animations)
-- **Animation - Gestures/Scroll**: Framer Motion (for scroll triggers and gesture-based animations)
+- **Animation**: GSAP 3.13+ (for sequential timeline-based animations and festival greeting effects)
 - **Styling**: Tailwind CSS with Shadcn/ui components
 - **Deployment**: Vercel (zero-config requirement)
 
-**Rationale for Animation Split**: GSAP excels at timeline-based animations (festival intro sequences). Framer Motion excels at scroll/gesture interactions (parallax, card reveals). Using both leverages their strengths without library bloat.
+**Rationale for Animation Choice**: GSAP excels at timeline-based animations (festival intro sequences, particle systems, motion paths) and provides comprehensive plugin ecosystem (MotionPathPlugin, DrawSVG) suitable for greeting card animations. Single animation library reduces bundle size and maintains Solo Developer Simplicity principle.
+
+**Note**: Framer Motion removed as of 2025-10-17. Previous constitution mandated Framer Motion for scroll/gesture interactions, but festival greeting animations exclusively use GSAP. Future features requiring scroll triggers may re-evaluate animation library needs via amendment process.
 
 ### Technology Evaluation Criteria
 

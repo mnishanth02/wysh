@@ -4,15 +4,25 @@
  * Template Selector Component
  * Displays available templates for the selected festival
  * Handles template selection and greeting creation
+ * T097: Added animation preview capability with AnimationControls
  */
 
 import { useMutation } from "convex/react";
+import { Eye } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
+import { GreetingRenderer } from "@/components/greetings/GreetingRenderer";
 import { LoadingState } from "@/components/shared/LoadingState";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { api } from "@/convex/_generated/api";
 import { FESTIVALS } from "@/lib/constants";
 import { getRelationshipContext } from "@/lib/context-engine";
@@ -24,6 +34,7 @@ interface TemplateSelectorProps {
   recipientName: string;
   senderName: string;
   customMessage: string;
+  enablePreview?: boolean;
 }
 
 // Template configurations for each festival
@@ -33,105 +44,101 @@ const TEMPLATE_CONFIGS: Record<
 > = {
   diwali: [
     {
-      id: "diwali-template-1",
+      id: "diwali-1",
       name: "Diya Lights",
       description: "Traditional diyas lighting sequence",
     },
     {
-      id: "diwali-template-2",
+      id: "diwali-2",
       name: "Rangoli Bloom",
       description: "Colorful rangoli animation",
     },
     {
-      id: "diwali-template-3",
+      id: "diwali-3",
       name: "Fireworks Joy",
       description: "Festive fireworks display",
     },
   ],
   holi: [
     {
-      id: "holi-template-1",
+      id: "holi-1",
       name: "Color Splash",
       description: "Vibrant color powder burst",
     },
     {
-      id: "holi-template-2",
+      id: "holi-2",
       name: "Water Balloons",
       description: "Playful water balloon animation",
     },
     {
-      id: "holi-template-3",
+      id: "holi-3",
       name: "Rainbow Wave",
       description: "Flowing rainbow colors",
     },
   ],
   christmas: [
     {
-      id: "christmas-template-1",
+      id: "christmas-1",
       name: "Snow Globe",
       description: "Magical snow globe scene",
     },
     {
-      id: "christmas-template-2",
+      id: "christmas-2",
       name: "Tree Lights",
       description: "Twinkling Christmas tree",
     },
     {
-      id: "christmas-template-3",
+      id: "christmas-3",
       name: "Gift Unwrap",
       description: "Surprise gift reveal",
     },
   ],
   newyear: [
     {
-      id: "newyear-template-1",
+      id: "newyear-1",
       name: "Countdown",
       description: "New Year countdown timer",
     },
     {
-      id: "newyear-template-2",
+      id: "newyear-2",
       name: "Champagne Pop",
       description: "Celebratory champagne toast",
     },
     {
-      id: "newyear-template-3",
+      id: "newyear-3",
       name: "Fireworks Sky",
       description: "Midnight fireworks spectacle",
     },
   ],
   pongal: [
     {
-      id: "pongal-template-1",
+      id: "pongal-1",
       name: "Harvest Sun",
       description: "Rising sun with sugarcane",
     },
     {
-      id: "pongal-template-2",
+      id: "pongal-2",
       name: "Boiling Pot",
       description: "Traditional Pongal pot",
     },
     {
-      id: "pongal-template-3",
+      id: "pongal-3",
       name: "Kolam Art",
       description: "Beautiful kolam patterns",
     },
   ],
   generic: [
     {
-      id: "generic-template-1",
+      id: "generic-1",
       name: "Celebration",
       description: "General celebration theme",
     },
     {
-      id: "generic-template-2",
+      id: "generic-2",
       name: "Confetti Joy",
       description: "Colorful confetti burst",
     },
-    {
-      id: "generic-template-3",
-      name: "Star Sparkle",
-      description: "Sparkling star animation",
-    },
+    // generic-3 is not in backend's allowed list, so remove it
   ],
 };
 
@@ -141,15 +148,28 @@ export function TemplateSelector({
   recipientName,
   senderName,
   customMessage,
+  enablePreview = false,
 }: TemplateSelectorProps) {
   const router = useRouter();
   const createGreeting = useMutation(api.greetings.createGreeting);
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [previewTemplate, setPreviewTemplate] = useState<string | null>(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   const festivalData = FESTIVALS[festival];
   const templates = TEMPLATE_CONFIGS[festival] || [];
   const relationshipContext = getRelationshipContext(relationship);
+
+  const handlePreview = (templateId: string) => {
+    setPreviewTemplate(templateId);
+    setIsPreviewOpen(true);
+  };
+
+  const handleClosePreview = () => {
+    setIsPreviewOpen(false);
+    setPreviewTemplate(null);
+  };
 
   const handleTemplateSelect = async (templateId: string) => {
     setSelectedTemplate(templateId);
@@ -166,12 +186,10 @@ export function TemplateSelector({
         templateId,
       });
 
-      // Store the shareable ID
-      sessionStorage.setItem("greeting_shareableId", result.shareableId);
-      sessionStorage.setItem("greeting_templateId", templateId);
-
-      // Navigate to success page
-      router.push("/create/success");
+      // Navigate to success page with shareableId in URL
+      router.push(
+        `/create/success?shareableId=${result.shareableId}&templateId=${templateId}`,
+      );
     } catch (error) {
       console.error("Failed to create greeting:", error);
       toast.error("Failed to create greeting. Please try again.");
@@ -221,12 +239,11 @@ export function TemplateSelector({
         {templates.map((template) => (
           <Card
             key={template.id}
-            className="group touch-target cursor-pointer overflow-hidden border-2 transition-all hover:border-primary hover:shadow-lg active:scale-95"
-            onClick={() => handleTemplateSelect(template.id)}
+            className="group gap-2 p-0 touch-target overflow-hidden border-2 transition-all hover:border-primary hover:shadow-lg"
           >
             {/* Template Preview */}
             <div
-              className="h-32 sm:h-48 flex items-center justify-center transition-transform group-hover:scale-105"
+              className="h-40 sm:h-44 flex items-center justify-center transition-transform group-hover:scale-105"
               style={{
                 background: `linear-gradient(135deg, ${festivalData.colorPalette[0]}, ${festivalData.colorPalette[1]})`,
               }}
@@ -247,20 +264,92 @@ export function TemplateSelector({
               <p className="text-xs sm:text-sm text-muted-foreground">
                 {template.description}
               </p>
-              <Button
-                variant="outline"
-                size="sm"
-                className="w-full mt-2 touch-target"
-                disabled={selectedTemplate === template.id}
-              >
-                {selectedTemplate === template.id
-                  ? "Creating..."
-                  : "Select Template"}
-              </Button>
+
+              {/* Action Buttons */}
+              <div className="flex gap-4 mt-3">
+                {enablePreview && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1 touch-target"
+                    onClick={() => handlePreview(template.id)}
+                  >
+                    <Eye className="h-4 w-4 mr-1" />
+                    Preview
+                  </Button>
+                )}
+                <Button
+                  variant={enablePreview ? "default" : "outline"}
+                  size="sm"
+                  className={`${enablePreview ? "flex-1" : "w-full"} touch-target`}
+                  disabled={selectedTemplate === template.id}
+                  onClick={() => handleTemplateSelect(template.id)}
+                >
+                  {selectedTemplate === template.id
+                    ? "Creating..."
+                    : "Select Template"}
+                </Button>
+              </div>
             </div>
           </Card>
         ))}
       </div>
+
+      {/* T151: Preview Dialog with Animation - Fixed responsive layout */}
+      {enablePreview && (
+        <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+          <DialogContent className="max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden">
+            <DialogHeader className="p-3 sm:p-4 bg-background border-b shrink-0">
+              <DialogTitle className="text-base sm:text-lg">
+                Preview Animation
+              </DialogTitle>
+              <DialogDescription className="text-xs sm:text-sm">
+                Watch the full animation before selecting this template
+              </DialogDescription>
+            </DialogHeader>
+
+            {/* T151: Responsive preview container with proper aspect ratio */}
+            <div className="relative flex-1 min-h-0 w-full bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden">
+              {previewTemplate && (
+                <GreetingRenderer
+                  festivalType={festival}
+                  relationshipType={relationship}
+                  recipientName={recipientName}
+                  senderName={senderName}
+                  message={
+                    customMessage || `Happy ${festivalData.displayName}!`
+                  }
+                  templateId={previewTemplate}
+                  isPreview={true}
+                />
+              )}
+            </div>
+
+            <div className="p-3 sm:p-4 border-t bg-background shrink-0">
+              <div className="flex gap-2 justify-end">
+                <Button
+                  variant="outline"
+                  onClick={handleClosePreview}
+                  className="text-xs sm:text-sm"
+                >
+                  Close
+                </Button>
+                <Button
+                  onClick={() => {
+                    if (previewTemplate) {
+                      handleClosePreview();
+                      handleTemplateSelect(previewTemplate);
+                    }
+                  }}
+                  className="text-xs sm:text-sm"
+                >
+                  Select This Template
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   );
 }
