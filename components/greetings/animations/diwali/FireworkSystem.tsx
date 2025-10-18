@@ -6,7 +6,7 @@
  */
 
 import { gsap } from "gsap";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DIWALI_COLORS } from "@/lib/animations/festival-themes";
 import type { ParticleSystem } from "@/lib/animations/particle-physics";
 import {
@@ -37,6 +37,33 @@ export function FireworkSystem({
   const canvasRef = useRef<ParticleCanvasRef>(null);
   const systemRef = useRef<ParticleSystem | null>(null);
   const timelineRef = useRef<gsap.core.Timeline | null>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [canvasDimensions, setCanvasDimensions] = useState({
+    width: 800,
+    height: 600,
+  });
+
+  // Measure container dimensions for responsive canvas
+  useEffect(() => {
+    if (!containerRef.current) return;
+
+    const updateDimensions = () => {
+      if (containerRef.current) {
+        const rect = containerRef.current.getBoundingClientRect();
+        setCanvasDimensions({
+          width: rect.width || 800,
+          height: rect.height || 600,
+        });
+      }
+    };
+
+    // Initial measurement
+    updateDimensions();
+
+    // Update on resize
+    window.addEventListener("resize", updateDimensions);
+    return () => window.removeEventListener("resize", updateDimensions);
+  }, []);
 
   const launchFirework = useCallback(
     (x: number, y: number, targetY: number) => {
@@ -122,22 +149,24 @@ export function FireworkSystem({
   }, []);
 
   return (
-    <ParticleCanvas
-      ref={canvasRef}
-      config={{
-        colors,
-        particleSize: 4,
-        gravity: 150,
-        friction: 0.98,
-        maxParticles: burstCount * particlesPerBurst + 50,
-        lifespan: 2000,
-        blendMode: "screen",
-      }}
-      className="absolute inset-0"
-      width={800}
-      height={600}
-      autoStart={true}
-      onSystemReady={handleSystemReady}
-    />
+    <div ref={ containerRef } className="absolute inset-0">
+      <ParticleCanvas
+        ref={ canvasRef }
+        config={ {
+          colors,
+          particleSize: 4,
+          gravity: 150,
+          friction: 0.98,
+          maxParticles: burstCount * particlesPerBurst + 50,
+          lifespan: 2000,
+          blendMode: "screen",
+        } }
+        className="absolute inset-0"
+        width={ canvasDimensions.width }
+        height={ canvasDimensions.height }
+        autoStart={ true }
+        onSystemReady={ handleSystemReady }
+      />
+    </div>
   );
 }

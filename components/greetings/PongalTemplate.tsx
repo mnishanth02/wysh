@@ -170,58 +170,63 @@ export function PongalTemplate({
   if (reducedMotion) {
     return (
       <div
-        ref={ containerRef }
+        ref={containerRef}
         className="pongal-bg relative flex items-center justify-center p-4 w-full h-full"
-        style={ {
+        style={{
           background: `linear-gradient(to bottom, ${adjustedColors[0]}, ${adjustedColors[1]})`,
           minHeight: isPreview ? "auto" : "100vh",
-        } }
+        }}
       >
         <div
-          className={ `relative z-10 max-w-2xl text-center w-full ${isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
-            }` }
+          className={`relative z-10 max-w-2xl text-center w-full ${
+            isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
+          }`}
         >
           <h1
-            className={ `font-bold drop-shadow-lg ${isPreview
+            className={`font-bold drop-shadow-lg ${
+              isPreview
                 ? "text-2xl sm:text-3xl md:text-4xl"
                 : "text-5xl sm:text-6xl md:text-7xl"
-              }` }
-            style={ { color: adjustedColors[2] } }
+            }`}
+            style={{ color: adjustedColors[2] }}
           >
             Pongal Vazhthukkal!
           </h1>
 
-          <div className={ isPreview ? "space-y-3 sm:space-y-4" : "space-y-4" }>
+          <div className={isPreview ? "space-y-3 sm:space-y-4" : "space-y-4"}>
             <p
-              className={ `font-semibold drop-shadow-md ${isPreview
+              className={`font-semibold drop-shadow-md ${
+                isPreview
                   ? "text-lg sm:text-2xl md:text-3xl"
                   : "text-3xl sm:text-4xl"
-                }` }
-              style={ { color: adjustedColors[3] } }
+              }`}
+              style={{ color: adjustedColors[3] }}
             >
-              Dear { recipientName },
+              Dear {recipientName},
             </p>
 
             <p
-              className={ `leading-relaxed px-4 drop-shadow-md text-white ${isPreview
+              className={`leading-relaxed px-4 drop-shadow-md text-white ${
+                isPreview
                   ? "text-sm sm:text-base md:text-lg"
                   : "text-lg sm:text-xl"
-                }` }
+              }`}
             >
-              { message ||
-                `May this harvest festival bring abundant prosperity and happiness to you and your family!` }
+              {message ||
+                `May this harvest festival bring abundant prosperity and happiness to you and your family!`}
             </p>
 
             <p
-              className={ `font-medium drop-shadow-md ${isPreview
+              className={`font-medium drop-shadow-md ${
+                isPreview
                   ? "text-base sm:text-lg md:text-xl mt-4 sm:mt-6"
                   : "text-xl sm:text-2xl mt-8"
-                }` }
-              style={ { color: adjustedColors[0] } }
+              }`}
+              style={{ color: adjustedColors[0] }}
             >
               With best wishes,
               <br />
-              { senderName }
+              {senderName}
             </p>
           </div>
         </div>
@@ -231,121 +236,126 @@ export function PongalTemplate({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="pongal-bg relative flex items-center justify-center p-4 overflow-hidden w-full h-full"
-      style={ {
+      style={{
         background: `linear-gradient(to bottom, ${adjustedColors[0]}, ${adjustedColors[1]})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 2s ease-out" : "none",
         minHeight: isPreview ? "auto" : "100vh",
-      } }
+      }}
     >
-      {/* Animation Layers */ }
+      {/* Animation Layers */}
 
-      {/* Background decorations - always visible */ }
-      { (animationPhase === "celebration" ||
+      {/* Background decorations - always visible */}
+      {(animationPhase === "celebration" ||
         animationPhase === "text" ||
         animationPhase === "complete") && (
-          <>
-            <SugarcaneSway duration={ 8 } />
-            <RiceGrains grainCount={ 40 } duration={ 10 } />
-          </>
-        ) }
+        <>
+          <SugarcaneSway duration={8} />
+          <RiceGrains grainCount={40} duration={10} />
+        </>
+      )}
 
-      {/* Sunrise animation (0-2s) */ }
-      { animationPhase === "sunrise" && (
+      {/* Sunrise animation (0-2s) */}
+      {animationPhase === "sunrise" && (
         <SunRise
-          duration={ 2 * (animationConfig.duration / 8000) }
-          sunColor={ adjustedColors[0] }
-          rayColor={ adjustedColors[1] }
-          onComplete={ () => {
+          duration={2 * (animationConfig.duration / 8000)}
+          sunColor={adjustedColors[0]}
+          rayColor={adjustedColors[1]}
+          onComplete={() => {
             // Sunrise complete handled by timeline
-          } }
+          }}
         />
-      ) }
+      )}
 
-      {/* Kolam drawing (2-4s) */ }
-      { animationPhase === "kolam" && (
+      {/* Kolam drawing (2-4s) */}
+      {animationPhase === "kolam" && (
         <KolamDrawing
-          duration={ 2 }
+          duration={2}
           color="#F5F5DC"
-          circleCount={ 6 }
-          onComplete={ () => {
+          circleCount={6}
+          onComplete={() => {
             // Kolam complete handled by timeline
-          } }
+          }}
         />
-      ) }
+      )}
 
-      {/* Pongal pot with boiling and overflow (3-6s) */ }
-      { (animationPhase === "pot" || animationPhase === "celebration") && (
+      {/* Pongal pot with boiling and overflow (3-6s) */}
+      {(animationPhase === "pot" || animationPhase === "celebration") && (
         <>
           <div className="absolute inset-0 flex items-center justify-center">
             <PongalPot
-              duration={ 6 }
+              duration={6}
               potColor="#D2691E"
-              overflowAt={ 4 }
-              onComplete={ () => {
+              overflowAt={4}
+              onComplete={() => {
                 // Pot animation complete
-              } }
+              }}
             />
           </div>
 
-          {/* Steam particles (4-10s) */ }
+          {/* Steam particles (4-10s) */}
           <SteamParticles
-            particleCount={ animationConfig.particleCount }
-            duration={ 6 * (animationConfig.duration / 8000) }
-            onComplete={ () => {
+            particleCount={animationConfig.particleCount}
+            duration={6 * (animationConfig.duration / 8000)}
+            onComplete={() => {
               // Steam complete
-            } }
+            }}
           />
         </>
-      ) }
+      )}
 
-      {/* Text content (6-10s) - Always rendered but initially hidden, T151: responsive */ }
+      {/* Text content (6-10s) - Always rendered but initially hidden, T151: responsive */}
       <div
-        className={ `relative z-20 max-w-2xl text-center w-full ${isPreview ? "p-4 sm:p-6 space-y-4 sm:space-y-6" : "space-y-6"
-          } ${animationPhase !== "text" && animationPhase !== "complete" ? "opacity-0 pointer-events-none" : ""}` }
+        className={`relative z-20 max-w-2xl text-center w-full ${
+          isPreview ? "p-4 sm:p-6 space-y-4 sm:space-y-6" : "space-y-6"
+        } ${animationPhase !== "text" && animationPhase !== "complete" ? "opacity-0 pointer-events-none" : ""}`}
       >
         <h1
-          className={ `greeting-text font-bold drop-shadow-lg ${isPreview
+          className={`greeting-text font-bold drop-shadow-lg ${
+            isPreview
               ? "text-2xl sm:text-3xl md:text-4xl"
               : "text-4xl sm:text-5xl md:text-6xl"
-            }` }
-          style={ { color: adjustedColors[2] } }
+          }`}
+          style={{ color: adjustedColors[2] }}
         >
           Pongal Vazhthukkal!
         </h1>
 
-        <div className={ isPreview ? "space-y-3 sm:space-y-4" : "space-y-4" }>
+        <div className={isPreview ? "space-y-3 sm:space-y-4" : "space-y-4"}>
           <p
-            className={ `recipient-name font-semibold drop-shadow-md text-white ${isPreview
+            className={`recipient-name font-semibold drop-shadow-md text-white ${
+              isPreview
                 ? "text-lg sm:text-2xl md:text-3xl"
                 : "text-2xl sm:text-3xl md:text-4xl"
-              }` }
+            }`}
           >
-            Dear { recipientName },
+            Dear {recipientName},
           </p>
 
           <p
-            className={ `message-body leading-relaxed px-4 drop-shadow-md text-white ${isPreview
+            className={`message-body leading-relaxed px-4 drop-shadow-md text-white ${
+              isPreview
                 ? "text-sm sm:text-base md:text-lg"
                 : "text-base sm:text-lg md:text-xl"
-              }` }
+            }`}
           >
-            { message ||
-              `May this harvest festival bring abundant prosperity and happiness to you and your family!` }
+            {message ||
+              `May this harvest festival bring abundant prosperity and happiness to you and your family!`}
           </p>
 
           <p
-            className={ `sender-name font-medium drop-shadow-md ${isPreview
+            className={`sender-name font-medium drop-shadow-md ${
+              isPreview
                 ? "text-base sm:text-lg md:text-xl mt-4 sm:mt-6"
                 : "text-lg sm:text-xl md:text-2xl mt-8"
-              }` }
-            style={ { color: adjustedColors[1] } }
+            }`}
+            style={{ color: adjustedColors[1] }}
           >
             With best wishes,
             <br />
-            { senderName }
+            {senderName}
           </p>
         </div>
       </div>

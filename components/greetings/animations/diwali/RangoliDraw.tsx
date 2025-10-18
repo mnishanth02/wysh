@@ -56,15 +56,18 @@ export function RangoliDraw({
   }, [duration, delay, onComplete]);
 
   return (
-    <div className="absolute inset-0 flex items-center justify-center opacity-0 animate-fade-in">
+    <div className="absolute inset-0 flex items-center justify-center">
       <svg
-        ref={svgRef}
+        ref={ svgRef }
         viewBox="0 0 200 200"
-        className="w-48 h-48"
-        style={{ filter: "drop-shadow(0 0 10px rgba(255, 165, 0, 0.5))" }}
+        className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48"
+        style={ {
+          filter: "drop-shadow(0 0 10px rgba(255, 165, 0, 0.5))",
+          opacity: 1,
+        } }
         aria-hidden="true"
       >
-        {/* Center circle */}
+        {/* Center circle */ }
         <circle
           cx="100"
           cy="100"
@@ -74,21 +77,21 @@ export function RangoliDraw({
           strokeWidth="2"
         />
 
-        {/* Inner petals */}
+        {/* Inner petals */ }
         <g transform="translate(100, 100)">
-          {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
+          { [0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
             <path
-              key={angle}
+              key={ angle }
               d="M 0 -40 Q -10 -25 -8 -15 L 0 0 L 8 -15 Q 10 -25 0 -40 Z"
               fill="none"
               stroke="#FFA500"
               strokeWidth="2"
-              transform={`rotate(${angle})`}
+              transform={ `rotate(${angle})` }
             />
-          ))}
+          )) }
         </g>
 
-        {/* Middle ring */}
+        {/* Middle ring */ }
         <circle
           cx="100"
           cy="100"
@@ -98,7 +101,7 @@ export function RangoliDraw({
           strokeWidth="3"
         />
 
-        {/* Outer ring */}
+        {/* Outer ring */ }
         <circle
           cx="100"
           cy="100"

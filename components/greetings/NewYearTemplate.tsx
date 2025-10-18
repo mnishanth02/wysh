@@ -157,16 +157,16 @@ export function NewYearTemplate({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="newyear-bg relative w-full h-full overflow-hidden"
-      style={ {
+      style={{
         background: `linear-gradient(135deg, ${animationConfig.colors[2] || colors[2]}, ${animationConfig.colors[3] || colors[3]})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 1s ease-out" : "none",
         minHeight: isPreview ? "auto" : "100vh",
-      } }
+      }}
     >
-      {/* Night sky background */ }
+      {/* Night sky background */}
       <div className="absolute inset-0">
         <Image
           src="/festivals/newyear/night-sky.svg"
@@ -177,78 +177,84 @@ export function NewYearTemplate({
         />
       </div>
 
-      {/* T151: Reduced motion variant - responsive sizing for preview and full-screen modes */ }
-      { useReducedMotion ? (
+      {/* T151: Reduced motion variant - responsive sizing for preview and full-screen modes */}
+      {useReducedMotion ? (
         <div
-          className={ `newyear-content absolute inset-0 flex items-center justify-center ${isPreview ? "p-4 sm:p-6" : "p-8"
-            }` }
+          className={`newyear-content absolute inset-0 flex items-center justify-center ${
+            isPreview ? "p-4 sm:p-6" : "p-8"
+          }`}
         >
           <div
-            className={ `max-w-2xl text-center w-full ${isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
-              }` }
+            className={`max-w-2xl text-center w-full ${
+              isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
+            }`}
           >
             <h1
-              className={ `font-bold ${isPreview
+              className={`font-bold ${
+                isPreview
                   ? "text-2xl sm:text-3xl md:text-4xl"
                   : "text-5xl md:text-6xl lg:text-7xl"
-                }` }
-              style={ { color: animationConfig.colors[0] || colors[0] } }
+              }`}
+              style={{ color: animationConfig.colors[0] || colors[0] }}
             >
               Happy New Year 2026!
             </h1>
             <p
-              className={ `font-semibold ${isPreview
+              className={`font-semibold ${
+                isPreview
                   ? "text-lg sm:text-2xl md:text-3xl"
                   : "text-3xl md:text-4xl"
-                }` }
-              style={ { color: animationConfig.colors[4] || colors[4] } }
+              }`}
+              style={{ color: animationConfig.colors[4] || colors[4] }}
             >
-              Dear { recipientName },
+              Dear {recipientName},
             </p>
             <p
-              className={ `leading-relaxed ${isPreview
+              className={`leading-relaxed ${
+                isPreview
                   ? "text-sm sm:text-base md:text-lg"
                   : "text-lg md:text-xl"
-                }` }
-              style={ { color: animationConfig.colors[4] || colors[4] } }
+              }`}
+              style={{ color: animationConfig.colors[4] || colors[4] }}
             >
-              { message || defaultMessage }
+              {message || defaultMessage}
             </p>
             <p
-              className={ `font-medium mt-6 sm:mt-8 ${isPreview
+              className={`font-medium mt-6 sm:mt-8 ${
+                isPreview
                   ? "text-base sm:text-lg md:text-xl"
                   : "text-xl md:text-2xl"
-                }` }
-              style={ { color: animationConfig.colors[1] || colors[1] } }
+              }`}
+              style={{ color: animationConfig.colors[1] || colors[1] }}
             >
               Cheers to new beginnings,
               <br />
-              { senderName }
+              {senderName}
             </p>
           </div>
         </div>
       ) : (
         <>
-          {/* All animation components always mounted for GSAP targeting, visibility controlled by opacity/pointer-events */ }
+          {/* All animation components always mounted for GSAP targeting, visibility controlled by opacity/pointer-events */}
 
-          {/* T053: Phase 1 (0-4s): Countdown */ }
+          {/* T053: Phase 1 (0-4s): Countdown */}
           <div
-            className={ `absolute inset-0 ${animationPhase === "countdown" ? "opacity-100" : "opacity-0 pointer-events-none"}` }
+            className={`absolute inset-0 ${animationPhase === "countdown" ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           >
             <CountdownTimer
-              startFrom={ 3 }
-              durationPerNumber={ 1.3 }
-              delay={ 0.5 }
-              onComplete={ () => {
+              startFrom={3}
+              durationPerNumber={1.3}
+              delay={0.5}
+              onComplete={() => {
                 // Countdown complete triggers fireworks phase
-              } }
-              colors={ animationConfig.colors }
+              }}
+              colors={animationConfig.colors}
             />
           </div>
 
-          {/* T053, T054: Phase 2 (4-7s): Fireworks */ }
+          {/* T053, T054: Phase 2 (4-7s): Fireworks */}
           <div
-            className={ `absolute inset-0 ${animationPhase === "fireworks" || animationPhase === "confetti" || animationPhase === "text" || animationPhase === "complete" ? "opacity-100" : "opacity-0 pointer-events-none"}` }
+            className={`absolute inset-0 ${animationPhase === "fireworks" || animationPhase === "confetti" || animationPhase === "text" || animationPhase === "complete" ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           >
             <FireworkBurst
               burstCount={
@@ -265,15 +271,15 @@ export function NewYearTemplate({
                     ? 90
                     : 80
               }
-              duration={ 3 }
-              delay={ 0 }
-              colors={ animationConfig.colors }
+              duration={3}
+              delay={0}
+              colors={animationConfig.colors}
             />
           </div>
 
-          {/* T053: Phase 3 (5-10s): Confetti */ }
+          {/* T053: Phase 3 (5-10s): Confetti */}
           <div
-            className={ `absolute inset-0 ${animationPhase === "confetti" || animationPhase === "text" || animationPhase === "complete" ? "opacity-100" : "opacity-0 pointer-events-none"}` }
+            className={`absolute inset-0 ${animationPhase === "confetti" || animationPhase === "text" || animationPhase === "complete" ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           >
             <ConfettiSystem
               count={
@@ -283,84 +289,89 @@ export function NewYearTemplate({
                     ? 150
                     : 120
               }
-              duration={ 5 }
-              delay={ 0 }
-              colors={ animationConfig.colors }
+              duration={5}
+              delay={0}
+              colors={animationConfig.colors}
             />
           </div>
 
-          {/* T053, T058: Phase 4 (7-10s): Text explosion */ }
+          {/* T053, T058: Phase 4 (7-10s): Text explosion */}
           <div
-            className={ `absolute inset-0 ${animationPhase === "text" || animationPhase === "complete" ? "opacity-100" : "opacity-0 pointer-events-none"}` }
+            className={`absolute inset-0 ${animationPhase === "text" || animationPhase === "complete" ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           >
             <TextExplosion
               text="Happy New Year 2026!"
-              duration={ 1.5 }
-              delay={ 0 }
-              color={ animationConfig.colors[2] || colors[2] }
-              fontSize={ { mobile: 3, desktop: 5 } }
+              duration={1.5}
+              delay={0}
+              color={animationConfig.colors[2] || colors[2]}
+              fontSize={{ mobile: 3, desktop: 5 }}
             />
           </div>
 
-          {/* T058: Text reveal sequence - recipient name + message + sender - Always rendered, T151: responsive */ }
+          {/* T058: Text reveal sequence - recipient name + message + sender - Always rendered, T151: responsive */}
           <div
-            className={ `newyear-content absolute inset-0 flex items-center justify-center pointer-events-none ${isPreview ? "p-4 sm:p-6" : "p-8"
-              } ${animationPhase !== "text" && animationPhase !== "complete" ? "opacity-0" : ""}` }
+            className={`newyear-content absolute inset-0 flex items-center justify-center pointer-events-none ${
+              isPreview ? "p-4 sm:p-6" : "p-8"
+            } ${animationPhase !== "text" && animationPhase !== "complete" ? "opacity-0" : ""}`}
           >
             <div
-              className={ `max-w-2xl text-center w-full ${isPreview ? "space-y-3 sm:space-y-6" : "space-y-6"
-                }` }
+              className={`max-w-2xl text-center w-full ${
+                isPreview ? "space-y-3 sm:space-y-6" : "space-y-6"
+              }`}
             >
-              {/* Spacer for main text */ }
-              <div className={ isPreview ? "h-16 sm:h-24" : "h-32" } />
+              {/* Spacer for main text */}
+              <div className={isPreview ? "h-16 sm:h-24" : "h-32"} />
 
-              {/* Recipient name appears (8-9s) */ }
+              {/* Recipient name appears (8-9s) */}
               <div
-                className={ `newyear-recipient opacity-0 ${isPreview
+                className={`newyear-recipient opacity-0 ${
+                  isPreview
                     ? "text-lg sm:text-2xl md:text-3xl"
                     : "text-2xl md:text-3xl lg:text-4xl"
-                  } font-semibold` }
-                style={ {
+                } font-semibold`}
+                style={{
                   color: animationConfig.colors[4] || colors[4],
-                } }
+                }}
               >
-                <p>Dear { recipientName },</p>
+                <p>Dear {recipientName},</p>
               </div>
 
-              {/* Message body (8.5-9.5s) */ }
+              {/* Message body (8.5-9.5s) */}
               <p
-                className={ `newyear-message opacity-0 leading-relaxed ${isPreview
+                className={`newyear-message opacity-0 leading-relaxed ${
+                  isPreview
                     ? "text-sm sm:text-base md:text-lg"
                     : "text-lg md:text-xl"
-                  }` }
-                style={ {
+                }`}
+                style={{
                   color: animationConfig.colors[4] || colors[4],
-                } }
+                }}
               >
-                { message || defaultMessage }
+                {message || defaultMessage}
               </p>
 
-              {/* Sender name (9-10s) */ }
+              {/* Sender name (9-10s) */}
               <p
-                className={ `newyear-sender opacity-0 font-medium mt-4 sm:mt-6 ${isPreview
+                className={`newyear-sender opacity-0 font-medium mt-4 sm:mt-6 ${
+                  isPreview
                     ? "text-base sm:text-lg md:text-xl"
                     : "text-xl md:text-2xl"
-                  }` }
-                style={ {
+                }`}
+                style={{
                   color: animationConfig.colors[1] || colors[1],
-                } }
+                }}
               >
                 Cheers to new beginnings,
                 <br />
-                { senderName }
+                {senderName}
               </p>
             </div>
           </div>
         </>
-      ) }
+      )}
 
-      {/* CSS for fade-in animation */ }
-      <style jsx>{ `
+      {/* CSS for fade-in animation */}
+      <style jsx>{`
         @keyframes fadeIn {
           from {
             opacity: 0;

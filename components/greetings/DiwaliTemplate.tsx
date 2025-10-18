@@ -286,7 +286,7 @@ export function DiwaliTemplate({
       {/* Variant 2 (Rangoli Bloom): Colorful rangoli animation */ }
       { !useReducedMotion && variant === "2" && animationPhase !== "intro" && (
         <>
-          <div className="absolute inset-0 flex items-center justify-center opacity-60">
+          <div className="absolute inset-0 flex items-center justify-center opacity-90">
             <RangoliDraw duration={ 4 } delay={ 0 } />
           </div>
           { animationPhase === "main" && (

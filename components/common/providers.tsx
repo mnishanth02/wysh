@@ -17,21 +17,20 @@ const convex = new ConvexReactClient(convexUrl);
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
-    <ConvexProvider client={convex}>
+    <ConvexProvider client={ convex }>
       <NextThemesProvider
         attribute="class"
         defaultTheme="dark"
         disableTransitionOnChange
         enableColorScheme
-        enableSystem
       >
         <NuqsAdapter>
-          {children}
+          { children }
           <Toaster
-            duration={3000}
-            position="top-center"
+            duration={ 3000 }
+            position="bottom-right"
             richColors
-            toastOptions={{ style: { textAlign: "center" } }}
+            toastOptions={ { style: { textAlign: "center" } } }
           />
         </NuqsAdapter>
       </NextThemesProvider>
