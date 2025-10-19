@@ -103,5 +103,5 @@ export default async function GreetingPage({ params }: GreetingPageProps) {
   // Dynamically import the client component
   const { GreetingView } = await import("./GreetingView");
 
-  return <GreetingView shareableId={ id } />;
+  return <GreetingView shareableId={id} />;
 }

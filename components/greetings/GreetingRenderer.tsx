@@ -3,20 +3,77 @@
 /**
  * Greeting Renderer Component
  * Routes to the appropriate template based on festival and template ID
+ * Uses dynamic imports for code splitting to optimize bundle size
  */
 
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { LoadingState } from "@/components/shared/LoadingState";
 import { getRelationshipContext } from "@/lib/context-engine";
 import type { FestivalType, RelationshipType } from "@/types";
 import { ReplayButton } from "../shared/ReplayButton";
-import { ChristmasTemplate } from "./ChristmasTemplate";
-import { DiwaliTemplate } from "./DiwaliTemplate";
 import { GenericTemplate } from "./GenericTemplate";
-import { HoliTemplate } from "./HoliTemplate";
-import { NewYearTemplate } from "./NewYearTemplate";
-import { PongalTemplate } from "./PongalTemplate";
+
+// Dynamic imports for code splitting - templates loaded only when needed
+const DiwaliTemplate = dynamic(
+  () =>
+    import("./DiwaliTemplate").then((mod) => ({ default: mod.DiwaliTemplate })),
+  {
+    loading: () => (
+      <LoadingState message="Loading Diwali template..." size="md" />
+    ),
+    ssr: true,
+  },
+);
+
+const HoliTemplate = dynamic(
+  () => import("./HoliTemplate").then((mod) => ({ default: mod.HoliTemplate })),
+  {
+    loading: () => (
+      <LoadingState message="Loading Holi template..." size="md" />
+    ),
+    ssr: true,
+  },
+);
+
+const ChristmasTemplate = dynamic(
+  () =>
+    import("./ChristmasTemplate").then((mod) => ({
+      default: mod.ChristmasTemplate,
+    })),
+  {
+    loading: () => (
+      <LoadingState message="Loading Christmas template..." size="md" />
+    ),
+    ssr: true,
+  },
+);
+
+const NewYearTemplate = dynamic(
+  () =>
+    import("./NewYearTemplate").then((mod) => ({
+      default: mod.NewYearTemplate,
+    })),
+  {
+    loading: () => (
+      <LoadingState message="Loading New Year template..." size="md" />
+    ),
+    ssr: true,
+  },
+);
+
+const PongalTemplate = dynamic(
+  () =>
+    import("./PongalTemplate").then((mod) => ({ default: mod.PongalTemplate })),
+  {
+    loading: () => (
+      <LoadingState message="Loading Pongal template..." size="md" />
+    ),
+    ssr: true,
+  },
+);
 
 interface GreetingRendererProps {
   festivalType: FestivalType;

@@ -115,13 +115,13 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: <fals positive>
-          dangerouslySetInnerHTML={ { __html: JSON.stringify(jsonLd) } }
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
       <body
-        className={ `${geistSans.variable} ${geistMono.variable} antialiased` }
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Providers>{ children }</Providers>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

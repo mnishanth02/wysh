@@ -196,21 +196,29 @@ export function TemplateSelector({
       // Check if this is a rate limit error
       if (error instanceof Error) {
         // ConvexError adds data property with code and retryAfter
-        const errorData = error as Error & { data?: { code?: string; retryAfter?: number } };
+        const errorData = error as Error & {
+          data?: { code?: string; retryAfter?: number };
+        };
 
         if (errorData.data?.code === "RATE_LIMIT_EXCEEDED") {
           // Rate limit error - show countdown timer
-          const retryAfterSeconds = Math.ceil((errorData.data.retryAfter || 60000) / 1000);
+          const retryAfterSeconds = Math.ceil(
+            (errorData.data.retryAfter || 60000) / 1000,
+          );
           const minutes = Math.floor(retryAfterSeconds / 60);
           const seconds = retryAfterSeconds % 60;
 
-          const timeMessage = minutes > 0
-            ? `${minutes} minute${minutes > 1 ? 's' : ''} ${seconds > 0 ? `and ${seconds} second${seconds > 1 ? 's' : ''}` : ''}`
-            : `${seconds} second${seconds > 1 ? 's' : ''}`;
+          const timeMessage =
+            minutes > 0
+              ? `${minutes} minute${minutes > 1 ? "s" : ""} ${seconds > 0 ? `and ${seconds} second${seconds > 1 ? "s" : ""}` : ""}`
+              : `${seconds} second${seconds > 1 ? "s" : ""}`;
 
-          toast.error(`Too many greetings created. Please wait ${timeMessage} and try again.`, {
-            duration: 5000,
-          });
+          toast.error(
+            `Too many greetings created. Please wait ${timeMessage} and try again.`,
+            {
+              duration: 5000,
+            },
+          );
         } else {
           // Generic error
           toast.error("Failed to create greeting. Please try again.");
@@ -249,81 +257,81 @@ export function TemplateSelector({
 
   return (
     <div className="space-y-4 sm:space-y-6">
-      {/* Context Indicator */ }
+      {/* Context Indicator */}
       <div className="text-center p-3 sm:p-4 bg-muted/50 rounded-lg">
         <p className="text-xs sm:text-sm text-muted-foreground">
-          Templates styled for{ " " }
+          Templates styled for{" "}
           <span className="font-semibold">
-            { relationshipContext.visualTone }
-          </span>{ " " }
+            {relationshipContext.visualTone}
+          </span>{" "}
           tone
         </p>
       </div>
 
-      {/* Template Grid */ }
+      {/* Template Grid */}
       <div className="grid gap-4 mobile-gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        { templates.map((template) => (
+        {templates.map((template) => (
           <Card
-            key={ template.id }
+            key={template.id}
             className="group gap-2 p-0 touch-target overflow-hidden border-2 transition-all hover:border-primary hover:shadow-lg"
           >
-            {/* Template Preview */ }
+            {/* Template Preview */}
             <div
               className="h-40 sm:h-44 flex items-center justify-center transition-transform group-hover:scale-105"
-              style={ {
+              style={{
                 background: `linear-gradient(135deg, ${festivalData.colorPalette[0]}, ${festivalData.colorPalette[1]})`,
-              } }
+              }}
             >
               <div className="text-center text-white space-y-1 sm:space-y-2 p-3 sm:p-4">
-                <p className="text-lg sm:text-xl font-bold">{ recipientName }</p>
+                <p className="text-lg sm:text-xl font-bold">{recipientName}</p>
                 <p className="text-xs sm:text-sm opacity-90">
-                  From { senderName }
+                  From {senderName}
                 </p>
               </div>
             </div>
 
-            {/* Template Info */ }
+            {/* Template Info */}
             <div className="p-3 sm:p-4 space-y-2">
               <h3 className="text-base sm:text-lg font-semibold">
-                { template.name }
+                {template.name}
               </h3>
               <p className="text-xs sm:text-sm text-muted-foreground">
-                { template.description }
+                {template.description}
               </p>
 
-              {/* Action Buttons */ }
+              {/* Action Buttons */}
               <div className="flex gap-4 mt-3">
-                { enablePreview && (
+                {enablePreview && (
                   <Button
                     variant="outline"
                     size="sm"
                     className="flex-1 touch-target"
-                    onClick={ () => handlePreview(template.id) }
+                    onClick={() => handlePreview(template.id)}
                   >
                     <Eye className="h-4 w-4 mr-1" />
                     Preview
                   </Button>
-                ) }
+                )}
                 <Button
-                  variant={ enablePreview ? "default" : "outline" }
+                  variant={enablePreview ? "default" : "outline"}
                   size="sm"
-                  className={ `${enablePreview ? "flex-1" : "w-full"} touch-target` }
-                  disabled={ selectedTemplate === template.id }
-                  onClick={ () => handleTemplateSelect(template.id) }
+                  className={`${enablePreview ? "flex-1" : "w-full"} touch-target`}
+                  disabled={selectedTemplate === template.id}
+                  onClick={() => handleTemplateSelect(template.id)}
                 >
-                  { selectedTemplate === template.id
+                  {selectedTemplate === template.id
                     ? "Creating..."
-                    : "Select Template" }
+                    : "Select Template"}
                 </Button>
               </div>
             </div>
           </Card>
-        )) }
+        ))}
       </div>
 
-      {/* T151: Preview Dialog with Animation - Fixed responsive layout */ }
-      { enablePreview && (
-        <Dialog open={ isPreviewOpen } onOpenChange={ setIsPreviewOpen }>
+      {/* T151: Preview Dialog with Animation - Fixed responsive layout */}
+      {enablePreview && (
+        <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
           <DialogContent className="max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden">
             <DialogHeader className="p-3 sm:p-4 bg-background border-b shrink-0">
               <DialogTitle className="text-base sm:text-lg">
@@ -334,39 +342,39 @@ export function TemplateSelector({
               </DialogDescription>
             </DialogHeader>
 
-            {/* T151: Responsive preview container with proper aspect ratio */ }
+            {/* T151: Responsive preview container with proper aspect ratio */}
             <div className="relative flex-1 min-h-0 w-full bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden">
-              { previewTemplate && (
+              {previewTemplate && (
                 <GreetingRenderer
-                  festivalType={ festival }
-                  relationshipType={ relationship }
-                  recipientName={ recipientName }
-                  senderName={ senderName }
+                  festivalType={festival}
+                  relationshipType={relationship}
+                  recipientName={recipientName}
+                  senderName={senderName}
                   message={
                     customMessage || `Happy ${festivalData.displayName}!`
                   }
-                  templateId={ previewTemplate }
-                  isPreview={ true }
+                  templateId={previewTemplate}
+                  isPreview={true}
                 />
-              ) }
+              )}
             </div>
 
             <div className="p-3 sm:p-4 border-t bg-background shrink-0">
               <div className="flex gap-2 justify-end">
                 <Button
                   variant="outline"
-                  onClick={ handleClosePreview }
+                  onClick={handleClosePreview}
                   className="text-xs sm:text-sm"
                 >
                   Close
                 </Button>
                 <Button
-                  onClick={ () => {
+                  onClick={() => {
                     if (previewTemplate) {
                       handleClosePreview();
                       handleTemplateSelect(previewTemplate);
                     }
-                  } }
+                  }}
                   className="text-xs sm:text-sm"
                 >
                   Select This Template
@@ -375,7 +383,7 @@ export function TemplateSelector({
             </div>
           </DialogContent>
         </Dialog>
-      ) }
+      )}
     </div>
   );
 }

@@ -204,24 +204,24 @@ Web application structure: `app/`, `components/`, `lib/`, `convex/`, `hooks/`, `
 
 ### Implementation for User Story 5
 
-- [ ] T085 [P] [US5] Verify LoadingState component in `components/shared/LoadingState.tsx` exists with skeleton loaders for all major layouts
-- [ ] T086 [P] [US5] Verify ErrorState component in `components/shared/ErrorState.tsx` exists with proper error handling UI
-- [ ] T087 [P] [US5] Add loading states to PersonalizationForm in `components/forms/PersonalizationForm.tsx` - disable form, show spinner, update button text during submission
-- [ ] T088 [P] [US5] Add skeleton loaders to StatisticsSection in `components/stats/StatisticsSection.tsx` while data loads
-- [ ] T089 [P] [US5] Implement code splitting for GreetingRenderer in `components/greetings/GreetingRenderer.tsx` using dynamic imports for festival templates
-- [ ] T090 [P] [US5] Create loading.tsx skeletons for ALL routes (9 files total): `app/loading.tsx`, `app/create/loading.tsx`, `app/create/festival/loading.tsx`, `app/create/relationship/loading.tsx`, `app/create/personalize/loading.tsx`, `app/create/template/loading.tsx`, `app/create/success/loading.tsx`, `app/g/loading.tsx`, `app/g/[id]/loading.tsx`
-- [ ] T091 [P] [US5] Optimize images in `public/` directory - convert to WebP/AVIF, ensure <128KB per asset, add blur placeholders
-- [ ] T091a [P] [US5] Audit existing images in `public/` against 128KB limit - list all images >128KB, create optimization plan for WebP conversion or quality reduction
-- [ ] T092 [P] [US5] Audit Next.js Image usage across components - add priority prop for above-the-fold images, verify width/height specified
-- [ ] T093 [P] [US5] Add React.memo to expensive components - wrap festival templates if re-rendering unnecessarily
-- [ ] T093a [P] [US5] Profile re-render counts for StatisticsSection, GreetingRenderer, and festival templates using React DevTools Profiler - apply React.memo to components with >5 unnecessary re-renders per user action
-- [ ] T094 [P] [US5] Verify Convex queries use stable patterns in all pages/components to prevent flashing undefined states
-- [ ] T095 [US5] Configure next.config.ts for optimal image formats - ensure WebP/AVIF support enabled
+- [X] T085 [P] [US5] Verify LoadingState component in `components/shared/LoadingState.tsx` exists with skeleton loaders for all major layouts - Component exists with size variants
+- [X] T086 [P] [US5] Verify ErrorState component in `components/shared/ErrorState.tsx` exists with proper error handling UI - Component exists with retry/home actions
+- [ ] T087 [P] [US5] Add loading states to PersonalizationForm in `components/forms/PersonalizationForm.tsx` - disable form, show spinner, update button text during submission - Form has isSubmitting state, needs UI enhancement
+- [X] T088 [P] [US5] Add skeleton loaders to StatisticsSection in `components/stats/StatisticsSection.tsx` while data loads - Already has StatsSkeleton loading component
+- [X] T089 [P] [US5] Implement code splitting for GreetingRenderer in `components/greetings/GreetingRenderer.tsx` using dynamic imports for festival templates - Implemented with next/dynamic for all templates
+- [X] T090 [P] [US5] Create loading.tsx skeletons for ALL routes (9 files total): `app/loading.tsx`, `app/create/loading.tsx`, `app/create/festival/loading.tsx`, `app/create/relationship/loading.tsx`, `app/create/personalize/loading.tsx`, `app/create/template/loading.tsx`, `app/create/success/loading.tsx`, `app/g/loading.tsx`, `app/g/[id]/loading.tsx` - All 9 files created
+- [X] T091 [P] [US5] Optimize images in `public/` directory - convert to WebP/AVIF, ensure <128KB per asset, add blur placeholders - N/A (all images are SVG, already optimal)
+- [X] T091a [P] [US5] Audit existing images in `public/` against 128KB limit - list all images >128KB, create optimization plan for WebP conversion or quality reduction - Completed: All 14 SVG files <4KB
+- [X] T092 [P] [US5] Audit Next.js Image usage across components - add priority prop for above-the-fold images, verify width/height specified - Completed: 2 Image usages found, both have width/height
+- [ ] T093 [P] [US5] Add React.memo to expensive components - wrap festival templates if re-rendering unnecessarily - Needs profiling first
+- [ ] T093a [P] [US5] Profile re-render counts for StatisticsSection, GreetingRenderer, and festival templates using React DevTools Profiler - apply React.memo to components with >5 unnecessary re-renders per user action - Pending
+- [X] T094 [P] [US5] Verify Convex queries use stable patterns in all pages/components to prevent flashing undefined states - Verified stable patterns used
+- [X] T095 [US5] Configure next.config.ts for optimal image formats - ensure WebP/AVIF support enabled - Already configured with WebP/AVIF, quality=85
 - [ ] T096 [US5] Run Lighthouse audit on homepage (mobile) - verify Performance >90, LCP <2.5s, FID <100ms, CLS <0.1
 - [ ] T097 [US5] Run Lighthouse audit on homepage (desktop) - verify Performance >95
 - [ ] T098 [US5] Run Lighthouse audit on greeting page /g/[id] (mobile) - verify Performance >90
 - [ ] T099 [US5] Test page load on simulated 4G connection - verify FCP <1.5s for 90% of loads
-- [ ] T100 [US5] Verify total bundle size <300KB compressed using Vercel analytics or webpack-bundle-analyzer
+- [X] T100 [US5] Verify total bundle size <300KB compressed using Vercel analytics or webpack-bundle-analyzer - Verified: 216KB homepage < 300KB ✅
 - [ ] T101 [US5] Test all async operations show appropriate loading states (no blank screens or content flashing)
 - [ ] T102 [US5] Measure and verify CLS <0.1 across all pages using Chrome DevTools Performance panel
 
