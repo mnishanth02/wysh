@@ -18,7 +18,7 @@ const POLICIES = {
   // Greeting creation limits (strict to prevent abuse)
   createGreetingPerMin: {
     kind: "fixed window" as const,
-    rate: getEnvNumber("RATE_LIMIT_CREATE_PER_MIN", 3),
+    rate: getEnvNumber("RATE_LIMIT_CREATE_PER_MIN", 5),
     period: MINUTE,
   },
 

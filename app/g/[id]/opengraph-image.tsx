@@ -10,10 +10,10 @@ import { fetchGreetingByShareableId } from "@/lib/convex-server";
 import type { FestivalType } from "@/types";
 
 export const runtime = "edge";
-export const alt = "Festival Greeting";
+export const alt = "Festival Greeting from Wysh";
 export const size = {
-  width: 800,
-  height: 600,
+  width: 1200,
+  height: 630,
 };
 export const contentType = "image/png";
 
@@ -32,7 +32,7 @@ export default async function Image({ params }: OGImageProps) {
       // Return fallback image for not found
       return new ImageResponse(
         <div
-          style={{
+          style={ {
             width: "100%",
             height: "100%",
             display: "flex",
@@ -42,13 +42,13 @@ export default async function Image({ params }: OGImageProps) {
             backgroundColor: "#1a1a1a",
             color: "white",
             fontFamily: "sans-serif",
-          }}
+          } }
         >
-          <div style={{ fontSize: 48, marginBottom: 20 }}>✨</div>
-          <div style={{ fontSize: 36, fontWeight: "bold" }}>
+          <div style={ { fontSize: 48, marginBottom: 20 } }>✨</div>
+          <div style={ { fontSize: 36, fontWeight: "bold" } }>
             Wysh Festival Greetings
           </div>
-          <div style={{ fontSize: 20, opacity: 0.7, marginTop: 10 }}>
+          <div style={ { fontSize: 20, opacity: 0.7, marginTop: 10 } }>
             Create personalized festival greetings
           </div>
         </div>,
@@ -70,7 +70,7 @@ export default async function Image({ params }: OGImageProps) {
 
     return new ImageResponse(
       <div
-        style={{
+        style={ {
           width: "100%",
           height: "100%",
           display: "flex",
@@ -82,11 +82,11 @@ export default async function Image({ params }: OGImageProps) {
           fontFamily: "sans-serif",
           padding: "60px",
           position: "relative",
-        }}
+        } }
       >
-        {/* Decorative circles */}
+        {/* Decorative circles */ }
         <div
-          style={{
+          style={ {
             position: "absolute",
             top: "40px",
             left: "40px",
@@ -95,10 +95,10 @@ export default async function Image({ params }: OGImageProps) {
             borderRadius: "50%",
             backgroundColor: "rgba(255, 255, 255, 0.15)",
             display: "flex",
-          }}
+          } }
         />
         <div
-          style={{
+          style={ {
             position: "absolute",
             bottom: "40px",
             right: "40px",
@@ -107,10 +107,10 @@ export default async function Image({ params }: OGImageProps) {
             borderRadius: "50%",
             backgroundColor: "rgba(255, 255, 255, 0.15)",
             display: "flex",
-          }}
+          } }
         />
         <div
-          style={{
+          style={ {
             position: "absolute",
             top: "50%",
             right: "60px",
@@ -119,75 +119,75 @@ export default async function Image({ params }: OGImageProps) {
             borderRadius: "50%",
             backgroundColor: "rgba(255, 255, 255, 0.1)",
             display: "flex",
-          }}
+          } }
         />
 
-        {/* Main content */}
+        {/* Main content */ }
         <div
-          style={{
+          style={ {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
             textAlign: "center",
             zIndex: 1,
             maxWidth: "680px",
-          }}
+          } }
         >
-          {/* Festival emoji */}
+          {/* Festival emoji */ }
           <div
-            style={{
+            style={ {
               fontSize: 120,
               marginBottom: 30,
               display: "flex",
-            }}
+            } }
           >
-            {festivalEmoji}
+            { festivalEmoji }
           </div>
 
-          {/* Festival name */}
+          {/* Festival name */ }
           <div
-            style={{
+            style={ {
               fontSize: 48,
               fontWeight: "bold",
               marginBottom: 20,
               display: "flex",
               textShadow: "0 2px 10px rgba(0,0,0,0.3)",
-            }}
+            } }
           >
-            Happy {festival.displayName}!
+            Happy { festival.displayName }!
           </div>
 
-          {/* Recipient name */}
+          {/* Recipient name */ }
           <div
-            style={{
+            style={ {
               fontSize: 36,
               marginBottom: 15,
               display: "flex",
               opacity: 0.95,
-            }}
+            } }
           >
-            For {greeting.recipientName}
+            For { greeting.recipientName }
           </div>
 
-          {/* From sender */}
+          {/* From sender */ }
           <div
-            style={{
+            style={ {
               fontSize: 24,
               display: "flex",
               opacity: 0.85,
-            }}
+            } }
           >
-            From {greeting.senderName}
+            From { greeting.senderName }
           </div>
 
-          {/* Wysh branding */}
+          {/* Wysh branding */ }
           <div
-            style={{
+            style={ {
               marginTop: 40,
               fontSize: 20,
               display: "flex",
               opacity: 0.7,
-            }}
+            } }
           >
             ✨ Created with Wysh
           </div>
@@ -203,7 +203,7 @@ export default async function Image({ params }: OGImageProps) {
     // Return error fallback image
     return new ImageResponse(
       <div
-        style={{
+        style={ {
           width: "100%",
           height: "100%",
           display: "flex",
@@ -213,10 +213,10 @@ export default async function Image({ params }: OGImageProps) {
           backgroundColor: "#1a1a1a",
           color: "white",
           fontFamily: "sans-serif",
-        }}
+        } }
       >
-        <div style={{ fontSize: 48, marginBottom: 20 }}>⚠️</div>
-        <div style={{ fontSize: 32 }}>Unable to load greeting</div>
+        <div style={ { fontSize: 48, marginBottom: 20 } }>⚠️</div>
+        <div style={ { fontSize: 32 } }>Unable to load greeting</div>
       </div>,
       {
         ...size,

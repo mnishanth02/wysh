@@ -16,6 +16,7 @@ export async function generateMetadata({
   params,
 }: GreetingPageProps): Promise<Metadata> {
   const { id } = await params;
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://wysh.app";
 
   try {
     // Fetch greeting data server-side
@@ -25,6 +26,10 @@ export async function generateMetadata({
       return {
         title: "Greeting Not Found | Wysh",
         description: "The greeting you're looking for doesn't exist.",
+        robots: {
+          index: false,
+          follow: false,
+        },
       };
     }
 
@@ -47,22 +52,26 @@ export async function generateMetadata({
       message.length > 157 ? `${message.substring(0, 157)}...` : message;
 
     // Generate OG image URL (will be created in next step)
-    const ogImageUrl = `${process.env.NEXT_PUBLIC_APP_URL || "https://wysh.app"}/g/${id}/opengraph-image`;
+    const ogImageUrl = `${SITE_URL}/g/${id}/opengraph-image`;
 
     return {
       title,
       description,
+      robots: {
+        index: false, // Don't index individual greetings (prevent duplicate content)
+        follow: false,
+      },
       openGraph: {
         title,
         description,
-        url: `${process.env.NEXT_PUBLIC_APP_URL || "https://wysh.app"}/g/${id}`,
+        url: `${SITE_URL}/g/${id}`,
         siteName: "Wysh",
         type: "website",
         images: [
           {
             url: ogImageUrl,
-            width: 800,
-            height: 600,
+            width: 1200,
+            height: 630,
             alt: `${festival.displayName} greeting from ${greeting.senderName} to ${greeting.recipientName}`,
           },
         ],
@@ -80,6 +89,10 @@ export async function generateMetadata({
     return {
       title: "Festival Greeting | Wysh",
       description: "View your personalized festival greeting",
+      robots: {
+        index: false,
+        follow: false,
+      },
     };
   }
 }
@@ -90,5 +103,5 @@ export default async function GreetingPage({ params }: GreetingPageProps) {
   // Dynamically import the client component
   const { GreetingView } = await import("./GreetingView");
 
-  return <GreetingView shareableId={id} />;
+  return <GreetingView shareableId={ id } />;
 }

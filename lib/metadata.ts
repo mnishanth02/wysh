@@ -33,6 +33,9 @@ export function generatePageMetadata({
   return {
     title,
     description,
+    alternates: {
+      canonical: url,
+    },
     openGraph: {
       type: "website",
       siteName: SITE_NAME,

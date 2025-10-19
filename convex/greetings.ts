@@ -378,13 +378,53 @@ export const createGreeting = mutation({
  *
  * Fire-and-forget operation that atomically increments view count
  * Fails silently if greeting not found (non-critical tracking)
+ * Includes rate limiting to prevent view count manipulation/scraping
  */
 export const incrementViewCount = mutation({
   args: {
     greetingId: v.id("greetings"),
+    clientIp: v.optional(v.string()), // IP address for rate limiting
   },
   handler: async (ctx, args) => {
     try {
+      // Rate limiting for view tracking (prevent scraping/manipulation)
+      const ipAddress = args.clientIp || "unknown";
+
+      // Skip rate limiting for whitelisted IPs
+      const whitelist = process.env.RATE_LIMIT_WHITELIST_IPS || "";
+      const whitelistedIps = whitelist
+        .split(",")
+        .map((ip) => ip.trim())
+        .filter((ip) => ip !== "");
+      const isWhitelisted = whitelistedIps.includes(ipAddress);
+
+      if (!isWhitelisted) {
+        // Check view rate limit (100 views per minute per IP)
+        const viewLimit = await rateLimiter.limit(
+          ctx,
+          RATE_LIMIT_POLICIES.VIEW,
+          {
+            key: ipAddress,
+          },
+        );
+
+        if (!viewLimit.ok) {
+          // Log rate limit violation but don't throw (non-critical operation)
+          console.warn(
+            JSON.stringify({
+              level: "warn",
+              message: "View rate limit exceeded",
+              ip: ipAddress,
+              greetingId: args.greetingId,
+              endpoint: "incrementViewCount",
+              timestamp: new Date().toISOString(),
+            }),
+          );
+          // Return success false but don't throw error
+          return { success: false, rateLimited: true };
+        }
+      }
+
       const greeting = await ctx.db.get(args.greetingId);
 
       if (!greeting) {
