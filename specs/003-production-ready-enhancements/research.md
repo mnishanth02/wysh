@@ -175,7 +175,7 @@ export default async function middleware(request: NextRequest) {
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://wysh.app'),
+  metadataBase: new URL('https://wysh.zealer.in'),
   title: {
     default: 'Wysh - Create Beautiful Personalized Festival Greetings | Free',
     template: '%s | Wysh'  // For child pages: "Diwali Greeting | Wysh"
@@ -188,7 +188,7 @@ export const metadata: Metadata = {
     siteName: 'Wysh',
     title: 'Wysh - Personalized Festival Greetings',
     description: 'Create stunning personalized festival greetings',
-    url: 'https://wysh.app',
+    url: 'https://wysh.zealer.in',
     images: [{
       url: '/og-default.png',
       width: 1200,
@@ -250,7 +250,7 @@ export async function generateMetadata({
       type: 'article',
       title,
       description,
-      url: `https://wysh.app/g/${id}`,
+      url: `https://wysh.zealer.in/g/${id}`,
       images: [{
         url: `/api/og?id=${id}`,  // Dynamic OG image generation
         width: 1200,
@@ -368,13 +368,13 @@ import { MetadataRoute } from 'next';
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
-      url: 'https://wysh.app',
+      url: 'https://wysh.zealer.in',
       lastModified: new Date(),
       changeFrequency: 'daily',
       priority: 1,
     },
     {
-      url: 'https://wysh.app/create/festival',
+      url: 'https://wysh.zealer.in/create/festival',
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 0.8,
@@ -399,7 +399,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/g/'],  // Protect greetings and API routes
       },
     ],
-    sitemap: 'https://wysh.app/sitemap.xml',
+    sitemap: 'https://wysh.zealer.in/sitemap.xml',
   };
 }
 ```

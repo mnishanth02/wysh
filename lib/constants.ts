@@ -359,7 +359,7 @@ export const WHATSAPP_CONFIG = {
   BASE_URL: "https://wa.me/",
   SHARE_MESSAGE_TEMPLATE:
     "🎉 Check out this personalized festival greeting I created for you! {{url}}",
-  URL_BASE: process.env.NEXT_PUBLIC_APP_URL || "https://wysh.app",
+  URL_BASE: process.env.NEXT_PUBLIC_APP_URL || "https://wysh.zealer.in",
 } as const;
 
 // ============================================================================

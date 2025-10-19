@@ -128,12 +128,12 @@ export async function generateMetadata({ params }) {
 ```xml
 <urlset>
   <url>
-    <loc>https://wysh.app</loc>
+    <loc>https://wysh.zealer.in</loc>
     <priority>1.0</priority>
     <changefreq>weekly</changefreq>
   </url>
   <url>
-    <loc>https://wysh.app/create/festival</loc>
+    <loc>https://wysh.zealer.in/create/festival</loc>
     <priority>0.8</priority>
     <changefreq>monthly</changefreq>
   </url>
@@ -154,7 +154,7 @@ Allow: /create/*
 Disallow: /api/*
 Disallow: /g/*
 
-Sitemap: https://wysh.app/sitemap.xml
+Sitemap: https://wysh.zealer.in/sitemap.xml
 ```
 
 **Rationale**:
@@ -186,7 +186,7 @@ Sitemap: https://wysh.app/sitemap.xml
 
 ```bash
 # .env.local or Vercel Environment Variables
-NEXT_PUBLIC_SITE_URL=https://wysh.app
+NEXT_PUBLIC_SITE_URL=https://wysh.zealer.in
 NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-verification-code
 ```
 
@@ -210,7 +210,7 @@ Allow: /create/*
 Disallow: /api/*
 Disallow: /g/*
 
-Sitemap: https://wysh.app/sitemap.xml
+Sitemap: https://wysh.zealer.in/sitemap.xml
 ```
 
 **Sitemap.xml** ✅:
@@ -219,7 +219,7 @@ $ curl http://localhost:3001/sitemap.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://wysh.app</loc>
+    <loc>https://wysh.zealer.in</loc>
     <lastmod>2025-10-19</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1</priority>

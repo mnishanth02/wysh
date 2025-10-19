@@ -78,7 +78,7 @@ On your hosting platform (Vercel/Netlify/etc.), add:
 
 ```bash
 NEXT_PUBLIC_CONVEX_URL=https://[your-deployment].convex.cloud
-NEXT_PUBLIC_SITE_URL=https://wysh.app  # Or your custom domain
+NEXT_PUBLIC_SITE_URL=https://wysh.zealer.in
 CONVEX_DEPLOYMENT=prod:[your-deployment]
 ```
 

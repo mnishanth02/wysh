@@ -13,7 +13,7 @@ interface MetadataParams {
 }
 
 const SITE_NAME = "Wysh";
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://wysh.app";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://wysh.zealer.in";
 const DEFAULT_OG_IMAGE = "/og-default.png";
 
 /**

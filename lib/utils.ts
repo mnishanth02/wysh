@@ -222,10 +222,10 @@ export function isApproachingLimit(
  * @returns Full greeting URL
  *
  * @example
- * buildGreetingUrl("a7x9k2m1") // "https://wysh.app/g/a7x9k2m1"
+ * buildGreetingUrl("a7x9k2m1") // "https://wysh.zealer.in/g/a7x9k2m1"
  */
 export function buildGreetingUrl(shareableId: string): string {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wysh.app";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://wysh.zealer.in";
   return `${baseUrl}/g/${shareableId}`;
 }
 

@@ -87,7 +87,7 @@ Allow: /create/*
 Disallow: /api/*
 Disallow: /g/*
 
-Sitemap: https://wysh.app/sitemap.xml
+Sitemap: https://wysh.zealer.in/sitemap.xml
 ```
 
 **Rationale**:
@@ -110,7 +110,7 @@ Required in `.env.local`:
 
 ```bash
 # SEO Configuration
-NEXT_PUBLIC_SITE_URL=https://wysh.app
+NEXT_PUBLIC_SITE_URL=https://wysh.zealer.in
 NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-google-verification-code
 ```
 
@@ -153,8 +153,8 @@ bun run dev
 
 **Steps**:
 1. Navigate to Twitter Card Validator
-2. Test homepage: `https://wysh.app`
-3. Test greeting page: `https://wysh.app/g/[SHAREABLE_ID]`
+2. Test homepage: `https://wysh.zealer.in`
+3. Test greeting page: `https://wysh.zealer.in/g/[SHAREABLE_ID]`
 4. **Expected**:
    - Card Type: summary_large_image
    - Image displays correctly (1200×630px)
@@ -177,8 +177,8 @@ bun run dev
 
 **Steps**:
 1. Navigate to Facebook Sharing Debugger
-2. Test homepage: `https://wysh.app`
-3. Test greeting page: `https://wysh.app/g/[SHAREABLE_ID]`
+2. Test homepage: `https://wysh.zealer.in`
+3. Test greeting page: `https://wysh.zealer.in/g/[SHAREABLE_ID]`
 4. Click "Scrape Again" if cached
 5. **Expected**:
    - Open Graph tags detected
@@ -202,7 +202,7 @@ bun run dev
 
 2. **Production**:
    ```bash
-   curl https://wysh.app/sitemap.xml
+   curl https://wysh.zealer.in/sitemap.xml
    ```
 
 3. **Expected XML Structure**:
@@ -210,7 +210,7 @@ bun run dev
    <?xml version="1.0" encoding="UTF-8"?>
    <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
      <url>
-       <loc>https://wysh.app</loc>
+       <loc>https://wysh.zealer.in</loc>
        <lastmod>2024-01-15</lastmod>
        <changefreq>weekly</changefreq>
        <priority>1.0</priority>
@@ -234,7 +234,7 @@ bun run dev
 
 2. **Production**:
    ```bash
-   curl https://wysh.app/robots.txt
+   curl https://wysh.zealer.in/robots.txt
    ```
 
 3. **Expected Content**:
@@ -245,7 +245,7 @@ bun run dev
    Disallow: /api/*
    Disallow: /g/*
 
-   Sitemap: https://wysh.app/sitemap.xml
+   Sitemap: https://wysh.zealer.in/sitemap.xml
    ```
 
 4. **Validation**:
@@ -266,7 +266,7 @@ bun run dev
 
 2. For each greeting, navigate to OG image URL:
    ```
-   https://wysh.app/g/[SHAREABLE_ID]/opengraph-image
+   https://wysh.zealer.in/g/[SHAREABLE_ID]/opengraph-image
    ```
 
 3. **Expected**:
@@ -301,10 +301,10 @@ bun run dev
 
    <!-- Open Graph -->
    <meta property="og:type" content="website" />
-   <meta property="og:url" content="https://wysh.app" />
+   <meta property="og:url" content="https://wysh.zealer.in" />
    <meta property="og:title" content="..." />
    <meta property="og:description" content="..." />
-   <meta property="og:image" content="https://wysh.app/og-default.png" />
+   <meta property="og:image" content="https://wysh.zealer.in/og-default.png" />
 
    <!-- Twitter Card -->
    <meta name="twitter:card" content="summary_large_image" />
@@ -313,7 +313,7 @@ bun run dev
    <meta name="twitter:image" content="..." />
 
    <!-- Canonical -->
-   <link rel="canonical" href="https://wysh.app" />
+   <link rel="canonical" href="https://wysh.zealer.in" />
 
    <!-- Robots -->
    <meta name="robots" content="index, follow" />
@@ -349,7 +349,7 @@ bun run dev
 ### 2. Submit Sitemap
 
 1. Navigate to Search Console > Sitemaps
-2. Add new sitemap: `https://wysh.app/sitemap.xml`
+2. Add new sitemap: `https://wysh.zealer.in/sitemap.xml`
 3. Click "Submit"
 4. **Expected**: 6 URLs discovered (homepage + 5 creation pages)
 
@@ -494,7 +494,7 @@ bun run dev
 1. **Deploy to Production**:
    ```bash
    # Set environment variables in Vercel
-   NEXT_PUBLIC_SITE_URL=https://wysh.app
+   NEXT_PUBLIC_SITE_URL=https://wysh.zealer.in
    NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION=your-code
    ```
 

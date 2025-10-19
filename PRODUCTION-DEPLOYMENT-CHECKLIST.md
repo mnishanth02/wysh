@@ -8,7 +8,7 @@
 ```bash
 # Required Variables
 NEXT_PUBLIC_CONVEX_URL=https://your-convex-deployment.convex.cloud
-NEXT_PUBLIC_SITE_URL=https://wysh.app
+NEXT_PUBLIC_SITE_URL=https://wysh.zealer.in
 CONVEX_DEPLOYMENT=prod:your-deployment-name
 
 # Optional Variables
@@ -97,7 +97,7 @@ Check at https://securityheaders.com or https://observatory.mozilla.org
 ## Domain & SSL Setup
 
 ### Custom Domain (Optional)
-If using custom domain instead of `wysh.app`:
+If using custom domain instead of `wysh.zealer.in`:
 
 1. **Update environment variables**:
    ```bash

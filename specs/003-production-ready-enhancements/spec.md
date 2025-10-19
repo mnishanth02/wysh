@@ -578,7 +578,7 @@ The following items are **explicitly not included** in this enhancement and shou
 - **Music or audio**: Silent greetings only. No background music, no voice messages.
 - **Collaborative greetings**: Single creator only. No group greeting creation.
 - **Greeting analytics for users**: Users cannot see view counts or analytics for their greetings.
-- **Custom domain for greetings**: All greetings use wysh.app domain. No custom branding.
+- **Custom domain for greetings**: All greetings use wysh.zealer.in domain. No custom branding.
 - **API for third-party integrations**: No public API for external services to create greetings.
 
 ### May Be Considered for Future Phases

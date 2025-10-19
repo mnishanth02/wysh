@@ -5,7 +5,7 @@ import type { MetadataRoute } from "next";
  * Controls search engine crawler access
  */
 export default function robots(): MetadataRoute.Robots {
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://wysh.app";
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://wysh.zealer.in";
 
   return {
     rules: [

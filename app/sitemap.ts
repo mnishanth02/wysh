@@ -9,7 +9,7 @@ import type { MetadataRoute } from "next";
  * - Dynamic admin routes
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://wysh.app";
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://wysh.zealer.in";
 
   return [
     {

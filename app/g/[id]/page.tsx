@@ -16,7 +16,7 @@ export async function generateMetadata({
   params,
 }: GreetingPageProps): Promise<Metadata> {
   const { id } = await params;
-  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://wysh.app";
+  const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://wysh.zealer.in";
 
   try {
     // Fetch greeting data server-side
@@ -103,5 +103,5 @@ export default async function GreetingPage({ params }: GreetingPageProps) {
   // Dynamically import the client component
   const { GreetingView } = await import("./GreetingView");
 
-  return <GreetingView shareableId={id} />;
+  return <GreetingView shareableId={ id } />;
 }
