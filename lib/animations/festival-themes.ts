@@ -57,6 +57,23 @@ export const PONGAL_COLORS = [
 ] as const;
 
 /**
+ * Champagne Pop Sparkle Colors (New Year - Variant 2)
+ * Premium champagne aesthetic with golden sparkles
+ * - Gold #FFD700: Primary champagne color - luxury and celebration
+ * - Light Gold #FFF8DC: Champagne cream - soft elegant sparkle
+ * - Amber #FFB700: Rich champagne tone - warmth and festivity
+ * - White #FFFFFF: Bright sparkle highlights - premium shimmer
+ * - Pale Goldenrod #EEE8AA: Soft champagne accent - gentle glow
+ */
+export const CHAMPAGNE_SPARKLE_COLORS = [
+  "#FFD700", // Gold
+  "#FFF8DC", // Cornsilk (champagne cream)
+  "#FFB700", // Amber
+  "#FFFFFF", // White
+  "#EEE8AA", // Pale Goldenrod
+] as const;
+
+/**
  * Fireworks Color Palette (multi-context)
  * Vibrant celebration colors suitable for any festive occasion
  */

@@ -170,89 +170,95 @@ export function GenericTemplate({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="generic-bg relative flex items-center justify-center p-4 w-full h-full"
-      style={ {
+      style={{
         background: `linear-gradient(135deg, ${primaryColor}, ${colors[1]})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 1s ease-out" : "none",
         minHeight: isPreview ? "auto" : "100vh",
-      } }
+      }}
     >
-      {/* Decorative elements */ }
+      {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
-        {/* Stars */ }
-        { [...Array(12)].map((_, i) => (
+        {/* Stars */}
+        {[...Array(12)].map((_, i) => (
           <div
-            key={ `star-${generateUniqueKey()}` }
-            className={ `star absolute opacity-0 ${isPreview ? "text-2xl" : "text-4xl"
-              }` }
-            style={ {
+            key={`star-${generateUniqueKey()}`}
+            className={`star absolute opacity-0 ${
+              isPreview ? "text-2xl" : "text-4xl"
+            }`}
+            style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
               color: colors[i % colors.length],
-            } }
+            }}
           >
             ⭐
           </div>
-        )) }
+        ))}
 
-        {/* Confetti */ }
-        { [...Array(25)].map((_, i) => (
+        {/* Confetti */}
+        {[...Array(25)].map((_, i) => (
           <div
-            key={ `confetti-${generateUniqueKey()}` }
-            className={ `confetti absolute rounded-sm opacity-0 ${isPreview ? "h-2 w-2" : "h-3 w-3"
-              }` }
-            style={ {
+            key={`confetti-${generateUniqueKey()}`}
+            className={`confetti absolute rounded-sm opacity-0 ${
+              isPreview ? "h-2 w-2" : "h-3 w-3"
+            }`}
+            style={{
               backgroundColor: colors[i % colors.length],
               left: `${Math.random() * 100}%`,
               top: `${20 + Math.random() * 60}%`,
               transform: `rotate(${Math.random() * 360}deg)`,
-            } }
+            }}
           />
-        )) }
+        ))}
       </div>
 
-      {/* T151: Responsive content for preview and full-screen modes */ }
+      {/* T151: Responsive content for preview and full-screen modes */}
       <div
-        className={ `relative z-10 max-w-2xl text-center w-full ${isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
-          }` }
+        className={`relative z-10 max-w-2xl text-center w-full ${
+          isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
+        }`}
       >
         <h1
-          className={ `greeting-text font-bold opacity-0 ${isPreview
+          className={`greeting-text font-bold opacity-0 ${
+            isPreview
               ? "text-2xl sm:text-3xl md:text-4xl"
               : "text-5xl sm:text-6xl md:text-7xl"
-            }` }
-          style={ {
+          }`}
+          style={{
             color: "#FFFFFF",
             textShadow:
               "0 3px 10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(102, 126, 234, 0.6), 0 6px 15px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 1)",
-          } }
+          }}
         >
           Celebrating You!
         </h1>
 
-        <div className={ isPreview ? "space-y-3 sm:space-y-4" : "space-y-4" }>
+        <div className={isPreview ? "space-y-3 sm:space-y-4" : "space-y-4"}>
           <p
-            className={ `recipient-name font-semibold opacity-0 ${isPreview
+            className={`recipient-name font-semibold opacity-0 ${
+              isPreview
                 ? "text-xl sm:text-2xl md:text-3xl"
                 : "text-3xl sm:text-4xl"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#FFFFFF",
               textShadow:
                 "0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 1)",
-            } }
+            }}
           >
-            Dear { recipientName },
+            Dear {recipientName},
           </p>
 
           <p
-            className={ `greeting-text leading-relaxed px-4 opacity-0 ${isPreview
+            className={`greeting-text leading-relaxed px-4 opacity-0 ${
+              isPreview
                 ? "text-sm sm:text-base md:text-lg"
                 : "text-lg sm:text-xl"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#FFFFFF",
               textShadow:
                 "0 2px 6px rgba(0, 0, 0, 0.95), 0 3px 10px rgba(0, 0, 0, 0.8)",
@@ -260,25 +266,26 @@ export function GenericTemplate({
               padding: "0.75rem 1rem",
               borderRadius: "0.5rem",
               backdropFilter: "blur(6px)",
-            } }
+            }}
           >
-            { message || `Sending you warm wishes and lots of happiness!` }
+            {message || `Sending you warm wishes and lots of happiness!`}
           </p>
 
           <p
-            className={ `sender-name font-medium opacity-0 ${isPreview
+            className={`sender-name font-medium opacity-0 ${
+              isPreview
                 ? "text-base sm:text-lg md:text-xl mt-4 sm:mt-6"
                 : "text-xl sm:text-2xl mt-8"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#F093FB",
               textShadow:
                 "0 2px 8px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.8), 0 4px 12px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)",
-            } }
+            }}
           >
             With love,
             <br />
-            { senderName }
+            {senderName}
           </p>
         </div>
       </div>

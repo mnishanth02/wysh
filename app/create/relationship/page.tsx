@@ -37,7 +37,7 @@ function RelationshipContent() {
     <div className="max-w-4xl mx-auto space-y-6 sm:space-y-8">
       <Button
         variant="ghost"
-        onClick={() => router.back()}
+        onClick={() => router.push("/create/festival")}
         className="mb-2 sm:mb-4 touch-target"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
