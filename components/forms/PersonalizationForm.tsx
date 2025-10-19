@@ -106,8 +106,17 @@ export function PersonalizationForm() {
       ? sanitizeMessage(data.customMessage)
       : "";
 
-    // Build the complete URL with all necessary parameters
-    // This ensures both current page history and next page can access all parameters
+    // Update nuqs state - this automatically updates the URL for the current page
+    // This ensures the browser history entry for the personalize page contains the form data
+    // When user clicks back from template, they'll see the filled form with data in URL
+    await setQueryStates({
+      recipientName: sanitizedRecipientName,
+      senderName: sanitizedSenderName,
+      customMessage: sanitizedCustomMessage,
+    });
+
+    // Build complete URL with all parameters for navigation to template page
+    // We need to explicitly pass all params since we're navigating to a new route
     const params = new URLSearchParams({
       festival: urlState.festival || "",
       relationship: urlState.relationship || "",
@@ -116,25 +125,7 @@ export function PersonalizationForm() {
       customMessage: sanitizedCustomMessage,
     });
 
-    // IMPORTANT: Update current page URL FIRST with router.replace()
-    // This updates the browser history entry for the personalize page
-    // so when user clicks back from template, they'll see the filled form with data in URL
-    // We use router.replace() to avoid creating a duplicate history entry
-    const personalizationUrl = `/create/personalize?${params.toString()}`;
-    router.replace(personalizationUrl);
-
-    // Small delay to ensure router.replace completes before navigation
-    // This ensures the browser history is properly updated
-    await new Promise((resolve) => setTimeout(resolve, 0));
-
-    // Now update nuqs state to keep it in sync
-    await setQueryStates({
-      recipientName: sanitizedRecipientName,
-      senderName: sanitizedSenderName,
-      customMessage: sanitizedCustomMessage,
-    });
-
-    // Finally navigate to template with full parameters
+    // Navigate to template selection with all parameters
     router.push(`/create/template?${params.toString()}`);
   };
 
