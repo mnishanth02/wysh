@@ -234,42 +234,43 @@ export function generateContextualMessage(
 ): string {
   const context = getRelationshipContext(relationshipType);
 
-  // Message templates organized by message tone and festival
+  // Enhanced message templates organized by message tone and festival
+  // All messages are culturally appropriate, warm, and relationship-specific
   const messageTemplates: Record<
     "formal" | "casual" | "intimate" | "professional",
     Record<FestivalType, string>
   > = {
     formal: {
-      diwali: `May this Diwali illuminate your life with boundless joy and prosperity. Wishing you a blessed festival of lights.`,
-      holi: `May the vibrant colors of Holi bring you happiness and success in all your endeavors. Warm wishes for a joyful celebration.`,
-      christmas: `Wishing you a peaceful Christmas filled with love and warmth. May the season bring you joy and blessings.`,
-      newyear: `May the new year bring you success, good health, and happiness. Wishing you prosperity in all your endeavors.`,
-      pongal: `May this harvest festival bring abundance and prosperity to your life. Wishing you and your family a blessed Pongal.`,
-      generic: `Wishing you joy and happiness on this special occasion. May all your endeavors be blessed with success.`,
+      diwali: `May this auspicious festival of Diwali illuminate your path with divine blessings, prosperity, and boundless joy. Wishing you and your loved ones a radiant celebration filled with light and happiness.`,
+      holi: `May the vibrant colors of Holi bring renewed joy, good health, and success to your life. Wishing you a blessed and joyful celebration filled with warmth and happiness.`,
+      christmas: `Wishing you a blessed Christmas filled with peace, love, and the warmth of family. May this holy season bring you joy and may the new year ahead be filled with countless blessings.`,
+      newyear: `As we welcome the new year, may it bring you good health, prosperity, and success in all your endeavors. Wishing you and your family a wonderful year filled with happiness and achievements.`,
+      pongal: `May this sacred harvest festival of Pongal bring abundance, prosperity, and good fortune to your home. Wishing you and your family a blessed celebration filled with joy and gratitude.`,
+      generic: `Wishing you joy, peace, and happiness on this special occasion. May this celebration bring you wonderful moments and may all your endeavors be blessed with success.`,
     },
     professional: {
-      diwali: `Wishing you and your team a prosperous Diwali. May this festival bring new opportunities and success to your ventures.`,
-      holi: `Wishing you a colorful and joyous Holi. May this festival bring fresh energy and success to your professional journey.`,
-      christmas: `Season's greetings! Wishing you continued success and prosperity. May the new year bring exciting opportunities.`,
-      newyear: `Wishing you a successful year ahead filled with achievements. Looking forward to continued collaboration.`,
-      pongal: `Wishing you a prosperous Pongal. May this harvest festival bring abundance and growth to all your endeavors.`,
-      generic: `Best wishes on this occasion. May it bring continued success and prosperity to your professional journey.`,
+      diwali: `Wishing you and your organization a prosperous Diwali! May this festival of lights bring new opportunities, continued success, and abundant growth to all your ventures.`,
+      holi: `Wishing you a vibrant and joyous Holi! May this colorful festival bring renewed energy, fresh perspectives, and continued success to your professional journey.`,
+      christmas: `Season's greetings! Wishing you a wonderful Christmas and a prosperous new year. May the coming year bring exciting opportunities and continued success in all your endeavors.`,
+      newyear: `Wishing you a successful and rewarding new year ahead! May it bring new achievements, exciting collaborations, and continued growth. Looking forward to another year of working together.`,
+      pongal: `Wishing you a prosperous Pongal! May this harvest festival bring abundance, growth, and success to your organization and all your professional endeavors.`,
+      generic: `Warm wishes on this special occasion! May it bring continued success, prosperity, and positive growth to your professional journey and all your future endeavors.`,
     },
     casual: {
-      diwali: `Happy Diwali! Hope your festival is lit with joy, laughter, and loads of sweets! Have a blast! 🪔✨`,
-      holi: `Happy Holi! Get ready for colors, laughter, and all the fun! Let's make this one unforgettable! 🎨🌈`,
-      christmas: `Merry Christmas! Hope Santa brings you everything on your wishlist! Enjoy the festive vibes! 🎄🎁`,
-      newyear: `Happy New Year! Here's to new adventures, crazy memories, and all the good times ahead! 🎉🥳`,
-      pongal: `Happy Pongal! May your harvest be full of happiness and your year full of fun! 🌾☀️`,
-      generic: `Wishing you the best on this special day! Hope it's filled with joy, laughter, and amazing memories! ✨🎉`,
+      diwali: `Happy Diwali! 🪔✨ Hope your festival is absolutely lit with joy, tons of sweets, sparkly diyas, and loads of laughter! Let's celebrate big time!`,
+      holi: `Happy Holi! 🎨🌈 Get ready for an explosion of colors, non-stop fun, and unforgettable memories! Let's paint the town in all the colors of joy!`,
+      christmas: `Merry Christmas! 🎄🎁 Hope your holidays are filled with cozy vibes, awesome gifts, delicious treats, and tons of fun with loved ones! Enjoy every moment!`,
+      newyear: `Happy New Year! 🎉🥳 Here's to fresh starts, exciting adventures, crazy fun times, and making amazing memories together! Let's make this year absolutely epic!`,
+      pongal: `Happy Pongal! 🌾☀️ May your harvest be overflowing with happiness, your pots overflow with prosperity, and your year be filled with sunshine and smiles!`,
+      generic: `Hey! ✨🎉 Wishing you an absolutely amazing celebration filled with joy, laughter, great company, and wonderful memories! Have a fantastic time!`,
     },
     intimate: {
-      diwali: `You light up my life every single day, just like the diyas of Diwali. Wishing us a beautiful celebration together, my love.`,
-      holi: `You bring color to my world all year round. Can't wait to celebrate this vibrant festival with you. Love you! 💕`,
-      christmas: `You're my favorite gift, today and always. Merry Christmas to us, my love. Here's to magical moments together. 🎄❤️`,
-      newyear: `Cheers to another year of love, laughter, and beautiful memories with you. You make every day special. Happy New Year, darling! 💑`,
-      pongal: `Grateful for our harvest of love and togetherness. Wishing us a beautiful Pongal and a lifetime of happiness. 💕`,
-      generic: `Every celebration is special because I get to share it with you. You make my life beautiful. Love you always! 💕✨`,
+      diwali: `You light up my world every single day, just like the beautiful diyas of Diwali. Being with you makes every moment magical. Wishing us a luminous celebration together, my love. 🪔💕`,
+      holi: `You bring vibrant colors to my life all year round, making every day beautiful and bright. Can't wait to celebrate this joyful festival with you, my love. Here's to us! 🎨💕`,
+      christmas: `You're the most precious gift in my life, today and always. Merry Christmas to us, my love. Here's to creating magical memories and cherishing beautiful moments together. 🎄❤️`,
+      newyear: `Cheers to another year of endless love, joyful laughter, and countless beautiful memories with you. You make every single day feel special. Happy New Year, my darling! 💑✨`,
+      pongal: `Grateful for our abundant harvest of love, togetherness, and beautiful moments. Wishing us a wonderful Pongal and a lifetime filled with happiness and warmth. 💕🌾`,
+      generic: `Every celebration becomes truly special because I get to share it with you. You make my life beautiful in every way. Love you more than words can say! 💕✨`,
     },
   };
 

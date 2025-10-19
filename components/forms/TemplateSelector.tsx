@@ -256,20 +256,20 @@ export function TemplateSelector({
   }
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      {/* Context Indicator */ }
-      <div className="text-center p-3 sm:p-4 bg-muted/50 rounded-lg">
-        <p className="text-xs sm:text-sm text-muted-foreground">
+    <div className="space-y-6 sm:space-y-8">
+      {/* Context Indicator - Redesigned */ }
+      <div className="text-center p-4 sm:p-5 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-2xl border border-primary/20">
+        <p className="text-sm sm:text-base text-foreground">
           Templates styled for{ " " }
-          <span className="font-semibold">
+          <span className="font-bold text-primary">
             { relationshipContext.visualTone }
           </span>{ " " }
           tone
         </p>
       </div>
 
-      {/* Template Grid */ }
-      <div className="grid gap-4 mobile-gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {/* Template Grid - Redesigned with larger cards */ }
+      <div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         { templates.map((template, index) => {
           // Use different color combinations for each template variant
           const colorIndex1 = index % festivalData.colorPalette.length;
@@ -279,49 +279,56 @@ export function TemplateSelector({
           return (
             <Card
               key={ template.id }
-              className="group gap-2 p-0 touch-target overflow-hidden border-2 transition-all hover:border-primary hover:shadow-lg"
+              className="group gap-0 p-0 touch-target overflow-hidden border-2 shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] rounded-3xl"
             >
-              {/* Template Preview */ }
+              {/* Template Preview - Enlarged */ }
               <div
-                className="h-40 sm:h-44 flex items-center justify-center transition-transform group-hover:scale-105"
+                className="relative h-56 sm:h-64 flex items-center justify-center overflow-hidden transition-transform duration-500 group-hover:scale-110"
                 style={ {
                   background: `linear-gradient(${gradientAngle}deg, ${festivalData.colorPalette[colorIndex1]}, ${festivalData.colorPalette[colorIndex2]})`,
                 } }
               >
-                <div className="text-center text-white space-y-1 sm:space-y-2 p-3 sm:p-4">
-                  <p className="text-lg sm:text-xl font-bold">{ recipientName }</p>
-                  <p className="text-xs sm:text-sm opacity-90">
+                {/* Gradient Overlay for depth */ }
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
+
+                <div className="relative text-center text-white space-y-2 sm:space-y-3 p-4 sm:p-6 drop-shadow-lg">
+                  <p className="text-2xl sm:text-3xl md:text-4xl font-bold">
+                    { recipientName }
+                  </p>
+                  <p className="text-sm sm:text-base md:text-lg opacity-90">
                     From { senderName }
                   </p>
                 </div>
               </div>
 
-              {/* Template Info */ }
-              <div className="p-3 sm:p-4 space-y-2">
-                <h3 className="text-base sm:text-lg font-semibold">
-                  { template.name }
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground">
-                  { template.description }
-                </p>
+              {/* Template Info - Improved spacing */ }
+              <div className="p-5 sm:p-6 space-y-3 sm:space-y-4 bg-card">
+                <div>
+                  <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">
+                    { template.name }
+                  </h3>
+                  <p className="text-sm sm:text-base text-muted-foreground">
+                    { template.description }
+                  </p>
+                </div>
 
-                {/* Action Buttons */ }
-                <div className="flex gap-4 mt-3">
+                {/* Action Buttons - Improved design */ }
+                <div className="flex gap-3 pt-2">
                   { enablePreview && (
                     <Button
                       variant="outline"
-                      size="sm"
-                      className="flex-1 touch-target"
+                      size="default"
+                      className="flex-1 touch-target h-11 sm:h-12 text-sm sm:text-base font-medium"
                       onClick={ () => handlePreview(template.id) }
                     >
-                      <Eye className="h-4 w-4 mr-1" />
+                      <Eye className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                       Preview
                     </Button>
                   ) }
                   <Button
-                    variant={ enablePreview ? "default" : "outline" }
-                    size="sm"
-                    className={ `${enablePreview ? "flex-1" : "w-full"} touch-target` }
+                    variant={ enablePreview ? "default" : "default" }
+                    size="default"
+                    className={ `${enablePreview ? "flex-1" : "w-full"} touch-target h-11 sm:h-12 text-sm sm:text-base font-semibold` }
                     disabled={ selectedTemplate === template.id }
                     onClick={ () => handleTemplateSelect(template.id) }
                   >
@@ -336,21 +343,21 @@ export function TemplateSelector({
         }) }
       </div>
 
-      {/* T151: Preview Dialog with Animation - Fixed responsive layout */ }
+      {/* Preview Dialog with Animation - Enhanced Design */ }
       { enablePreview && (
         <Dialog open={ isPreviewOpen } onOpenChange={ setIsPreviewOpen }>
-          <DialogContent className="max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden">
-            <DialogHeader className="p-3 sm:p-4 bg-background border-b shrink-0">
-              <DialogTitle className="text-base sm:text-lg">
+          <DialogContent className="max-w-5xl h-[90vh] p-0 flex flex-col overflow-hidden rounded-3xl">
+            <DialogHeader className="p-4 sm:p-6 bg-background border-b shrink-0">
+              <DialogTitle className="text-lg sm:text-xl font-bold">
                 Preview Animation
               </DialogTitle>
-              <DialogDescription className="text-xs sm:text-sm">
+              <DialogDescription className="text-sm sm:text-base text-muted-foreground">
                 Watch the full animation before selecting this template
               </DialogDescription>
             </DialogHeader>
 
-            {/* T151: Responsive preview container with proper aspect ratio */ }
-            <div className="relative flex-1 min-h-0 w-full bg-gradient-to-br from-slate-900 to-slate-800 overflow-hidden">
+            {/* Responsive preview container with proper aspect ratio */ }
+            <div className="relative flex-1 min-h-0 w-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
               { previewTemplate && (
                 <GreetingRenderer
                   festivalType={ festival }
@@ -366,12 +373,13 @@ export function TemplateSelector({
               ) }
             </div>
 
-            <div className="p-3 sm:p-4 border-t bg-background shrink-0">
-              <div className="flex gap-2 justify-end">
+            <div className="p-4 sm:p-6 border-t bg-background shrink-0">
+              <div className="flex gap-3 justify-end">
                 <Button
                   variant="outline"
                   onClick={ handleClosePreview }
-                  className="text-xs sm:text-sm"
+                  size="default"
+                  className="text-sm sm:text-base h-11 sm:h-12 px-6 font-medium"
                 >
                   Close
                 </Button>
@@ -382,7 +390,8 @@ export function TemplateSelector({
                       handleTemplateSelect(previewTemplate);
                     }
                   } }
-                  className="text-xs sm:text-sm"
+                  size="default"
+                  className="text-sm sm:text-base h-11 sm:h-12 px-6 font-semibold"
                 >
                   Select This Template
                 </Button>
