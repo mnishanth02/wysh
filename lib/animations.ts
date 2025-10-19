@@ -505,6 +505,7 @@ export function prefersReducedMotion(): boolean {
 
 /**
  * Detect if device is mobile (screen width < 768px)
+ * NOTE: No longer used for performance restrictions - all devices get full experience
  */
 export function isMobileDevice(): boolean {
   if (typeof window === "undefined") return false;
@@ -512,32 +513,37 @@ export function isMobileDevice(): boolean {
 }
 
 /**
- * Get mobile-optimized particle count (60% reduction for mobile devices)
+ * Get particle count (no mobile reduction - full experience on all devices)
  *
- * @param desktopCount - Desired particle count for desktop
- * @returns Optimized particle count based on device type
+ * UPDATED: Removed mobile optimization to provide consistent high-quality experience
+ * All devices now receive the same particle counts
+ *
+ * @param desktopCount - Desired particle count
+ * @returns Full particle count regardless of device type
  */
 export function getMobileParticleCount(desktopCount: number): number {
-  if (typeof window === "undefined") return desktopCount;
-  return isMobileDevice() ? Math.floor(desktopCount * 0.4) : desktopCount;
+  // Return full count for all devices - no reduction
+  return desktopCount;
 }
 
 /**
  * Get animation configuration based on device capabilities
  *
- * @returns Animation config with mobile-specific optimizations
+ * UPDATED: Removed mobile-specific restrictions - all devices get full animations
+ *
+ * @returns Animation config (no mobile degradation)
  */
 export function getDeviceAnimationConfig() {
   const mobile = isMobileDevice();
   const reducedMotion = prefersReducedMotion();
 
   return {
-    isMobile: mobile,
+    isMobile: mobile, // Still provided for informational purposes
     prefersReducedMotion: reducedMotion,
-    particleMultiplier: mobile ? 0.4 : 1.0, // 60% reduction on mobile
-    animationDuration: reducedMotion ? 0.3 : mobile ? 0.7 : 1.0,
-    enableComplexEffects: !mobile && !reducedMotion,
-    maxParticles: mobile ? 20 : 50,
+    particleMultiplier: 1.0, // UPDATED: Full particles on all devices (was 0.4 for mobile)
+    animationDuration: reducedMotion ? 0.3 : 1.0, // UPDATED: Full duration on all devices (was 0.7 for mobile)
+    enableComplexEffects: !reducedMotion, // UPDATED: Based only on motion preference, not device (was !mobile && !reducedMotion)
+    maxParticles: 50, // UPDATED: Same max for all devices (was 20 for mobile)
   };
 }
 

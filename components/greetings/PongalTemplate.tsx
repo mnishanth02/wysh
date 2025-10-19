@@ -17,7 +17,6 @@
 
 import { gsap } from "gsap";
 import { memo, useEffect, useRef, useState } from "react";
-import { getMobileParticleCount } from "@/lib/animations";
 import { FESTIVALS } from "@/lib/constants";
 import { shouldUseReducedMotion } from "@/lib/performance";
 import type { RelationshipContext } from "@/types";
@@ -72,9 +71,6 @@ function PongalTemplateComponent({
     relationshipContext?.relationshipType || "friend",
     65, // Base particle count for steam/rice
   );
-
-  // T111: Mobile optimization - reduce particles on mobile
-  const mobileParticleCount = (count: number) => getMobileParticleCount(count);
 
   // Apply relationship-adjusted colors if available
   const adjustedColors = relationshipContext ? animationConfig.colors : colors;
@@ -174,59 +170,55 @@ function PongalTemplateComponent({
   if (reducedMotion) {
     return (
       <div
-        ref={containerRef}
+        ref={ containerRef }
         className="pongal-bg relative flex items-center justify-center p-4 w-full h-full"
-        style={{
+        style={ {
           background: `linear-gradient(to bottom, ${adjustedColors[0]}, ${adjustedColors[1]})`,
           minHeight: isPreview ? "auto" : "100vh",
-        }}
+        } }
       >
-        {/* Semi-transparent backdrop for better text readability */}
+        {/* Semi-transparent backdrop for better text readability */ }
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30" />
 
         <div
-          className={`relative z-10 max-w-2xl text-center w-full ${
-            isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
-          }`}
+          className={ `relative z-10 max-w-2xl text-center w-full ${isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
+            }` }
         >
           <h1
-            className={`font-bold ${
-              isPreview
+            className={ `font-bold ${isPreview
                 ? "text-2xl sm:text-3xl md:text-4xl"
                 : "text-5xl sm:text-6xl md:text-7xl"
-            }`}
-            style={{
+              }` }
+            style={ {
               color: "#FFFFFF",
               textShadow:
                 "0 3px 10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(139, 69, 19, 0.6), 0 6px 15px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 1)",
-            }}
+            } }
           >
             Pongal Vazhthukkal!
           </h1>
 
-          <div className={isPreview ? "space-y-3 sm:space-y-4" : "space-y-4"}>
+          <div className={ isPreview ? "space-y-3 sm:space-y-4" : "space-y-4" }>
             <p
-              className={`font-semibold ${
-                isPreview
+              className={ `font-semibold ${isPreview
                   ? "text-lg sm:text-2xl md:text-3xl"
                   : "text-3xl sm:text-4xl"
-              }`}
-              style={{
+                }` }
+              style={ {
                 color: "#FFFFFF",
                 textShadow:
                   "0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 1)",
-              }}
+              } }
             >
-              Dear {recipientName},
+              Dear { recipientName },
             </p>
 
             <p
-              className={`leading-relaxed px-4 ${
-                isPreview
+              className={ `leading-relaxed px-4 ${isPreview
                   ? "text-sm sm:text-base md:text-lg"
                   : "text-lg sm:text-xl"
-              }`}
-              style={{
+                }` }
+              style={ {
                 color: "#FFFFFF",
                 textShadow:
                   "0 2px 6px rgba(0, 0, 0, 0.95), 0 3px 10px rgba(0, 0, 0, 0.8)",
@@ -234,27 +226,26 @@ function PongalTemplateComponent({
                 padding: "0.75rem 1rem",
                 borderRadius: "0.5rem",
                 backdropFilter: "blur(6px)",
-              }}
+              } }
             >
-              {message ||
-                `May this harvest festival bring abundant prosperity and happiness to you and your family!`}
+              { message ||
+                `May this harvest festival bring abundant prosperity and happiness to you and your family!` }
             </p>
 
             <p
-              className={`font-medium ${
-                isPreview
+              className={ `font-medium ${isPreview
                   ? "text-base sm:text-lg md:text-xl mt-4 sm:mt-6"
                   : "text-xl sm:text-2xl mt-8"
-              }`}
-              style={{
+                }` }
+              style={ {
                 color: "#FDEE00",
                 textShadow:
                   "0 2px 8px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.8), 0 4px 12px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)",
-              }}
+              } }
             >
               With best wishes,
               <br />
-              {senderName}
+              { senderName }
             </p>
           </div>
         </div>
@@ -264,124 +255,120 @@ function PongalTemplateComponent({
 
   return (
     <div
-      ref={containerRef}
+      ref={ containerRef }
       className="pongal-bg relative flex items-center justify-center p-4 overflow-hidden w-full h-full"
-      style={{
+      style={ {
         background: `linear-gradient(to bottom, ${adjustedColors[0]}, ${adjustedColors[1]})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 2s ease-out" : "none",
         minHeight: isPreview ? "auto" : "100vh",
-      }}
+      } }
     >
-      {/* Animation Layers */}
+      {/* Animation Layers */ }
 
-      {/* Background decorations - always visible */}
-      {(animationPhase === "celebration" ||
+      {/* Background decorations - always visible */ }
+      { (animationPhase === "celebration" ||
         animationPhase === "text" ||
         animationPhase === "complete") && (
-        <>
-          <SugarcaneSway duration={8} />
-          <RiceGrains grainCount={mobileParticleCount(40)} duration={10} />
-        </>
-      )}
+          <>
+            <SugarcaneSway duration={ 8 } />
+            <RiceGrains grainCount={ 40 } duration={ 10 } />
+          </>
+        ) }
 
-      {/* Sunrise animation (0-2s) */}
-      {animationPhase === "sunrise" && (
+      {/* Sunrise animation (0-2s) */ }
+      { animationPhase === "sunrise" && (
         <SunRise
-          duration={2 * (animationConfig.duration / 8000)}
-          sunColor={adjustedColors[0]}
-          rayColor={adjustedColors[1]}
-          onComplete={() => {
+          duration={ 2 * (animationConfig.duration / 8000) }
+          sunColor={ adjustedColors[0] }
+          rayColor={ adjustedColors[1] }
+          onComplete={ () => {
             // Sunrise complete handled by timeline
-          }}
+          } }
         />
-      )}
+      ) }
 
-      {/* Kolam drawing (2-4s) */}
-      {animationPhase === "kolam" && (
+      {/* Kolam drawing (2-4s) */ }
+      { animationPhase === "kolam" && (
         <KolamDrawing
-          duration={2}
+          duration={ 2 }
           color="#F5F5DC"
-          circleCount={6}
-          onComplete={() => {
+          circleCount={ 6 }
+          onComplete={ () => {
             // Kolam complete handled by timeline
-          }}
+          } }
         />
-      )}
+      ) }
 
-      {/* Pongal pot with boiling and overflow (3-6s) */}
-      {(animationPhase === "pot" || animationPhase === "celebration") && (
+      {/* Pongal pot with boiling and overflow (3-6s) */ }
+      { (animationPhase === "pot" || animationPhase === "celebration") && (
         <>
           <div className="absolute inset-0 flex items-center justify-center">
             <PongalPot
-              duration={6}
+              duration={ 6 }
               potColor="#D2691E"
-              overflowAt={4}
-              onComplete={() => {
+              overflowAt={ 4 }
+              onComplete={ () => {
                 // Pot animation complete
-              }}
+              } }
             />
           </div>
 
-          {/* Steam particles (4-10s) - T111: Mobile optimized */}
+          {/* Steam particles (4-10s) - Full quality on all devices */ }
           <SteamParticles
-            particleCount={mobileParticleCount(animationConfig.particleCount)}
-            duration={6 * (animationConfig.duration / 8000)}
-            onComplete={() => {
+            particleCount={ animationConfig.particleCount }
+            duration={ 6 * (animationConfig.duration / 8000) }
+            onComplete={ () => {
               // Steam complete
-            }}
+            } }
           />
         </>
-      )}
+      ) }
 
-      {/* Text content (6-10s) - Always rendered but initially hidden, T151: responsive */}
+      {/* Text content (6-10s) - Always rendered but initially hidden, T151: responsive */ }
       <div
-        className={`relative z-20 max-w-2xl text-center w-full ${
-          isPreview ? "p-4 sm:p-6 space-y-4 sm:space-y-6" : "space-y-6"
-        } ${animationPhase !== "text" && animationPhase !== "complete" ? "opacity-0 pointer-events-none" : ""}`}
+        className={ `relative z-20 max-w-2xl text-center w-full ${isPreview ? "p-4 sm:p-6 space-y-4 sm:space-y-6" : "space-y-6"
+          } ${animationPhase !== "text" && animationPhase !== "complete" ? "opacity-0 pointer-events-none" : ""}` }
       >
-        {/* Semi-transparent backdrop for better text readability */}
+        {/* Semi-transparent backdrop for better text readability */ }
         <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-transparent to-black/30 rounded-lg" />
 
         <div className="relative z-10">
           <h1
-            className={`greeting-text font-bold ${
-              isPreview
+            className={ `greeting-text font-bold ${isPreview
                 ? "text-2xl sm:text-3xl md:text-4xl"
                 : "text-4xl sm:text-5xl md:text-6xl"
-            }`}
-            style={{
+              }` }
+            style={ {
               color: "#FFFFFF",
               textShadow:
                 "0 3px 10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(139, 69, 19, 0.6), 0 6px 15px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 1)",
-            }}
+            } }
           >
             Pongal Vazhthukkal!
           </h1>
 
-          <div className={isPreview ? "space-y-3 sm:space-y-4" : "space-y-4"}>
+          <div className={ isPreview ? "space-y-3 sm:space-y-4" : "space-y-4" }>
             <p
-              className={`recipient-name font-semibold ${
-                isPreview
+              className={ `recipient-name font-semibold ${isPreview
                   ? "text-lg sm:text-2xl md:text-3xl"
                   : "text-2xl sm:text-3xl md:text-4xl"
-              }`}
-              style={{
+                }` }
+              style={ {
                 color: "#FFFFFF",
                 textShadow:
                   "0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 1)",
-              }}
+              } }
             >
-              Dear {recipientName},
+              Dear { recipientName },
             </p>
 
             <p
-              className={`message-body leading-relaxed px-4 ${
-                isPreview
+              className={ `message-body leading-relaxed px-4 ${isPreview
                   ? "text-sm sm:text-base md:text-lg"
                   : "text-base sm:text-lg md:text-xl"
-              }`}
-              style={{
+                }` }
+              style={ {
                 color: "#FFFFFF",
                 textShadow:
                   "0 2px 6px rgba(0, 0, 0, 0.95), 0 3px 10px rgba(0, 0, 0, 0.8)",
@@ -389,27 +376,26 @@ function PongalTemplateComponent({
                 padding: "0.75rem 1rem",
                 borderRadius: "0.5rem",
                 backdropFilter: "blur(6px)",
-              }}
+              } }
             >
-              {message ||
-                `May this harvest festival bring abundant prosperity and happiness to you and your family!`}
+              { message ||
+                `May this harvest festival bring abundant prosperity and happiness to you and your family!` }
             </p>
 
             <p
-              className={`sender-name font-medium ${
-                isPreview
+              className={ `sender-name font-medium ${isPreview
                   ? "text-base sm:text-lg md:text-xl mt-4 sm:mt-6"
                   : "text-lg sm:text-xl md:text-2xl mt-8"
-              }`}
-              style={{
+                }` }
+              style={ {
                 color: "#FDEE00",
                 textShadow:
                   "0 2px 8px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.8), 0 4px 12px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)",
-              }}
+              } }
             >
               With best wishes,
               <br />
-              {senderName}
+              { senderName }
             </p>
           </div>
         </div>
@@ -429,9 +415,9 @@ export const PongalTemplate = memo(
       prevProps.variant === nextProps.variant &&
       prevProps.isPreview === nextProps.isPreview &&
       prevProps.relationshipContext?.colorIntensity ===
-        nextProps.relationshipContext?.colorIntensity &&
+      nextProps.relationshipContext?.colorIntensity &&
       prevProps.relationshipContext?.animationSpeed ===
-        nextProps.relationshipContext?.animationSpeed
+      nextProps.relationshipContext?.animationSpeed
     );
   },
 );

@@ -50,9 +50,9 @@ function FireworksTemplateComponent({
   message,
   relationshipContext,
   onAnimationComplete,
-  burstCount = 6,
-  particleCount = 300,
-  duration = 8000,
+  burstCount = 50, // 200% INCREASE: 25 → 50
+  particleCount = 2400, // 200% INCREASE: 1200 → 2400
+  duration: _duration = 13000, // Kept for backward compatibility, using fixed timing internally
   colorPalette,
   enableLoop = false,
 }: FireworksTemplateProps) {
@@ -82,16 +82,17 @@ function FireworksTemplateComponent({
       const particleSystem = canvasRef.current?.getSystem();
       if (!particleSystem) return null;
 
-      // Random launch position (horizontal spread across bottom third)
-      const launchX = canvasWidth * (0.2 + Math.random() * 0.6);
+      // Full experience on all devices - wider spread and dramatic effect
+      const launchX = canvasWidth * (0.25 + Math.random() * 0.5);
       const launchY = canvasHeight; // Bottom of screen
 
-      // T103: Apex point (30-70% height) for bezier curve
-      const apexY = canvasHeight * (0.2 + Math.random() * 0.3);
+      // T103: Apex point - burst high for dramatic effect on all devices
+      const apexY = canvasHeight * (0.1 + Math.random() * 0.2);
 
       // T104: 360-degree radial burst
-      // Calculate particles per burst
+      // Calculate particles per burst - 200% INCREASE!
       const particlesPerBurst = Math.floor(particleCount / burstCount);
+      const enhancedParticleCount = Math.max(particlesPerBurst, 300); // 200% INCREASE: 150 → 300 minimum!
 
       // Color for this burst
       const colorIndex = index % colors.length;
@@ -117,14 +118,40 @@ function FireworksTemplateComponent({
           onComplete: () => {
             // T104: Emit 360-degree radial burst at apex
             // T105: Burst uses power3.out for explosive feel
+            // 200% DENSITY INCREASE - TRIPLE BURST SYSTEM!
+            // MOBILE FIX: Reduced speeds (40-90 vs 60-140) and larger sizes (8-16px vs 6-14px)
             particleSystem.emitBurst(launchX, apexY, {
-              count: particlesPerBurst,
+              count: enhancedParticleCount,
               angle: undefined, // 360-degree radial
-              speed: { min: 100, max: 200 },
-              size: { min: 2, max: 5 },
-              life: 1500 + Math.random() * 1000, // 1.5-2.5s
+              speed: { min: 60, max: 140 }, // 33% slower on mobile!
+              size: { min: 6, max: 14 }, // Larger for high-DPI mobile!
+              life: 3000 + Math.random() * 2000, // 3-5s MUCH longer life!
               colors: [burstColor],
             });
+
+            // SECOND BURST: 0.1s later for density!
+            setTimeout(() => {
+              particleSystem.emitBurst(launchX, apexY, {
+                count: Math.floor(enhancedParticleCount * 0.9), // 90% of main burst
+                angle: undefined,
+                speed: { min: 50, max: 120 }, // Slower on mobile
+                size: { min: 5, max: 12 }, // Larger on mobile
+                life: 2500 + Math.random() * 1500,
+                colors: [burstColor],
+              });
+            }, 100);
+
+            // THIRD BURST: 0.2s later for MAXIMUM density!
+            setTimeout(() => {
+              particleSystem.emitBurst(launchX, apexY, {
+                count: Math.floor(enhancedParticleCount * 0.7), // 70% of main burst
+                angle: undefined,
+                speed: { min: 40, max: 100 }, // Slower on mobile
+                size: { min: 4, max: 10 }, // Larger on mobile
+                life: 2000 + Math.random() * 1200,
+                colors: [burstColor],
+              });
+            }, 200);
           },
         },
         0,
@@ -150,77 +177,82 @@ function FireworksTemplateComponent({
 
       if (type === "anar") {
         // Anar (Flower Pot) - continuous upward spray with color changing
-        const x = canvasWidth * (0.15 + Math.random() * 0.7);
-        const y = canvasHeight * 0.88; // Visible at bottom
+        // MOBILE OPTIMIZED: More centered position
+        const x = canvasWidth * (0.25 + Math.random() * 0.5);
+        const y = canvasHeight * 0.85; // Higher for mobile visibility
 
-        // Longer duration with more particles for prominent effect
-        for (let i = 0; i < 20; i++) {
-          const colorIndex = Math.floor(i / 4) % colors.length; // Change color every 4 bursts
+        // 200% INCREASE: 30 → 60 bursts!
+        for (let i = 0; i < 60; i++) {
+          const colorIndex = Math.floor(i / 5) % colors.length; // Change color every 5 bursts
           crackerTl.call(
             () => {
               particleSystem.emitBurst(x, y, {
-                count: 25, // More particles for visibility
+                count: 120, // 200% INCREASE: 60 → 120 particles!
                 angle: { min: -Math.PI * 0.7, max: -Math.PI * 0.3 }, // Wide upward cone
-                speed: { min: 100, max: 200 }, // Faster for more height
-                size: { min: 3, max: 6 }, // Larger particles
-                life: 1200 + Math.random() * 600, // Longer life
+                speed: { min: 120, max: 240 }, // Faster for more height
+                size: { min: 6, max: 12 }, // 200% LARGER: was 4-9, now 6-12!
+                life: 2000 + Math.random() * 1000, // Longer life
                 colors: [colors[colorIndex] || colors[0]],
               });
             },
             [],
-            i * 0.12,
-          ); // Continuous spray
+            i * 0.05,
+          ); // Faster spray for MORE density!
         }
       } else if (type === "fountain") {
-        // Fountain cracker - dense upward spray
-        const x = canvasWidth * (0.15 + Math.random() * 0.7);
-        const y = canvasHeight * 0.88;
+        // Fountain cracker - SUPER dense upward spray
+        // MOBILE OPTIMIZED: More centered position
+        const x = canvasWidth * (0.25 + Math.random() * 0.5);
+        const y = canvasHeight * 0.85;
 
-        for (let i = 0; i < 15; i++) {
+        for (let i = 0; i < 50; i++) {
+          // 200% INCREASE: 25 → 50!
           crackerTl.call(
             () => {
               particleSystem.emitBurst(x, y, {
-                count: 30, // Dense spray
+                count: 140, // 200% INCREASE: 70 → 140 particles!
                 angle: { min: -Math.PI * 0.65, max: -Math.PI * 0.35 }, // Tight cone
-                speed: { min: 120, max: 180 },
-                size: { min: 3, max: 5 },
-                life: 1000 + Math.random() * 500,
+                speed: { min: 130, max: 220 },
+                size: { min: 6, max: 11 }, // 200% LARGER!
+                life: 1800 + Math.random() * 800,
                 colors: [
                   colors[Math.floor(Math.random() * colors.length)] ||
-                    colors[0],
+                  colors[0],
                 ],
               });
             },
             [],
-            i * 0.1,
+            i * 0.05,
           );
         }
       } else {
-        // Chakri (spinning wheel) - brighter and more visible
-        const x = canvasWidth * (0.2 + Math.random() * 0.6);
-        const y = canvasHeight * 0.88;
+        // Chakri (spinning wheel) - SUPER bright and visible
+        // MOBILE OPTIMIZED: More centered position
+        const x = canvasWidth * (0.3 + Math.random() * 0.4);
+        const y = canvasHeight * 0.85;
 
-        // Spinning effect with more particles
-        for (let i = 0; i < 24; i++) {
+        // Spinning effect with MANY more particles - 200% INCREASE!
+        for (let i = 0; i < 72; i++) {
+          // 200% INCREASE: 36 → 72!
           // More rotations for longer effect
-          const baseAngle = (i / 24) * Math.PI * 4; // 2 full rotations
+          const baseAngle = (i / 72) * Math.PI * 10; // 5 full rotations!
           crackerTl.call(
             () => {
               particleSystem.emitBurst(x, y, {
-                count: 15, // More particles per burst
-                angle: { min: baseAngle - 0.3, max: baseAngle + 0.3 },
-                speed: { min: 80, max: 140 },
-                size: { min: 2, max: 5 }, // Larger for visibility
-                life: 800 + Math.random() * 400,
+                count: 80, // 200% INCREASE: 40 → 80 particles!
+                angle: { min: baseAngle - 0.4, max: baseAngle + 0.4 },
+                speed: { min: 100, max: 180 },
+                size: { min: 5, max: 10 }, // 200% LARGER!
+                life: 1500 + Math.random() * 700,
                 colors: [
                   colors[Math.floor(Math.random() * colors.length)] ||
-                    colors[0],
+                  colors[0],
                 ],
               });
             },
             [],
-            i * 0.08,
-          ); // Fast rotation
+            i * 0.04,
+          ); // Even faster rotation!
         }
       }
 
@@ -242,65 +274,97 @@ function FireworksTemplateComponent({
 
       const sparkleTl = gsap.timeline({ delay });
 
-      const x = canvasWidth * (0.3 + Math.random() * 0.4);
-      const y = canvasHeight * (0.15 + Math.random() * 0.15); // Top area
+      // MOBILE FIX: Position sparkles in MIDDLE-TOP area (25-40%) not extreme top (8-20%)
+      // This keeps sparkles visible in small mobile viewport
+      const x = canvasWidth * (0.35 + Math.random() * 0.3);
+      const y = canvasHeight * (0.08 + Math.random() * 0.12);
 
       if (pattern === "willow") {
-        // Willow - drooping effect with trails
+        // Willow - drooping effect with trails - 200% INCREASE!
+        // MOBILE FIX: Slower speeds and larger sizes for mobile visibility
         sparkleTl.call(() => {
           particleSystem.emitBurst(x, y, {
-            count: 50,
+            count: 240, // 200% INCREASE: 120 → 240!
             angle: undefined, // Full radial
-            speed: { min: 40, max: 80 },
-            size: { min: 1, max: 2 },
-            life: 2000 + Math.random() * 500, // Longer life for trailing
+            speed: { min: 35, max: 90 }, // Even slower on mobile!
+            size: { min: 5, max: 10 }, // Larger on mobile!
+            life: 3500 + Math.random() * 1200, // MUCH longer life!
             colors: [
               colors[Math.floor(Math.random() * colors.length)] || colors[0],
             ],
           });
 
-          // Secondary sparkles after 0.3s
+          // Secondary sparkles after 0.2s - 200% MORE!
           setTimeout(() => {
             particleSystem.emitBurst(x, y + 30, {
-              count: 30,
+              count: 160, // 200% INCREASE: 80 → 160!
               angle: { min: Math.PI * 0.3, max: Math.PI * 0.7 }, // Downward
-              speed: { min: 20, max: 50 },
-              size: { min: 1, max: 2 },
-              life: 1500,
+              speed: { min: 20, max: 55 }, // Slower on mobile
+              size: { min: 5, max: 9 }, // Larger on mobile
+              life: 3000,
               colors: ["#FFD700", "#FFA500"], // Golden sparkles
             });
-          }, 300);
-        });
-      } else if (pattern === "palm") {
-        // Palm - burst then fall pattern
-        sparkleTl.call(() => {
-          particleSystem.emitBurst(x, y, {
-            count: 40,
-            angle: { min: -Math.PI * 0.3, max: -Math.PI * 0.7 }, // Upward
-            speed: { min: 80, max: 120 },
-            size: { min: 2, max: 4 },
-            life: 1200,
-            colors: [
-              colors[Math.floor(Math.random() * colors.length)] || colors[0],
-            ],
-          });
+          }, 200);
 
-          // Secondary burst at peak
+          // TRIPLE burst for density - 200% INCREASE!
           setTimeout(() => {
-            particleSystem.emitBurst(x, y - 50, {
-              count: 60,
+            particleSystem.emitBurst(x, y + 50, {
+              count: 120, // 200% INCREASE: 60 → 120!
               angle: undefined,
-              speed: { min: 30, max: 70 },
-              size: { min: 1, max: 2 },
-              life: 1800,
+              speed: { min: 18, max: 45 }, // Slower on mobile
+              size: { min: 4, max: 8 }, // Larger on mobile
+              life: 2800,
               colors: [
                 colors[Math.floor(Math.random() * colors.length)] || colors[0],
               ],
             });
           }, 400);
         });
+      } else if (pattern === "palm") {
+        // Palm - burst then fall pattern - 200% INCREASE!
+        // MOBILE FIX: Slower speeds and larger sizes for mobile visibility
+        sparkleTl.call(() => {
+          particleSystem.emitBurst(x, y, {
+            count: 200, // 200% INCREASE: 100 → 200!
+            angle: { min: -Math.PI * 0.3, max: -Math.PI * 0.7 }, // Upward
+            speed: { min: 60, max: 110 }, // Slower on mobile
+            size: { min: 6, max: 12 }, // Larger on mobile
+            life: 2500,
+            colors: [
+              colors[Math.floor(Math.random() * colors.length)] || colors[0],
+            ],
+          });
+
+          // Secondary burst at peak - 200% MORE!
+          setTimeout(() => {
+            particleSystem.emitBurst(x, y - 50, {
+              count: 280, // 200% INCREASE: 140 → 280!
+              angle: undefined,
+              speed: { min: 30, max: 75 }, // Slower on mobile
+              size: { min: 5, max: 11 }, // Larger on mobile
+              life: 3200,
+              colors: [
+                colors[Math.floor(Math.random() * colors.length)] || colors[0],
+              ],
+            });
+          }, 400);
+
+          // TRIPLE burst for palm - 200% INCREASE!
+          setTimeout(() => {
+            particleSystem.emitBurst(x, y - 30, {
+              count: 160, // 200% INCREASE: 80 → 160!
+              angle: undefined,
+              speed: { min: 22, max: 58 }, // Slower on mobile
+              size: { min: 4, max: 10 }, // Larger on mobile
+              life: 2900,
+              colors: [
+                colors[Math.floor(Math.random() * colors.length)] || colors[0],
+              ],
+            });
+          }, 600);
+        });
       } else {
-        // Crossette - multiple small bursts in pattern
+        // Crossette - multiple LARGE bursts in pattern - 200% INCREASE!
         const crossettePositions = [
           { dx: 0, dy: 0 },
           { dx: 40, dy: -30 },
@@ -313,19 +377,34 @@ function FireworksTemplateComponent({
           sparkleTl.call(
             () => {
               particleSystem.emitBurst(x + pos.dx, y + pos.dy, {
-                count: 20,
+                count: 140, // 200% INCREASE: 70 → 140!
                 angle: undefined,
-                speed: { min: 50, max: 100 },
-                size: { min: 1, max: 3 },
-                life: 1000 + Math.random() * 500,
+                speed: { min: 45, max: 100 }, // Slower on mobile
+                size: { min: 5, max: 12 }, // Larger on mobile
+                life: 2500 + Math.random() * 1000,
                 colors: [
                   colors[Math.floor(Math.random() * colors.length)] ||
-                    colors[0],
+                  colors[0],
                 ],
               });
+
+              // Double burst for each crossette position - 200% INCREASE!
+              setTimeout(() => {
+                particleSystem.emitBurst(x + pos.dx, y + pos.dy, {
+                  count: 100, // 200% INCREASE: 50 → 100!
+                  angle: undefined,
+                  speed: { min: 30, max: 70 }, // Slower on mobile
+                  size: { min: 4, max: 10 }, // Larger on mobile
+                  life: 2000 + Math.random() * 800,
+                  colors: [
+                    colors[Math.floor(Math.random() * colors.length)] ||
+                    colors[0],
+                  ],
+                });
+              }, 150);
             },
             [],
-            idx * 0.1,
+            idx * 0.08,
           );
         });
       }
@@ -431,11 +510,11 @@ function FireworksTemplateComponent({
         0,
       );
 
-      // Animate ground glow to pulse with crackers
+      // Animate ground glow to pulse with crackers - MORE VISIBLE!
       tl.to(
         ".fireworks-ground-glow",
         {
-          opacity: 0.6,
+          opacity: 0.8, // Increased for better visibility
           duration: 0.8,
           ease: "power2.in",
         },
@@ -445,138 +524,153 @@ function FireworksTemplateComponent({
       tl.to(
         ".fireworks-ground-glow",
         {
-          opacity: 0.3,
-          duration: 0.5,
+          opacity: 0.5, // Higher base for visibility
+          duration: 0.4,
           ease: "sine.inOut",
-          repeat: 8, // Pulse 8 times
+          repeat: 15, // More pulses for extended phase
           yoyo: true,
         },
         2,
       );
 
-      // Phase 2: Launch fireworks with staggered timing (1-duration)
+      // Phase 2: Launch fireworks with staggered timing (1-7s = 6 seconds of pure fireworks!)
       setAnimationPhase("fireworks");
 
-      // T106: Staggered burst timing - delay between fireworks
-      const durationInSeconds = duration / 1000;
-      const fireworksDuration = durationInSeconds * 0.6; // 60% of total for fireworks
-      const staggerDelay = fireworksDuration / burstCount;
+      // NEW STRUCTURE: Dedicated 6-second fireworks phase before text
+      const fireworksOnlyDuration = 6; // 6 seconds of pure fireworks
+      const staggerDelay = fireworksOnlyDuration / burstCount;
 
+      // Launch main fireworks with OVERLAPPING distribution for maximum density!
+      // 200% INCREASE: TRIPLE burst system = 3 × 50 = 150 total bursts!
       for (let i = 0; i < burstCount; i++) {
-        const delay = 1 + i * staggerDelay; // Start after background fade
+        const delay = 1 + i * staggerDelay * 0.6; // 40% faster = MORE OVERLAP!
         const fireworkTl = launchFirework(i, canvasWidth, canvasHeight, 0);
         if (fireworkTl) {
           tl.add(fireworkTl, delay);
         }
       }
 
-      // NEW: Add ground crackers - Diwali celebration at bottom!
+      // Second wave offset by 0.3s
+      for (let i = 0; i < burstCount; i++) {
+        const delay = 1.3 + i * staggerDelay * 0.6; // Offset by 0.3s
+        const fireworkTl = launchFirework(
+          i + burstCount,
+          canvasWidth,
+          canvasHeight,
+          0,
+        );
+        if (fireworkTl) {
+          tl.add(fireworkTl, delay);
+        }
+      }
+
+      // 200% INCREASE: THIRD wave offset by 0.6s for MAXIMUM density!
+      for (let i = 0; i < burstCount; i++) {
+        const delay = 1.6 + i * staggerDelay * 0.6; // Offset by 0.6s
+        const fireworkTl = launchFirework(
+          i + burstCount * 2,
+          canvasWidth,
+          canvasHeight,
+          0,
+        );
+        if (fireworkTl) {
+          tl.add(fireworkTl, delay);
+        }
+      }
+
+      // NEW: Add ground crackers - 200% INCREASE!
       const crackerStartTime = 1.2; // Start early for continuous ground effect
 
-      // Launch 3 Anar (Flower Pot) crackers - the star of ground crackers!
-      const anar1 = launchGroundCracker(canvasWidth, canvasHeight, 0, "anar");
-      if (anar1) {
-        tl.add(anar1, crackerStartTime);
-      }
+      // Launch 16 Anar (Flower Pot) crackers - 200% INCREASE: 8 → 16!
+      const anarTimings = [
+        0, 0.4, 0.8, 1.2, 1.6, 2.0, 2.4, 2.8, 3.2, 3.6, 4.0, 4.4, 4.8, 5.2, 5.6,
+        6.0,
+      ];
+      anarTimings.forEach((timing) => {
+        const anar = launchGroundCracker(canvasWidth, canvasHeight, 0, "anar");
+        if (anar) {
+          tl.add(anar, crackerStartTime + timing);
+        }
+      });
 
-      const anar2 = launchGroundCracker(canvasWidth, canvasHeight, 0, "anar");
-      if (anar2) {
-        tl.add(anar2, crackerStartTime + 1.5);
-      }
+      // Launch 12 fountain crackers - 200% INCREASE: 6 → 12!
+      const fountainTimings = [
+        0.3, 0.8, 1.3, 1.8, 2.3, 2.8, 3.3, 3.8, 4.3, 4.8, 5.3, 5.8,
+      ];
+      fountainTimings.forEach((timing) => {
+        const fountain = launchGroundCracker(
+          canvasWidth,
+          canvasHeight,
+          0,
+          "fountain",
+        );
+        if (fountain) {
+          tl.add(fountain, crackerStartTime + timing);
+        }
+      });
 
-      const anar3 = launchGroundCracker(canvasWidth, canvasHeight, 0, "anar");
-      if (anar3) {
-        tl.add(anar3, crackerStartTime + 3);
-      }
+      // Launch 16 chakri (spinning wheel) crackers - 200% INCREASE: 8 → 16!
+      const chakriTimings = [
+        0.2, 0.6, 1.0, 1.4, 1.8, 2.2, 2.6, 3.0, 3.4, 3.8, 4.2, 4.6, 5.0, 5.4,
+        5.8, 6.2,
+      ];
+      chakriTimings.forEach((timing) => {
+        const chakri = launchGroundCracker(
+          canvasWidth,
+          canvasHeight,
+          0,
+          "chakri",
+        );
+        if (chakri) {
+          tl.add(chakri, crackerStartTime + timing);
+        }
+      });
 
-      // Launch 2 fountain crackers for variety
-      const fountain1 = launchGroundCracker(
-        canvasWidth,
-        canvasHeight,
-        0,
-        "fountain",
-      );
-      if (fountain1) {
-        tl.add(fountain1, crackerStartTime + 0.8);
-      }
+      // NEW: Add top sparkles - 200% INCREASE: 12 → 24 sparkles!
+      const sparkleStartTime = 1.5; // Start with the fireworks
 
-      const fountain2 = launchGroundCracker(
-        canvasWidth,
-        canvasHeight,
-        0,
-        "fountain",
-      );
-      if (fountain2) {
-        tl.add(fountain2, crackerStartTime + 4);
-      }
+      // Add 24 sparkle patterns for MAXIMUM coverage - 200% INCREASE!
+      const sparkleSequence = [
+        { delay: 0, type: "willow" as const },
+        { delay: 0.35, type: "palm" as const },
+        { delay: 0.7, type: "crossette" as const },
+        { delay: 1.05, type: "willow" as const },
+        { delay: 1.4, type: "palm" as const },
+        { delay: 1.75, type: "crossette" as const },
+        { delay: 2.1, type: "willow" as const },
+        { delay: 2.45, type: "palm" as const },
+        { delay: 2.8, type: "crossette" as const },
+        { delay: 3.15, type: "willow" as const },
+        { delay: 3.5, type: "palm" as const },
+        { delay: 3.85, type: "crossette" as const },
+        { delay: 4.2, type: "willow" as const },
+        { delay: 4.55, type: "palm" as const },
+        { delay: 4.9, type: "crossette" as const },
+        { delay: 5.25, type: "willow" as const },
+        { delay: 5.6, type: "palm" as const },
+        { delay: 5.95, type: "crossette" as const },
+        { delay: 6.3, type: "willow" as const },
+        { delay: 6.65, type: "palm" as const },
+        { delay: 7.0, type: "crossette" as const },
+        { delay: 7.35, type: "willow" as const },
+        { delay: 7.7, type: "palm" as const },
+        { delay: 8.05, type: "crossette" as const },
+      ];
 
-      // Launch 3 chakri (spinning wheel) crackers
-      const chakri1 = launchGroundCracker(
-        canvasWidth,
-        canvasHeight,
-        0,
-        "chakri",
-      );
-      if (chakri1) {
-        tl.add(chakri1, crackerStartTime + 0.5);
-      }
+      sparkleSequence.forEach((sparkle) => {
+        const sparkleEffect = launchTopSparkle(
+          canvasWidth,
+          canvasHeight,
+          0,
+          sparkle.type,
+        );
+        if (sparkleEffect) {
+          tl.add(sparkleEffect, sparkleStartTime + sparkle.delay);
+        }
+      });
 
-      const chakri2 = launchGroundCracker(
-        canvasWidth,
-        canvasHeight,
-        0,
-        "chakri",
-      );
-      if (chakri2) {
-        tl.add(chakri2, crackerStartTime + 2.2);
-      }
-
-      const chakri3 = launchGroundCracker(
-        canvasWidth,
-        canvasHeight,
-        0,
-        "chakri",
-      );
-      if (chakri3) {
-        tl.add(chakri3, crackerStartTime + 3.8);
-      }
-
-      // NEW: Add top sparkles (willow, palm, crossette patterns)
-      const sparkleStartTime = 2; // Start with the fireworks
-
-      // Add 3-4 different sparkle patterns
-      const willow1 = launchTopSparkle(canvasWidth, canvasHeight, 0, "willow");
-      if (willow1) {
-        tl.add(willow1, sparkleStartTime);
-      }
-
-      const palm1 = launchTopSparkle(canvasWidth, canvasHeight, 0, "palm");
-      if (palm1) {
-        tl.add(palm1, sparkleStartTime + 1.5);
-      }
-
-      const crossette1 = launchTopSparkle(
-        canvasWidth,
-        canvasHeight,
-        0,
-        "crossette",
-      );
-      if (crossette1) {
-        tl.add(crossette1, sparkleStartTime + 2.5);
-      }
-
-      const willow2 = launchTopSparkle(canvasWidth, canvasHeight, 0, "willow");
-      if (willow2) {
-        tl.add(willow2, sparkleStartTime + 3.5);
-      }
-
-      const palm2 = launchTopSparkle(canvasWidth, canvasHeight, 0, "palm");
-      if (palm2) {
-        tl.add(palm2, sparkleStartTime + 4.5);
-      }
-
-      // Phase 3: Text reveal (at 75% of duration)
-      const textRevealStart = durationInSeconds * 0.75;
+      // Phase 3: Text reveal AFTER fireworks complete (starts at 7.5s)
+      const textRevealStart = 7.5; // Fixed timing: text appears after 6s of fireworks
       setAnimationPhase("text");
 
       tl.fromTo(
@@ -636,7 +730,6 @@ function FireworksTemplateComponent({
     };
   }, [
     burstCount,
-    duration,
     enableLoop,
     onAnimationComplete,
     useReducedMotion,
@@ -647,75 +740,79 @@ function FireworksTemplateComponent({
   ]);
 
   // Performance tuning: Particle multiplier for maxParticles
-  const PARTICLE_MULTIPLIER = 1.5;
+  const PARTICLE_MULTIPLIER = 6.0; // 200% INCREASE: 4.0 → 6.0 for MAXIMUM density!
+
+  // Full quality settings for all devices
+  const desktopGravity = 60; // Standard gravity for all devices
+  const desktopParticleSize = 6; // Standard size for all devices
 
   return (
     <div
-      ref={containerRef}
+      ref={ containerRef }
       className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
     >
-      {/* Background */}
+      {/* Background */ }
       <div
         className="fireworks-bg absolute inset-0 opacity-0"
-        style={{
+        style={ {
           background:
             "radial-gradient(ellipse at center, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 1) 100%)",
-        }}
+        } }
       />
 
-      {/* Ground Glow Effect - Makes bottom crackers more visible */}
+      {/* Ground Glow Effect - Makes bottom crackers more visible */ }
       <div
         className="fireworks-ground-glow absolute bottom-0 left-0 right-0 h-1/3 pointer-events-none opacity-0"
-        style={{
+        style={ {
           background: `linear-gradient(to top,
             ${colors[0]}15 0%,
             ${colors[1] || colors[0]}10 20%,
             transparent 100%)`,
           mixBlendMode: "screen",
-        }}
+        } }
       />
 
-      {/* T107: Particle Canvas with Gravity Simulation */}
+      {/* T107: Particle Canvas with Gravity Simulation */ }
       <ParticleCanvas
-        ref={canvasRef}
-        config={{
-          maxParticles: particleCount * PARTICLE_MULTIPLIER, // Increase for more particles
+        ref={ canvasRef }
+        config={ {
+          maxParticles: particleCount * PARTICLE_MULTIPLIER, // 200% INCREASE: 2400 * 6.0 = 14,400 particles!
           colors: colors,
-          particleSize: 3,
-          lifespan: 2000,
-          gravity: 120, // T107: Gravity for falling particles
-          friction: 0.97, // T107: Slight friction for realistic fall
-          velocityVariation: 0.2,
+          particleSize: desktopParticleSize, // MOBILE: 8px, DESKTOP: 6px
+          lifespan: 4000, // 200% INCREASE: 3000 → 4000ms for longer visibility!
+          gravity: desktopGravity, // MOBILE: 40 (lighter), DESKTOP: 60
+          friction: 0.99, // LESS friction = particles float more
+          velocityVariation: 0.25, // Slightly reduced variation for containment
           opacity: 1,
           blendMode: "screen",
-        }}
+        } }
         className="absolute inset-0 pointer-events-none"
-        autoStart={true}
+        autoStart={ true }
       />
 
-      {/* T111: Text Overlay */}
+      {/* T111: Text Overlay */ }
       <div className="fireworks-content absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="text-center space-y-4 sm:space-y-6 px-4">
-          {/* Recipient Name */}
+          {/* Recipient Name */ }
           <div className="fireworks-recipient opacity-0">
             <h1
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"
-              style={{
+              style={ {
                 color: "#FFFFFF",
                 textShadow:
                   "0 4px 12px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 0, 0, 0.9), 0 8px 20px rgba(0, 0, 0, 0.85), 0 2px 4px rgba(0, 0, 0, 1)",
-              }}
+              } }
             >
-              {recipientName}
+              { recipientName }
             </h1>
           </div>
 
-          {/* Message */}
-          {message && (
+          {/* Message */ }
+          { message && (
             <div className="fireworks-message opacity-0">
               <p
                 className="text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto px-4"
-                style={{
+                style={ {
                   color: "#FFFFFF",
                   textShadow:
                     "0 2px 8px rgba(0, 0, 0, 0.95), 0 4px 12px rgba(0, 0, 0, 0.8)",
@@ -723,35 +820,35 @@ function FireworksTemplateComponent({
                   padding: "1rem 1.5rem",
                   borderRadius: "0.75rem",
                   backdropFilter: "blur(8px)",
-                }}
+                } }
               >
-                {message}
+                { message }
               </p>
             </div>
-          )}
+          ) }
 
-          {/* Sender Name */}
+          {/* Sender Name */ }
           <div className="fireworks-sender opacity-0">
             <p
               className="text-base sm:text-lg md:text-xl"
-              style={{
+              style={ {
                 color: "#FFD700",
                 textShadow:
                   "0 2px 8px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.85), 0 4px 12px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)",
-              }}
+              } }
             >
-              From {senderName}
+              From { senderName }
             </p>
           </div>
         </div>
       </div>
 
-      {/* Animation Phase Indicator (dev only) */}
-      {process.env.NODE_ENV === "development" && (
+      {/* Animation Phase Indicator (dev only) */ }
+      { process.env.NODE_ENV === "development" && (
         <div className="absolute top-4 left-4 bg-black/50 text-white text-xs px-3 py-1 rounded">
-          Phase: {animationPhase}
+          Phase: { animationPhase }
         </div>
-      )}
+      ) }
     </div>
   );
 }
@@ -769,11 +866,11 @@ export const FireworksTemplate = memo(
       prevProps.duration === nextProps.duration &&
       prevProps.enableLoop === nextProps.enableLoop &&
       prevProps.relationshipContext.colorIntensity ===
-        nextProps.relationshipContext.colorIntensity &&
+      nextProps.relationshipContext.colorIntensity &&
       prevProps.relationshipContext.animationSpeed ===
-        nextProps.relationshipContext.animationSpeed &&
+      nextProps.relationshipContext.animationSpeed &&
       JSON.stringify(prevProps.colorPalette) ===
-        JSON.stringify(nextProps.colorPalette)
+      JSON.stringify(nextProps.colorPalette)
     );
   },
 );

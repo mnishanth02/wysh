@@ -8,7 +8,6 @@
 
 import { gsap } from "gsap";
 import { memo, useEffect, useRef, useState } from "react";
-import { getDeviceAnimationConfig } from "@/lib/animations";
 import { FESTIVALS } from "@/lib/constants";
 import { shouldUseReducedMotion } from "@/lib/performance";
 import { generateUniqueKey } from "@/lib/utils";
@@ -48,9 +47,6 @@ function HoliTemplateComponent({
 
   // T121: Check for reduced motion preference
   const useReducedMotion = shouldUseReducedMotion();
-
-  // T108: Mobile optimization - detect device for simplified animations
-  const deviceConfig = getDeviceAnimationConfig();
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -145,87 +141,75 @@ function HoliTemplateComponent({
 
   return (
     <div
-      ref={containerRef}
+      ref={ containerRef }
       className="holi-bg relative flex items-center justify-center p-4"
-      style={{
+      style={ {
         background: `linear-gradient(135deg, ${colors[0]}, ${colors[4]})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 0.8s ease-out" : "none",
         width: "100%",
         height: "100%",
         minHeight: isPreview ? "auto" : "100vh",
-      }}
+      } }
     >
-      {/* Color splash effects - T108: Reduce complexity on mobile */}
+      {/* Color splash effects - Full experience on all devices */ }
       <div className="absolute inset-0 overflow-hidden">
-        {colors
-          .slice(0, deviceConfig.isMobile ? 3 : colors.length)
-          .map((color, i) => (
-            <div
-              key={`splash-${generateUniqueKey()}`}
-              className={`color-splash absolute rounded-full ${
-                deviceConfig.isMobile ? "blur-2xl" : "blur-3xl"
-              }`}
-              style={{
-                backgroundColor: color,
-                opacity: 0,
-                width: deviceConfig.isMobile
-                  ? `${150 + i * 40}px`
-                  : `${200 + i * 50}px`,
-                height: deviceConfig.isMobile
-                  ? `${150 + i * 40}px`
-                  : `${200 + i * 50}px`,
-                left: `${20 + i * 15}%`,
-                top: `${10 + (i % 3) * 25}%`,
-              }}
-            />
-          ))}
+        { colors.map((color, i) => (
+          <div
+            key={ `splash-${generateUniqueKey()}` }
+            className="color-splash absolute rounded-full blur-3xl"
+            style={ {
+              backgroundColor: color,
+              opacity: 0,
+              width: `${200 + i * 50}px`,
+              height: `${200 + i * 50}px`,
+              left: `${20 + i * 15}%`,
+              top: `${10 + (i % 3) * 25}%`,
+            } }
+          />
+        )) }
       </div>
 
-      {/* T151: Responsive content for preview and full-screen modes */}
+      {/* T151: Responsive content for preview and full-screen modes */ }
       <div
-        className={`relative z-10 max-w-2xl text-center w-full ${
-          isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
-        }`}
+        className={ `relative z-10 max-w-2xl text-center w-full ${isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
+          }` }
       >
         <h1
-          className={`greeting-text font-bold opacity-0 ${
-            isPreview
+          className={ `greeting-text font-bold opacity-0 ${isPreview
               ? "text-3xl sm:text-4xl md:text-5xl"
               : "text-5xl sm:text-6xl md:text-7xl"
-          }`}
-          style={{
+            }` }
+          style={ {
             color: "#FFFFFF",
             textShadow:
               "0 3px 10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(0, 0, 0, 0.8), 0 6px 15px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 1)",
-          }}
+          } }
         >
           Happy Holi!
         </h1>
 
-        <div className={isPreview ? "space-y-3 sm:space-y-4" : "space-y-4"}>
+        <div className={ isPreview ? "space-y-3 sm:space-y-4" : "space-y-4" }>
           <p
-            className={`recipient-name font-semibold opacity-0 ${
-              isPreview
+            className={ `recipient-name font-semibold opacity-0 ${isPreview
                 ? "text-xl sm:text-2xl md:text-3xl"
                 : "text-3xl sm:text-4xl"
-            }`}
-            style={{
+              }` }
+            style={ {
               color: "#FFFFFF",
               textShadow:
                 "0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 1)",
-            }}
+            } }
           >
-            Dear {recipientName},
+            Dear { recipientName },
           </p>
 
           <p
-            className={`greeting-text leading-relaxed px-4 opacity-0 ${
-              isPreview
+            className={ `greeting-text leading-relaxed px-4 opacity-0 ${isPreview
                 ? "text-sm sm:text-base md:text-lg"
                 : "text-lg sm:text-xl"
-            }`}
-            style={{
+              }` }
+            style={ {
               color: "#FFFFFF",
               textShadow:
                 "0 2px 6px rgba(0, 0, 0, 0.95), 0 3px 10px rgba(0, 0, 0, 0.8)",
@@ -233,27 +217,26 @@ function HoliTemplateComponent({
               padding: "0.75rem 1rem",
               borderRadius: "0.5rem",
               backdropFilter: "blur(6px)",
-            }}
+            } }
           >
-            {message ||
-              `May your life be filled with colors of joy, love, and happiness!`}
+            { message ||
+              `May your life be filled with colors of joy, love, and happiness!` }
           </p>
 
           <p
-            className={`sender-name font-medium opacity-0 ${
-              isPreview
+            className={ `sender-name font-medium opacity-0 ${isPreview
                 ? "text-base sm:text-lg md:text-xl mt-4 sm:mt-6"
                 : "text-xl sm:text-2xl mt-8"
-            }`}
-            style={{
+              }` }
+            style={ {
               color: "#FFD700",
               textShadow:
                 "0 2px 8px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.8), 0 4px 12px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)",
-            }}
+            } }
           >
             With colorful wishes,
             <br />
-            {senderName}
+            { senderName }
           </p>
         </div>
       </div>
@@ -272,9 +255,9 @@ export const HoliTemplate = memo(
       prevProps.variant === nextProps.variant &&
       prevProps.isPreview === nextProps.isPreview &&
       prevProps.relationshipContext.colorIntensity ===
-        nextProps.relationshipContext.colorIntensity &&
+      nextProps.relationshipContext.colorIntensity &&
       prevProps.relationshipContext.animationSpeed ===
-        nextProps.relationshipContext.animationSpeed
+      nextProps.relationshipContext.animationSpeed
     );
   },
 );
