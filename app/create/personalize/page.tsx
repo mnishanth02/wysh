@@ -40,11 +40,12 @@ function PersonalizeContent() {
     <div className="max-w-2xl mx-auto space-y-8">
       <Button
         variant="ghost"
+        size="sm"
         onClick={() => router.push(`/create/relationship?festival=${festival}`)}
-        className="mb-4"
+        className="mb-4 text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back
+        Back to Relationship
       </Button>
 
       <div className="text-center space-y-4">

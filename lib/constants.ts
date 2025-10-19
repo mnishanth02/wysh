@@ -22,12 +22,12 @@ import type {
 export const FESTIVALS = {
   diwali: {
     festivalId: "diwali" as FestivalType,
-    displayName: "Diwali (Deepavali)",
+    displayName: "Diwali - Festival of Lights",
     category: "religious" as const,
     colorPalette: ["#FF6B35", "#FFA500", "#8B0000", "#FFFFFF"],
     symbols: ["diya", "rangoli", "fireworks", "lotus"],
     animationStyle: "sequential" as const,
-    description: "Festival of Lights",
+    description: "Celebrate prosperity and divine light",
   },
   holi: {
     festivalId: "holi" as FestivalType,
@@ -36,16 +36,16 @@ export const FESTIVALS = {
     colorPalette: ["#FF1493", "#FFD700", "#1E90FF", "#32CD32", "#9370DB"],
     symbols: ["color_powder", "water_balloon", "hands", "flowers"],
     animationStyle: "burst" as const,
-    description: "Festival of Colors",
+    description: "Spread joy, love, and vibrant celebrations",
   },
   christmas: {
     festivalId: "christmas" as FestivalType,
-    displayName: "Christmas",
+    displayName: "Christmas - Season of Joy",
     category: "religious" as const,
     colorPalette: ["#C41E3A", "#0C6B2E", "#FFD700", "#FFFFFF"],
     symbols: ["tree", "star", "gift", "snowflake", "bells"],
     animationStyle: "cascade" as const,
-    description: "Season of Joy",
+    description: "Celebrate love, warmth, and togetherness",
   },
   newyear: {
     festivalId: "newyear" as FestivalType,
@@ -54,7 +54,7 @@ export const FESTIVALS = {
     colorPalette: ["#FFD700", "#000000", "#FF6B6B", "#4ECDC4", "#95E1D3"],
     symbols: ["fireworks", "champagne", "clock", "confetti", "balloon"],
     animationStyle: "burst" as const,
-    description: "New Beginnings",
+    description: "Welcome new beginnings with hope",
   },
   pongal: {
     festivalId: "pongal" as FestivalType,

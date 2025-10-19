@@ -2,20 +2,95 @@
 
 /**
  * Festival Selector Component
- * Displays festival cards in a grid layout
+ * Displays festival cards with beautiful background images
  * Fetches festivals from Convex and handles selection
  *
  * Using nuqs with URL key remapping for cleaner URLs
  */
 
 import { useQuery } from "convex/react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { LoadingState } from "@/components/shared/LoadingState";
 import { Card } from "@/components/ui/card";
 import { api } from "@/convex/_generated/api";
 import { FESTIVALS } from "@/lib/constants";
 import type { FestivalType } from "@/types";
+
+// Festival image mappings
+const FESTIVAL_IMAGES: Record<FestivalType, string> = {
+  diwali: "/festivals/diwali/diwali-festival.png",
+  holi: "/festivals/holi/holi-festival.png",
+  christmas: "/festivals/christmas/christmas-festival.png",
+  newyear: "/festivals/newyear/newyear-festival.png",
+  pongal: "/festivals/pongal/pongal-festival.png",
+  generic: "/festivals/generic-festival.png",
+};
+
+// Fallback gradient backgrounds if images are not available
+const FESTIVAL_GRADIENTS: Record<FestivalType, string> = {
+  diwali: "linear-gradient(135deg, #FF6B35 0%, #FFA500 50%, #8B0000 100%)",
+  holi: "linear-gradient(135deg, #FF1493 0%, #FFD700 25%, #1E90FF 50%, #32CD32 75%, #9370DB 100%)",
+  christmas: "linear-gradient(135deg, #C41E3A 0%, #0C6B2E 50%, #FFD700 100%)",
+  newyear: "linear-gradient(135deg, #FFD700 0%, #FF6B6B 50%, #4ECDC4 100%)",
+  pongal: "linear-gradient(135deg, #FF8C42 0%, #FDEE00 50%, #228B22 100%)",
+  generic: "linear-gradient(135deg, #667EEA 0%, #764BA2 50%, #F093FB 100%)",
+};
+
+function FestivalCard({
+  festival,
+  festivalData,
+  festivalId,
+  onSelect,
+}: {
+  festival: { _id: string; displayName: string; festivalId: string };
+  festivalData: { description: string };
+  festivalId: FestivalType;
+  onSelect: () => void;
+}) {
+  const [imageError, setImageError] = useState(false);
+
+  return (
+    <Card
+      className="group relative touch-target gap-0 p-0 cursor-pointer overflow-hidden border-2 shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] rounded-3xl"
+      onClick={onSelect}
+    >
+      {/* Background Image or Gradient Fallback */}
+      <div className="relative h-56 sm:h-64 md:h-72 w-full overflow-hidden">
+        {!imageError ? (
+          <Image
+            src={FESTIVAL_IMAGES[festivalId]}
+            alt={festival.displayName}
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-110"
+            priority={festivalId === "diwali" || festivalId === "christmas"}
+            onError={() => setImageError(true)}
+          />
+        ) : (
+          <div
+            className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
+            style={{ background: FESTIVAL_GRADIENTS[festivalId] }}
+          />
+        )}
+
+        {/* Gradient Overlay for better text readability */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
+        {/* Festival Info Overlay */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 drop-shadow-lg">
+            {festival.displayName}
+          </h3>
+          <p className="text-sm sm:text-base md:text-lg text-white/90 drop-shadow">
+            {festivalData.description}
+          </p>
+        </div>
+      </div>
+    </Card>
+  );
+}
 
 export function FestivalSelector() {
   const router = useRouter();
@@ -42,33 +117,19 @@ export function FestivalSelector() {
 
   return (
     <div className="w-full px-4">
-      <div className="grid gap-4 sm:gap-5 grid-cols-2 lg:grid-cols-4 auto-rows-max">
+      <div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto">
         {filteredFestivals.map((festival) => {
           const festivalData = FESTIVALS[festival.festivalId as FestivalType];
+          const festivalId = festival.festivalId as FestivalType;
 
           return (
-            <Card
+            <FestivalCard
               key={festival._id}
-              className="group touch-target gap-0 p-0 cursor-pointer overflow-hidden border border-border shadow-sm transition-all duration-200 hover:shadow-md hover:scale-105 active:scale-95"
-              onClick={() =>
-                handleFestivalSelect(festival.festivalId as FestivalType)
-              }
-            >
-              <div
-                className="h-28 sm:h-36 transition-transform group-hover:brightness-110 duration-200"
-                style={{
-                  background: `linear-gradient(135deg, ${festivalData.colorPalette[0]}, ${festivalData.colorPalette[1]})`,
-                }}
-              />
-              <div className="p-4 sm:p-4 space-y-2">
-                <h3 className="text-base sm:text-lg font-semibold leading-tight">
-                  {festival.displayName}
-                </h3>
-                <p className="text-xs sm:text-sm text-muted-foreground line-clamp-1">
-                  {festivalData.description}
-                </p>
-              </div>
-            </Card>
+              festival={festival}
+              festivalData={festivalData}
+              festivalId={festivalId}
+              onSelect={() => handleFestivalSelect(festivalId)}
+            />
           );
         })}
       </div>

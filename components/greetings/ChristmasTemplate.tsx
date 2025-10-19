@@ -137,113 +137,119 @@ const SnowGlobeVariant = ({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="relative flex items-center justify-center p-4"
-      style={ {
+      style={{
         background: `linear-gradient(135deg, ${secondaryColor}, ${primaryColor})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 1s ease-out" : "none",
         width: "100%",
         height: "100%",
         minHeight: isPreview ? "auto" : "100vh",
-      } }
+      }}
     >
-      {/* Snowflakes - T109: Reduced count on mobile */ }
+      {/* Snowflakes - T109: Reduced count on mobile */}
       <div className="absolute inset-0 overflow-hidden">
-        { [...Array(snowflakeCount)].map(() => (
+        {[...Array(snowflakeCount)].map(() => (
           <div
-            key={ `snow-${generateUniqueKey()}` }
-            className={ `snowflake absolute text-white opacity-70 ${isPreview ? "text-lg" : "text-2xl"
-              }` }
-            style={ {
+            key={`snow-${generateUniqueKey()}`}
+            className={`snowflake absolute text-white opacity-70 ${
+              isPreview ? "text-lg" : "text-2xl"
+            }`}
+            style={{
               left: `${Math.random() * 100}%`,
               top: `${Math.random() * 100}%`,
-            } }
+            }}
           >
             ❄
           </div>
-        )) }
+        ))}
 
-        {/* Twinkling lights */ }
-        { [...Array(15)].map(() => (
+        {/* Twinkling lights */}
+        {[...Array(15)].map(() => (
           <div
-            key={ `light-${generateUniqueKey()}` }
-            className={ `light absolute rounded-full ${isPreview ? "h-2 w-2" : "h-3 w-3"}` }
-            style={ {
+            key={`light-${generateUniqueKey()}`}
+            className={`light absolute rounded-full ${isPreview ? "h-2 w-2" : "h-3 w-3"}`}
+            style={{
               backgroundColor: colors[2],
               left: `${Math.random() * 100}%`,
               top: `${10 + Math.random() * 5}%`,
               boxShadow: `0 0 15px ${colors[2]}`,
-            } }
+            }}
           />
-        )) }
+        ))}
       </div>
 
-      {/* Content */ }
+      {/* Content */}
       <div
-        className={ `relative z-10 max-w-2xl text-center w-full ${isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
-          }` }
+        className={`relative z-10 max-w-2xl text-center w-full ${
+          isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
+        }`}
       >
         <h1
-          className={ `greeting-text font-bold ${isPreview
+          className={`greeting-text font-bold ${
+            isPreview
               ? "text-3xl sm:text-4xl md:text-5xl"
               : "text-5xl sm:text-6xl md:text-7xl"
-            }` }
-          style={ {
+          }`}
+          style={{
             color: "#FFFFFF",
             textShadow:
               "0 3px 10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(196, 30, 58, 0.6), 0 6px 15px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 1)",
-          } }
+          }}
         >
           Merry Christmas!
         </h1>
 
-        <div className={ isPreview ? "space-y-3 sm:space-y-4" : "space-y-4" }>
+        <div className={isPreview ? "space-y-3 sm:space-y-4" : "space-y-4"}>
           <p
-            className={ `recipient-name font-semibold ${isPreview
+            className={`recipient-name font-semibold ${
+              isPreview
                 ? "text-xl sm:text-2xl md:text-3xl"
                 : "text-3xl sm:text-4xl"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#FFFFFF",
               textShadow:
                 "0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 1)",
-            } }
+            }}
           >
-            Dear { recipientName },
+            Dear {recipientName},
           </p>
 
           <p
-            className={ `greeting-text leading-relaxed px-4 ${isPreview
+            className={`greeting-text leading-relaxed px-4 ${
+              isPreview
                 ? "text-sm sm:text-base md:text-lg"
                 : "text-lg sm:text-xl"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#FFFFFF",
               textShadow:
                 "0 2px 6px rgba(0, 0, 0, 0.95), 0 3px 10px rgba(0, 0, 0, 0.6)",
               padding: "0.75rem 1rem",
               backdropFilter: "blur(6px)",
-            } }
+            }}
           >
-            { message ||
-              `Wishing you a magical Christmas filled with joy, peace, and love!` }
+            {message ||
+              `Wishing you a magical Christmas filled with joy, peace, and love!`}
           </p>
 
           <p
-            className={ `sender-name font-medium ${isPreview
+            className={`sender-name font-medium ${
+              isPreview
                 ? "text-base sm:text-lg md:text-xl mt-4 sm:mt-6"
                 : "text-xl sm:text-2xl mt-8"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#FFD700",
               textShadow:
                 "0 2px 4px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.8), 0 4px 8px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)",
-            } }
+            }}
           >
             With warm wishes,
             <br />
-            { senderName }
+            {senderName}
           </p>
         </div>
       </div>
@@ -353,23 +359,23 @@ const TreeLightsVariant = ({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="relative flex items-center justify-center p-4"
-      style={ {
+      style={{
         background: `linear-gradient(135deg, ${secondaryColor}, ${primaryColor})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 1s ease-out" : "none",
         width: "100%",
         height: "100%",
         minHeight: isPreview ? "auto" : "100vh",
-      } }
+      }}
     >
-      {/* Christmas Tree with Lights */ }
+      {/* Christmas Tree with Lights */}
       <div className="absolute inset-0 overflow-hidden flex items-center justify-center">
-        <div className="relative" style={ { width: "200px", height: "300px" } }>
-          {/* Tree shape */ }
+        <div className="relative" style={{ width: "200px", height: "300px" }}>
+          {/* Tree shape */}
           <div
-            style={ {
+            style={{
               position: "absolute",
               top: "0",
               left: "50%",
@@ -379,10 +385,10 @@ const TreeLightsVariant = ({
               borderLeft: "60px solid transparent",
               borderRight: "60px solid transparent",
               borderBottom: "100px solid rgba(10, 77, 46, 0.3)",
-            } }
+            }}
           />
           <div
-            style={ {
+            style={{
               position: "absolute",
               top: "80px",
               left: "50%",
@@ -392,11 +398,11 @@ const TreeLightsVariant = ({
               borderLeft: "80px solid transparent",
               borderRight: "80px solid transparent",
               borderBottom: "120px solid rgba(10, 77, 46, 0.3)",
-            } }
+            }}
           />
 
-          {/* Tree lights - distributed across tree */ }
-          { [...Array(24)].map((_, i) => {
+          {/* Tree lights - distributed across tree */}
+          {[...Array(24)].map((_, i) => {
             const row = Math.floor(i / 4);
             const col = i % 4;
             const topPercent = 15 + row * 18;
@@ -404,23 +410,23 @@ const TreeLightsVariant = ({
 
             return (
               <div
-                key={ `tree-light-${generateUniqueKey()}` }
+                key={`tree-light-${generateUniqueKey()}`}
                 className="tree-light absolute rounded-full"
-                style={ {
+                style={{
                   width: isPreview ? "8px" : "10px",
                   height: isPreview ? "8px" : "10px",
                   backgroundColor: colors[i % 3],
                   top: `${topPercent}%`,
                   left: `${leftPercent}%`,
                   boxShadow: `0 0 12px ${colors[i % 3]}, inset 0 0 8px rgba(255,255,255,0.4)`,
-                } }
+                }}
               />
             );
-          }) }
+          })}
 
-          {/* Tree trunk */ }
+          {/* Tree trunk */}
           <div
-            style={ {
+            style={{
               position: "absolute",
               bottom: "-40px",
               left: "50%",
@@ -429,76 +435,81 @@ const TreeLightsVariant = ({
               height: "40px",
               backgroundColor: "#8B4513",
               borderRadius: "2px",
-            } }
+            }}
           />
         </div>
       </div>
 
-      {/* Content */ }
+      {/* Content */}
       <div
-        className={ `relative z-10 max-w-2xl text-center w-full ${isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
-          }` }
+        className={`relative z-10 max-w-2xl text-center w-full ${
+          isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
+        }`}
       >
         <h1
-          className={ `greeting-text font-bold ${isPreview
+          className={`greeting-text font-bold ${
+            isPreview
               ? "text-3xl sm:text-4xl md:text-5xl"
               : "text-5xl sm:text-6xl md:text-7xl"
-            }` }
-          style={ {
+          }`}
+          style={{
             color: "#FFFFFF",
             textShadow:
               "0 3px 10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(196, 30, 58, 0.6), 0 6px 15px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 1)",
-          } }
+          }}
         >
           Merry Christmas!
         </h1>
 
-        <div className={ isPreview ? "space-y-3 sm:space-y-4" : "space-y-4" }>
+        <div className={isPreview ? "space-y-3 sm:space-y-4" : "space-y-4"}>
           <p
-            className={ `recipient-name font-semibold ${isPreview
+            className={`recipient-name font-semibold ${
+              isPreview
                 ? "text-xl sm:text-2xl md:text-3xl"
                 : "text-3xl sm:text-4xl"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#FFFFFF",
               textShadow:
                 "0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 1)",
-            } }
+            }}
           >
-            Dear { recipientName },
+            Dear {recipientName},
           </p>
 
           <p
-            className={ `greeting-text leading-relaxed px-4 ${isPreview
+            className={`greeting-text leading-relaxed px-4 ${
+              isPreview
                 ? "text-sm sm:text-base md:text-lg"
                 : "text-lg sm:text-xl"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#FFFFFF",
               textShadow:
                 "0 2px 6px rgba(0, 0, 0, 0.95), 0 3px 10px rgba(0, 0, 0, 0.6)",
               padding: "0.75rem 1rem",
               backdropFilter: "blur(6px)",
-            } }
+            }}
           >
-            { message ||
-              `Wishing you a magical Christmas filled with joy, peace, and love!` }
+            {message ||
+              `Wishing you a magical Christmas filled with joy, peace, and love!`}
           </p>
 
           <p
-            className={ `sender-name font-medium ${isPreview
+            className={`sender-name font-medium ${
+              isPreview
                 ? "text-base sm:text-lg md:text-xl mt-4 sm:mt-6"
                 : "text-xl sm:text-2xl mt-8"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#FFD700",
               textShadow:
                 "0 2px 4px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.8), 0 4px 8px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)",
-            } }
+            }}
           >
             With warm wishes,
             <br />
-            { senderName }
+            {senderName}
           </p>
         </div>
       </div>
@@ -629,9 +640,9 @@ const GiftUnwrapVariant = ({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="relative flex items-center justify-center p-4"
-      style={ {
+      style={{
         background: `linear-gradient(135deg, ${secondaryColor}, ${primaryColor})`,
         opacity: bgVisible ? 1 : 0,
         transition: bgVisible ? "opacity 1s ease-out" : "none",
@@ -639,31 +650,31 @@ const GiftUnwrapVariant = ({
         height: "100%",
         minHeight: isPreview ? "auto" : "100vh",
         perspective: "1000px",
-      } }
+      }}
     >
-      {/* Gift Box Animation */ }
+      {/* Gift Box Animation */}
       <div className="absolute inset-0 overflow-hidden flex items-start justify-center pt-12 sm:pt-20">
         <div
-          style={ {
+          style={{
             perspective: "1000px",
             width: isPreview ? "80px" : "120px",
             height: isPreview ? "80px" : "120px",
-          } }
+          }}
         >
-          {/* Gift Box */ }
+          {/* Gift Box */}
           <div
             className="gift-box relative"
-            style={ {
+            style={{
               width: "100%",
               height: "100%",
               backgroundColor: colors[0],
               borderRadius: "8px",
               boxShadow: `0 8px 24px rgba(0,0,0,0.3), inset 0 0 0 3px ${colors[1]}`,
-            } }
+            }}
           >
-            {/* Gift Ribbon */ }
+            {/* Gift Ribbon */}
             <div
-              style={ {
+              style={{
                 position: "absolute",
                 top: 0,
                 left: 0,
@@ -673,133 +684,138 @@ const GiftUnwrapVariant = ({
                 alignItems: "center",
                 justifyContent: "center",
                 zIndex: 1,
-              } }
+              }}
             >
               <div
-                style={ {
+                style={{
                   width: "30%",
                   height: "100%",
                   backgroundColor: colors[1],
                   opacity: 0.8,
-                } }
+                }}
               />
               <div
-                style={ {
+                style={{
                   width: "100%",
                   height: "30%",
                   backgroundColor: colors[1],
                   opacity: 0.8,
                   position: "absolute",
-                } }
+                }}
               />
               <div
-                style={ {
+                style={{
                   width: "20px",
                   height: "20px",
                   backgroundColor: colors[2],
                   borderRadius: "50%",
                   zIndex: 2,
-                } }
+                }}
               />
             </div>
 
-            {/* Gift Lid */ }
+            {/* Gift Lid */}
             <div
               className="gift-lid absolute top-0 left-0 right-0"
-              style={ {
+              style={{
                 height: "50%",
                 backgroundColor: colors[0],
                 borderRadius: "8px 8px 0 0",
                 boxShadow: `inset 0 0 0 3px ${colors[1]}`,
                 transformOrigin: "bottom center",
                 transformStyle: "preserve-3d",
-              } }
+              }}
             />
           </div>
         </div>
 
-        {/* Confetti Particles */ }
-        { [...Array(20)].map((_, idx) => (
+        {/* Confetti Particles */}
+        {[...Array(20)].map((_, idx) => (
           <div
-            key={ `confetti-${generateUniqueKey()}` }
+            key={`confetti-${generateUniqueKey()}`}
             className="confetti absolute"
-            style={ {
+            style={{
               width: isPreview ? "6px" : "8px",
               height: isPreview ? "6px" : "8px",
               backgroundColor: colors[idx % 3],
               top: "50%",
               left: "50%",
               borderRadius: "2px",
-            } }
+            }}
           />
-        )) }
+        ))}
       </div>
 
-      {/* Content */ }
+      {/* Content */}
       <div
-        className={ `relative z-10 max-w-2xl text-center w-full ${isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
-          }` }
+        className={`relative z-10 max-w-2xl text-center w-full ${
+          isPreview ? "space-y-4 sm:space-y-6" : "space-y-6"
+        }`}
       >
         <h1
-          className={ `greeting-text font-bold ${isPreview
+          className={`greeting-text font-bold ${
+            isPreview
               ? "text-3xl sm:text-4xl md:text-5xl"
               : "text-5xl sm:text-6xl md:text-7xl"
-            }` }
-          style={ {
+          }`}
+          style={{
             color: "#FFFFFF",
             textShadow:
               "0 3px 10px rgba(0, 0, 0, 0.9), 0 0 25px rgba(196, 30, 58, 0.6), 0 6px 15px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 1)",
-          } }
+          }}
         >
           Merry Christmas!
         </h1>
 
-        <div className={ isPreview ? "space-y-3 sm:space-y-4" : "space-y-4" }>
+        <div className={isPreview ? "space-y-3 sm:space-y-4" : "space-y-4"}>
           <p
-            className={ `recipient-name font-semibold ${isPreview
+            className={`recipient-name font-semibold ${
+              isPreview
                 ? "text-xl sm:text-2xl md:text-3xl"
                 : "text-3xl sm:text-4xl"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#FFFFFF",
               textShadow:
                 "0 2px 8px rgba(0, 0, 0, 0.9), 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 3px rgba(0, 0, 0, 1)",
-            } }
+            }}
           >
-            Dear { recipientName },
+            Dear {recipientName},
           </p>
 
           <p
-            className={ `greeting-text leading-relaxed px-4 ${isPreview
+            className={`greeting-text leading-relaxed px-4 ${
+              isPreview
                 ? "text-sm sm:text-base md:text-lg"
                 : "text-lg sm:text-xl"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#FFFFFF",
               textShadow:
                 "0 2px 6px rgba(0, 0, 0, 0.95), 0 3px 10px rgba(0, 0, 0, 0.6)",
               padding: "0.75rem 1rem",
               backdropFilter: "blur(6px)",
-            } }
+            }}
           >
-            { message ||
-              `Wishing you a magical Christmas filled with joy, peace, and love!` }
+            {message ||
+              `Wishing you a magical Christmas filled with joy, peace, and love!`}
           </p>
 
           <p
-            className={ `sender-name font-medium ${isPreview
+            className={`sender-name font-medium ${
+              isPreview
                 ? "text-base sm:text-lg md:text-xl mt-4 sm:mt-6"
                 : "text-xl sm:text-2xl mt-8"
-              }` }
-            style={ {
+            }`}
+            style={{
               color: "#FFD700",
               textShadow:
                 "0 2px 4px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.8), 0 4px 8px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)",
-            } }
+            }}
           >
             With warm wishes,
             <br />
-            { senderName }
+            {senderName}
           </p>
         </div>
       </div>
@@ -869,27 +885,32 @@ function ChristmasTemplateComponent({
   // Render appropriate variant
   switch (variant) {
     case "1":
-      return <SnowGlobeVariant { ...commonProps } />;
+      return <SnowGlobeVariant {...commonProps} />;
     case "2":
-      return <TreeLightsVariant { ...commonProps } />;
+      return <TreeLightsVariant {...commonProps} />;
     case "3":
-      return <GiftUnwrapVariant { ...commonProps } />;
+      return <GiftUnwrapVariant {...commonProps} />;
     default:
-      return <SnowGlobeVariant { ...commonProps } />;
+      return <SnowGlobeVariant {...commonProps} />;
   }
 }
 
 // Memoized export to prevent unnecessary re-renders
-export const ChristmasTemplate = memo(ChristmasTemplateComponent, (prevProps, nextProps) => {
-  return (
-    prevProps.recipientName === nextProps.recipientName &&
-    prevProps.senderName === nextProps.senderName &&
-    prevProps.message === nextProps.message &&
-    prevProps.variant === nextProps.variant &&
-    prevProps.isPreview === nextProps.isPreview &&
-    prevProps.relationshipContext.colorIntensity === nextProps.relationshipContext.colorIntensity &&
-    prevProps.relationshipContext.animationSpeed === nextProps.relationshipContext.animationSpeed
-  );
-});
+export const ChristmasTemplate = memo(
+  ChristmasTemplateComponent,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.recipientName === nextProps.recipientName &&
+      prevProps.senderName === nextProps.senderName &&
+      prevProps.message === nextProps.message &&
+      prevProps.variant === nextProps.variant &&
+      prevProps.isPreview === nextProps.isPreview &&
+      prevProps.relationshipContext.colorIntensity ===
+        nextProps.relationshipContext.colorIntensity &&
+      prevProps.relationshipContext.animationSpeed ===
+        nextProps.relationshipContext.animationSpeed
+    );
+  },
+);
 
 ChristmasTemplate.displayName = "ChristmasTemplate";

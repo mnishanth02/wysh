@@ -20,7 +20,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
     <ConvexProvider client={convex}>
       <NextThemesProvider
         attribute="class"
-        defaultTheme="dark"
+        defaultTheme="system"
         disableTransitionOnChange
         enableColorScheme
         enableSystem
