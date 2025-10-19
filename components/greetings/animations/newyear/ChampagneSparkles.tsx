@@ -75,6 +75,8 @@ export function ChampagneSparkles({
     [particleCount, duration, colors],
   );
 
+  const EARLY_TRIGGER_FACTOR = 0.8;
+
   useEffect(() => {
     const particleSystem = canvasRef.current?.getSystem();
     if (!particleSystem) return;
@@ -95,13 +97,13 @@ export function ChampagneSparkles({
       0,
     );
 
-    // Callback when sparkles should reach top (duration * 0.8 for early trigger)
+    // Callback when sparkles should reach top (duration * EARLY_TRIGGER_FACTOR for early trigger)
     tl.call(
       () => {
         onReachTop?.();
       },
       [],
-      duration * 0.8,
+      duration * EARLY_TRIGGER_FACTOR,
     );
 
     timelineRef.current = tl;

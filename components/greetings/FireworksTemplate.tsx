@@ -646,6 +646,9 @@ export function FireworksTemplate({
     launchTopSparkle,
   ]);
 
+  // Performance tuning: Particle multiplier for maxParticles
+  const PARTICLE_MULTIPLIER = 1.5;
+
   return (
     <div
       ref={ containerRef }
@@ -676,7 +679,7 @@ export function FireworksTemplate({
       <ParticleCanvas
         ref={ canvasRef }
         config={ {
-          maxParticles: particleCount * 1.5, // Increase for more particles
+          maxParticles: particleCount * PARTICLE_MULTIPLIER, // Increase for more particles
           colors: colors,
           particleSize: 3,
           lifespan: 2000,
