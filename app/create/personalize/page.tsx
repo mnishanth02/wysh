@@ -51,7 +51,7 @@ function PersonalizeContent() {
       <Button
         variant="ghost"
         size="sm"
-        onClick={ () => router.push(`/create/relationship?festival=${festival}`) }
+        onClick={() => router.push(`/create/relationship?festival=${festival}`)}
         className="mb-4 text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
@@ -78,7 +78,7 @@ export default function PersonalizePage() {
       <Navigation />
 
       <main className="flex-1 container mx-auto px-4 py-8 sm:py-12">
-        <Suspense fallback={ <LoadingState message="Loading..." /> }>
+        <Suspense fallback={<LoadingState message="Loading..." />}>
           <PersonalizeContent />
         </Suspense>
       </main>

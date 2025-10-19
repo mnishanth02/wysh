@@ -9,22 +9,22 @@ import { Lock } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
 interface ComingSoonBadgeProps {
-    /**
-     * Position of the badge on the card
-     * @default "top-right"
-     */
-    position?: "top-right" | "bottom-center" | "overlay";
+  /**
+   * Position of the badge on the card
+   * @default "top-right"
+   */
+  position?: "top-right" | "bottom-center" | "overlay";
 
-    /**
-     * Size variant
-     * @default "default"
-     */
-    size?: "sm" | "default" | "lg";
+  /**
+   * Size variant
+   * @default "default"
+   */
+  size?: "sm" | "default" | "lg";
 
-    /**
-     * Optional custom className
-     */
-    className?: string;
+  /**
+   * Optional custom className
+   */
+  className?: string;
 }
 
 /**
@@ -39,32 +39,32 @@ interface ComingSoonBadgeProps {
  * <ComingSoonBadge position="overlay" size="lg" />
  */
 export function ComingSoonBadge({
-    position = "top-right",
-    size = "default",
-    className = "",
+  position = "top-right",
+  size = "default",
+  className = "",
 }: ComingSoonBadgeProps) {
-    const positionClasses = {
-        "top-right": "absolute top-3 right-3 z-10",
-        "bottom-center": "absolute bottom-3 left-1/2 -translate-x-1/2 z-10",
-        overlay: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10",
-    };
+  const positionClasses = {
+    "top-right": "absolute top-3 right-3 z-10",
+    "bottom-center": "absolute bottom-3 left-1/2 -translate-x-1/2 z-10",
+    overlay: "absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10",
+  };
 
-    const sizeClasses = {
-        sm: "text-xs px-2 py-1 gap-1",
-        default: "text-sm px-3 py-1.5 gap-1.5",
-        lg: "text-base px-4 py-2 gap-2",
-    };
+  const sizeClasses = {
+    sm: "text-xs px-2 py-1 gap-1",
+    default: "text-sm px-3 py-1.5 gap-1.5",
+    lg: "text-base px-4 py-2 gap-2",
+  };
 
-    const iconSizes = {
-        sm: "h-3 w-3",
-        default: "h-3.5 w-3.5",
-        lg: "h-4 w-4",
-    };
+  const iconSizes = {
+    sm: "h-3 w-3",
+    default: "h-3.5 w-3.5",
+    lg: "h-4 w-4",
+  };
 
-    return (
-        <Badge
-            variant="secondary"
-            className={ `
+  return (
+    <Badge
+      variant="secondary"
+      className={`
         ${positionClasses[position]}
         ${sizeClasses[size]}
         bg-gradient-to-r from-amber-500/90 to-orange-500/90
@@ -77,11 +77,11 @@ export function ComingSoonBadge({
         pointer-events-none
         ${className}
       `}
-        >
-            <Lock className={ iconSizes[size] } />
-            <span>Coming Soon</span>
-        </Badge>
-    );
+    >
+      <Lock className={iconSizes[size]} />
+      <span>Coming Soon</span>
+    </Badge>
+  );
 }
 
 /**
@@ -95,9 +95,9 @@ export function ComingSoonBadge({
  * </div>
  */
 export function ComingSoonOverlay({ className = "" }: { className?: string }) {
-    return (
-        <div
-            className={ `
+  return (
+    <div
+      className={`
         absolute inset-0
         bg-background/60
         backdrop-blur-[2px]
@@ -106,7 +106,7 @@ export function ComingSoonOverlay({ className = "" }: { className?: string }) {
         rounded-lg
         ${className}
       `}
-            aria-hidden="true"
-        />
-    );
+      aria-hidden="true"
+    />
+  );
 }

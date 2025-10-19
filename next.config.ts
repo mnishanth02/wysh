@@ -37,6 +37,28 @@ const nextConfig: NextConfig = {
       ],
     },
     {
+      source: "/public/brand/:path*",
+      headers: [
+        {
+          key: "Cache-Control",
+          value: "public, max-age=31536000, immutable",
+        },
+      ],
+    },
+    {
+      source: "/manifest.webmanifest",
+      headers: [
+        {
+          key: "Content-Type",
+          value: "application/manifest+json",
+        },
+        {
+          key: "Cache-Control",
+          value: "public, max-age=86400",
+        },
+      ],
+    },
+    {
       source: "/:path*",
       headers: [
         {
@@ -50,6 +72,10 @@ const nextConfig: NextConfig = {
         {
           key: "X-XSS-Protection",
           value: "1; mode=block",
+        },
+        {
+          key: "Referrer-Policy",
+          value: "strict-origin-when-cross-origin",
         },
       ],
     },
