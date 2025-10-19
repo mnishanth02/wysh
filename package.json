@@ -11,6 +11,7 @@
     "clean": "lsof -ti:3001 | xargs kill -9 2>/dev/null; rm -rf .next; echo \"Cleaned\""
   },
   "dependencies": {
+    "@convex-dev/rate-limiter": "^0.2.14",
     "@gsap/react": "^2.1.2",
     "@hookform/resolvers": "^5.2.2",
     "@radix-ui/react-accordion": "^1.2.12",

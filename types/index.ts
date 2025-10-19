@@ -86,6 +86,15 @@ export interface CreateGreetingResponse {
   shareableId: string;
 }
 
+/**
+ * Rate limit error from Convex mutations
+ */
+export interface RateLimitError {
+  code: "RATE_LIMIT_EXCEEDED";
+  message: string;
+  retryAfter: number; // milliseconds
+}
+
 // Festival Types
 
 /**

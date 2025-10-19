@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Navigation } from "@/components/layout/Navigation";
 import { SampleGreeting } from "@/components/shared/SampleGreeting";
+import { StatisticsSection } from "@/components/stats/StatisticsSection";
 import { Button } from "@/components/ui/button";
 import { SAMPLE_GREETINGS } from "@/lib/constants";
 
@@ -36,7 +37,7 @@ export default function Home() {
       <Navigation />
 
       <main className="flex-1">
-        {/* Hero Section */}
+        {/* Hero Section */ }
         <section className="container mx-auto px-4 py-12 sm:py-16 md:py-24">
           <div className="flex flex-col items-center text-center space-y-6 sm:space-y-8">
             <div className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-purple-100 to-pink-100 px-4 py-2 text-sm font-medium text-purple-900">
@@ -47,7 +48,7 @@ export default function Home() {
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight max-w-4xl">
               Share Joy with
               <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
-                {" "}
+                { " " }
                 Animated Greetings
               </span>
             </h1>
@@ -80,9 +81,12 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Sample Greetings Showcase */}
+        {/* Statistics Section - Social Proof */ }
+        <StatisticsSection />
+
+        {/* Sample Greetings Showcase */ }
         <section
-          ref={samplesSectionRef}
+          ref={ samplesSectionRef }
           className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-background to-muted/30"
         >
           <div className="container mx-auto px-4">
@@ -95,28 +99,28 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Horizontal scroll container for mobile */}
+            {/* Horizontal scroll container for mobile */ }
             <div className="relative">
               <div className="flex gap-6 overflow-x-auto pb-4 snap-x snap-mandatory scrollbar-hide md:grid md:grid-cols-3 md:gap-8 md:overflow-visible">
-                {SAMPLE_GREETINGS.map((sample) => (
+                { SAMPLE_GREETINGS.map((sample) => (
                   <div
-                    key={sample.id}
+                    key={ sample.id }
                     className="flex-shrink-0 w-[85vw] sm:w-[70vw] md:w-auto snap-center"
                   >
                     <SampleGreeting
-                      festivalType={sample.festivalType}
-                      relationshipType={sample.relationshipType}
-                      recipientName={sample.recipientName}
-                      senderName={sample.senderName}
-                      label={sample.label}
-                      description={sample.description}
-                      isVisible={samplesVisible}
+                      festivalType={ sample.festivalType }
+                      relationshipType={ sample.relationshipType }
+                      recipientName={ sample.recipientName }
+                      senderName={ sample.senderName }
+                      label={ sample.label }
+                      description={ sample.description }
+                      isVisible={ samplesVisible }
                     />
                   </div>
-                ))}
+                )) }
               </div>
 
-              {/* Scroll hint for mobile */}
+              {/* Scroll hint for mobile */ }
               <div className="md:hidden mt-4 text-center">
                 <p className="text-sm text-muted-foreground">
                   ← Swipe to see more examples →
@@ -124,7 +128,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* CTA after samples */}
+            {/* CTA after samples */ }
             <div className="mt-10 sm:mt-12 text-center">
               <Button
                 asChild
@@ -137,7 +141,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* How It Works Section */}
+        {/* How It Works Section */ }
         <section
           id="how-it-works"
           className="bg-muted/50 py-12 sm:py-16 md:py-24"
@@ -182,7 +186,7 @@ export default function Home() {
           </div>
         </section>
 
-        {/* CTA Section */}
+        {/* CTA Section */ }
         <section className="py-12 sm:py-16 md:py-24">
           <div className="container mx-auto px-4">
             <div className="flex flex-col items-center text-center space-y-6 max-w-3xl mx-auto">

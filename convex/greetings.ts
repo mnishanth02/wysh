@@ -4,9 +4,10 @@
  * Mutations and queries for creating and viewing festival greetings
  */
 
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 import { generateShareableId } from "../lib/id-generator";
 import { mutation, query } from "./_generated/server";
+import { RATE_LIMIT_POLICIES, rateLimiter } from "./rateLimiter";
 
 // ============================================================================
 // Validation Constants
@@ -105,6 +106,7 @@ function validateMessage(message: string): void {
  *
  * Generates a unique shareable ID and stores greeting data
  * Implements retry logic on ID collision (extremely rare)
+ * Includes rate limiting to prevent abuse
  */
 export const createGreeting = mutation({
   args: {
@@ -114,8 +116,122 @@ export const createGreeting = mutation({
     senderName: v.string(),
     customMessage: v.optional(v.string()),
     templateId: v.string(),
+    clientIp: v.optional(v.string()), // IP address for rate limiting
   },
   handler: async (ctx, args) => {
+    // Rate limiting - check all policies (minute, hour, day)
+    const ipAddress = args.clientIp || "unknown";
+
+    // Skip rate limiting for whitelisted IPs
+    const whitelist = process.env.RATE_LIMIT_WHITELIST_IPS || "";
+    const whitelistedIps = whitelist
+      .split(",")
+      .map((ip) => ip.trim())
+      .filter((ip) => ip !== "");
+    const isWhitelisted = whitelistedIps.includes(ipAddress);
+
+    if (!isWhitelisted) {
+      // Check per-minute limit
+      const minuteLimit = await rateLimiter.limit(
+        ctx,
+        RATE_LIMIT_POLICIES.CREATE_PER_MIN,
+        {
+          key: ipAddress,
+        },
+      );
+
+      if (!minuteLimit.ok) {
+        const retryAfterSeconds = Math.ceil(
+          (minuteLimit.retryAfter || 60000) / 1000,
+        );
+
+        // Log rate limit violation
+        console.warn(
+          JSON.stringify({
+            level: "warn",
+            message: "Rate limit exceeded for greeting creation",
+            ip: ipAddress,
+            endpoint: "createGreeting",
+            policy: "perMinute",
+            retryAfter: retryAfterSeconds,
+            timestamp: new Date().toISOString(),
+          }),
+        );
+
+        throw new ConvexError({
+          code: "RATE_LIMIT_EXCEEDED",
+          message: `You're creating greetings too quickly. Please wait ${retryAfterSeconds} seconds before trying again.`,
+          retryAfter: minuteLimit.retryAfter || 60000,
+        });
+      }
+
+      // Check per-hour limit
+      const hourLimit = await rateLimiter.limit(
+        ctx,
+        RATE_LIMIT_POLICIES.CREATE_PER_HR,
+        {
+          key: ipAddress,
+        },
+      );
+
+      if (!hourLimit.ok) {
+        const retryAfterSeconds = Math.ceil(
+          (hourLimit.retryAfter || 3600000) / 1000,
+        );
+
+        console.warn(
+          JSON.stringify({
+            level: "warn",
+            message: "Hourly rate limit exceeded for greeting creation",
+            ip: ipAddress,
+            endpoint: "createGreeting",
+            policy: "perHour",
+            retryAfter: retryAfterSeconds,
+            timestamp: new Date().toISOString(),
+          }),
+        );
+
+        throw new ConvexError({
+          code: "RATE_LIMIT_EXCEEDED",
+          message: `You've created too many greetings this hour. Please wait ${Math.ceil(retryAfterSeconds / 60)} minutes before trying again.`,
+          retryAfter: hourLimit.retryAfter || 3600000,
+        });
+      }
+
+      // Check per-day limit
+      const dayLimit = await rateLimiter.limit(
+        ctx,
+        RATE_LIMIT_POLICIES.CREATE_PER_DAY,
+        {
+          key: ipAddress,
+        },
+      );
+
+      if (!dayLimit.ok) {
+        const retryAfterSeconds = Math.ceil(
+          (dayLimit.retryAfter || 86400000) / 1000,
+        );
+
+        console.warn(
+          JSON.stringify({
+            level: "warn",
+            message: "Daily rate limit exceeded for greeting creation",
+            ip: ipAddress,
+            endpoint: "createGreeting",
+            policy: "perDay",
+            retryAfter: retryAfterSeconds,
+            timestamp: new Date().toISOString(),
+          }),
+        );
+
+        throw new ConvexError({
+          code: "RATE_LIMIT_EXCEEDED",
+          message: `You've reached the daily limit for creating greetings. Please try again tomorrow.`,
+          retryAfter: dayLimit.retryAfter || 86400000,
+        });
+      }
+    }
+
     // Validate festival type against whitelist
     if (
       !VALID_FESTIVAL_TYPES.includes(

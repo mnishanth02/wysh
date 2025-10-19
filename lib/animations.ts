@@ -444,6 +444,66 @@ export class AnimationState {
 }
 
 // ============================================================================
+// Counter Animation Utilities
+// ============================================================================
+
+/**
+ * Animate a number counter using GSAP
+ *
+ * @param target - DOM element to animate (will update textContent)
+ * @param endValue - Final number to count to
+ * @param duration - Animation duration in seconds (default: 2)
+ * @param onUpdate - Optional callback called on each update
+ * @returns GSAP tween
+ */
+export function animateCounter(
+  target: HTMLElement,
+  endValue: number,
+  duration = 2,
+  onUpdate?: (value: number) => void,
+): gsap.core.Tween {
+  const counterObject = { value: 0 };
+
+  return gsap.to(counterObject, {
+    value: endValue,
+    duration,
+    ease: "power2.out",
+    onUpdate: () => {
+      const roundedValue = Math.round(counterObject.value);
+      target.textContent = roundedValue.toLocaleString();
+      onUpdate?.(roundedValue);
+    },
+  });
+}
+
+/**
+ * Get animation configuration for counter based on user preferences
+ */
+export function getCounterAnimationConfig(): {
+  duration: number;
+  ease: string;
+  reducedMotion: boolean;
+} {
+  const reducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  return {
+    duration: reducedMotion ? 0.5 : 2,
+    ease: reducedMotion ? "none" : "power2.out",
+    reducedMotion,
+  };
+}
+
+/**
+ * Check if user prefers reduced motion
+ */
+export function prefersReducedMotion(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+// ============================================================================
 // Exports
 // ============================================================================
 
@@ -471,6 +531,11 @@ export const animations = {
     scaleUp: scaleUpVariants,
     slideUp: slideUpVariants,
     staggerChildren: staggerChildrenVariants,
+  },
+  counter: {
+    animate: animateCounter,
+    getConfig: getCounterAnimationConfig,
+    prefersReducedMotion,
   },
   optimize: optimizeForAnimation,
   clearOptimization: clearAnimationOptimization,
