@@ -16,11 +16,16 @@ export interface RateLimitConfig {
   period: number; // time window in milliseconds
 }
 
+export type RateLimitViolationType =
+  | "RATE_LIMIT_EXCEEDED"
+  | "IP_BLOCKED"
+  | "SUSPICIOUS_ACTIVITY";
+
 export interface RateLimitViolation {
   timestamp: number;
   ip: string;
   endpoint: string;
-  violationType: "RATE_LIMIT_EXCEEDED";
+  violationType: RateLimitViolationType;
   retryAfter: number;
 }
 
