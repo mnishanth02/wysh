@@ -16,6 +16,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Navigation } from "@/components/layout/Navigation";
 import { LoadingState } from "@/components/shared/LoadingState";
 import { Button } from "@/components/ui/button";
+import { isFestivalEnabled } from "@/lib/feature-flags";
 import { greetingParsers } from "@/lib/url-state-parsers";
 
 function PersonalizeContent() {
@@ -29,6 +30,15 @@ function PersonalizeContent() {
     // Redirect to festival selection if required URL state is missing
     if (!festival || !relationship) {
       router.push("/create/festival");
+      return;
+    }
+
+    // Redirect if festival is not enabled (backdoor protection)
+    if (!isFestivalEnabled(festival)) {
+      console.warn(
+        `Attempted access to disabled festival: ${festival}. Redirecting to festival selection.`,
+      );
+      router.push("/create/festival");
     }
   }, [festival, relationship, router]);
 
@@ -41,7 +51,7 @@ function PersonalizeContent() {
       <Button
         variant="ghost"
         size="sm"
-        onClick={() => router.push(`/create/relationship?festival=${festival}`)}
+        onClick={ () => router.push(`/create/relationship?festival=${festival}`) }
         className="mb-4 text-muted-foreground hover:text-foreground"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
@@ -68,7 +78,7 @@ export default function PersonalizePage() {
       <Navigation />
 
       <main className="flex-1 container mx-auto px-4 py-8 sm:py-12">
-        <Suspense fallback={<LoadingState message="Loading..." />}>
+        <Suspense fallback={ <LoadingState message="Loading..." /> }>
           <PersonalizeContent />
         </Suspense>
       </main>

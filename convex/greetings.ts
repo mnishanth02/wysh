@@ -5,6 +5,7 @@
  */
 
 import { ConvexError, v } from "convex/values";
+import { validateFestivalEnabled } from "../lib/feature-flags";
 import { generateShareableId } from "../lib/id-generator";
 import { mutation, query } from "./_generated/server";
 import { RATE_LIMIT_POLICIES, rateLimiter } from "./rateLimiter";
@@ -242,6 +243,11 @@ export const createGreeting = mutation({
         `Invalid festival type. Must be one of: ${VALID_FESTIVAL_TYPES.join(", ")}`,
       );
     }
+
+    // Validate festival is enabled via feature flags (critical security check)
+    validateFestivalEnabled(
+      args.festivalType as (typeof VALID_FESTIVAL_TYPES)[number],
+    );
 
     // Validate relationship type against whitelist
     if (

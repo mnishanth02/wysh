@@ -12,12 +12,17 @@ import { useQuery } from "convex/react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import {
+  ComingSoonBadge,
+  ComingSoonOverlay,
+} from "@/components/shared/ComingSoonBadge";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { LoadingState } from "@/components/shared/LoadingState";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { FESTIVALS } from "@/lib/constants";
+import { isFestivalEnabled } from "@/lib/feature-flags";
 import type { FestivalType } from "@/types";
 
 // Festival image mappings
@@ -45,20 +50,33 @@ function FestivalCard({
   festivalData,
   festivalId,
   onSelect,
+  isDisabled = false,
 }: {
   festival: { _id: string; displayName: string; festivalId: string };
   festivalData: { description: string };
   festivalId: FestivalType;
   onSelect: () => void;
+  isDisabled?: boolean;
 }) {
   const [imageError, setImageError] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <Card
-      className="group relative touch-target gap-0 p-0 cursor-pointer overflow-hidden border-2 shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] rounded-3xl"
-      onClick={ onSelect }
+      className={ `group relative touch-target gap-0 p-0 overflow-hidden border-2 shadow-lg transition-all duration-300 rounded-3xl ${isDisabled
+          ? "cursor-not-allowed opacity-75"
+          : "cursor-pointer hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98]"
+        }` }
+      onClick={ isDisabled ? undefined : onSelect }
     >
+      {/* Coming Soon Overlay for Disabled Festivals */ }
+      { isDisabled && (
+        <>
+          <ComingSoonOverlay />
+          <ComingSoonBadge position="top-right" size="default" />
+        </>
+      ) }
+
       {/* Background Image or Gradient Fallback */ }
       <div className="relative h-56 sm:h-64 md:h-72 w-full overflow-hidden">
         {/* Skeleton Loader - shows while image is loading */ }
@@ -71,15 +89,16 @@ function FestivalCard({
             src={ FESTIVAL_IMAGES[festivalId] }
             alt={ festival.displayName }
             fill
-            className={ `object-cover transition-opacity duration-500 group-hover:scale-110 ${imageLoaded ? "opacity-100" : "opacity-0"
-              }` }
+            className={ `object-cover transition-opacity duration-500 ${isDisabled ? "" : "group-hover:scale-110"
+              } ${imageLoaded ? "opacity-100" : "opacity-0"}` }
             priority={ festivalId === "diwali" || festivalId === "christmas" }
             onLoad={ () => setImageLoaded(true) }
             onError={ () => setImageError(true) }
           />
         ) : (
           <div
-            className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
+            className={ `absolute inset-0 transition-transform duration-500 ${isDisabled ? "" : "group-hover:scale-110"
+              }` }
             style={ { background: FESTIVAL_GRADIENTS[festivalId] } }
           />
         ) }
@@ -120,16 +139,18 @@ export function FestivalSelector() {
     );
   }
 
-  const filteredFestivals = festivals.filter(
+  // Show all festivals, but disable the ones not enabled by feature flags
+  const allFestivals = festivals.filter(
     (f) => f.festivalId !== "holi" && f.festivalId !== "pongal", // Temporarily hide Holi and Pongal from the UI
   );
 
   return (
     <div className="w-full px-4">
       <div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto">
-        { filteredFestivals.map((festival) => {
+        { allFestivals.map((festival) => {
           const festivalData = FESTIVALS[festival.festivalId as FestivalType];
           const festivalId = festival.festivalId as FestivalType;
+          const isEnabled = isFestivalEnabled(festivalId);
 
           return (
             <FestivalCard
@@ -138,6 +159,7 @@ export function FestivalSelector() {
               festivalData={ festivalData }
               festivalId={ festivalId }
               onSelect={ () => handleFestivalSelect(festivalId) }
+              isDisabled={ !isEnabled }
             />
           );
         }) }

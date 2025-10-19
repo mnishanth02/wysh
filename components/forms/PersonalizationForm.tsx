@@ -141,25 +141,6 @@ export function PersonalizationForm() {
   return (
     <Card className="p-6 sm:p-8 shadow-lg border-2 bg-card">
       <form onSubmit={ handleSubmit(onSubmit) } className="space-y-4">
-        {/* Recipient Name */ }
-        <div className="space-y-2">
-          <Label htmlFor="recipientName" className="text-base font-medium">
-            Recipient's Name <span className="text-destructive">*</span>
-          </Label>
-          <Input
-            id="recipientName"
-            placeholder="Enter recipient's name"
-            autoComplete="name"
-            disabled={ isSubmitting }
-            { ...register("recipientName") }
-            className={ `h-12 text-base ${errors.recipientName ? "border-destructive" : ""}` }
-          />
-          { errors.recipientName && (
-            <p className="text-sm text-destructive">
-              { errors.recipientName.message }
-            </p>
-          ) }
-        </div>
 
         {/* Sender Name */ }
         <div className="space-y-2">
@@ -181,6 +162,27 @@ export function PersonalizationForm() {
           ) }
         </div>
 
+        {/* Recipient Name */ }
+        <div className="space-y-2">
+          <Label htmlFor="recipientName" className="text-base font-medium">
+            Recipient's Name <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="recipientName"
+            placeholder="Enter recipient's name"
+            autoComplete="name"
+            disabled={ isSubmitting }
+            { ...register("recipientName") }
+            className={ `h-12 text-base ${errors.recipientName ? "border-destructive" : ""}` }
+          />
+          { errors.recipientName && (
+            <p className="text-sm text-destructive">
+              { errors.recipientName.message }
+            </p>
+          ) }
+        </div>
+
+
         {/* Custom Message */ }
         <div className="space-y-2">
           <Label htmlFor="customMessage" className="text-base font-medium">
@@ -195,7 +197,7 @@ export function PersonalizationForm() {
           <Textarea
             id="customMessage"
             placeholder="Your custom message here..."
-            rows={ 4 }
+            rows={ 5 }
             disabled={ isSubmitting }
             { ...register("customMessage") }
             className={ `text-base resize-none ${errors.customMessage

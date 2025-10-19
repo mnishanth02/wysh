@@ -16,6 +16,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Navigation } from "@/components/layout/Navigation";
 import { LoadingState } from "@/components/shared/LoadingState";
 import { Button } from "@/components/ui/button";
+import { isFestivalEnabled } from "@/lib/feature-flags";
 import { greetingParsers } from "@/lib/url-state-parsers";
 
 function TemplateContent() {
@@ -34,6 +35,15 @@ function TemplateContent() {
   useEffect(() => {
     // Redirect to festival selection if required URL state is missing
     if (!festival || !relationship || !recipientName || !senderName) {
+      router.push("/create/festival");
+      return;
+    }
+
+    // Redirect if festival is not enabled (backdoor protection)
+    if (!isFestivalEnabled(festival)) {
+      console.warn(
+        `Attempted access to disabled festival: ${festival}. Redirecting to festival selection.`,
+      );
       router.push("/create/festival");
     }
   }, [festival, relationship, recipientName, senderName, router]);
