@@ -503,6 +503,44 @@ export function prefersReducedMotion(): boolean {
   return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
 
+/**
+ * Detect if device is mobile (screen width < 768px)
+ */
+export function isMobileDevice(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.innerWidth < 768;
+}
+
+/**
+ * Get mobile-optimized particle count (60% reduction for mobile devices)
+ *
+ * @param desktopCount - Desired particle count for desktop
+ * @returns Optimized particle count based on device type
+ */
+export function getMobileParticleCount(desktopCount: number): number {
+  if (typeof window === "undefined") return desktopCount;
+  return isMobileDevice() ? Math.floor(desktopCount * 0.4) : desktopCount;
+}
+
+/**
+ * Get animation configuration based on device capabilities
+ *
+ * @returns Animation config with mobile-specific optimizations
+ */
+export function getDeviceAnimationConfig() {
+  const mobile = isMobileDevice();
+  const reducedMotion = prefersReducedMotion();
+
+  return {
+    isMobile: mobile,
+    prefersReducedMotion: reducedMotion,
+    particleMultiplier: mobile ? 0.4 : 1.0, // 60% reduction on mobile
+    animationDuration: reducedMotion ? 0.3 : mobile ? 0.7 : 1.0,
+    enableComplexEffects: !mobile && !reducedMotion,
+    maxParticles: mobile ? 20 : 50,
+  };
+}
+
 // ============================================================================
 // Exports
 // ============================================================================
@@ -536,6 +574,11 @@ export const animations = {
     animate: animateCounter,
     getConfig: getCounterAnimationConfig,
     prefersReducedMotion,
+  },
+  mobile: {
+    isMobileDevice,
+    getMobileParticleCount,
+    getDeviceAnimationConfig,
   },
   optimize: optimizeForAnimation,
   clearOptimization: clearAnimationOptimization,

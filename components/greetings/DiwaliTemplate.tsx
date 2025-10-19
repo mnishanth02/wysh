@@ -9,6 +9,10 @@
 
 import { gsap } from "gsap";
 import { useEffect, useRef, useState } from "react";
+import {
+  getDeviceAnimationConfig,
+  getMobileParticleCount,
+} from "@/lib/animations";
 import { FESTIVALS } from "@/lib/constants";
 import {
   logPerformanceMetrics,
@@ -59,6 +63,11 @@ export function DiwaliTemplate({
 
   // T036: Check for reduced motion preference
   const useReducedMotion = shouldUseReducedMotion();
+
+  // T107: Mobile optimization - detect device and reduce particles
+  const deviceConfig = getDeviceAnimationConfig();
+  const mobileParticleCount = (count: number) =>
+    getMobileParticleCount(count);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -304,7 +313,11 @@ export function DiwaliTemplate({
         <>
           <DiyaLighting count={7} duration={1.5} delay={0.5} stagger={0.3} />
           {animationPhase === "main" && (
-            <SparkleParticles count={40} duration={4} delay={0} />
+            <SparkleParticles
+              count={mobileParticleCount(40)}
+              duration={4}
+              delay={0}
+            />
           )}
         </>
       )}
@@ -316,7 +329,11 @@ export function DiwaliTemplate({
             <RangoliDraw duration={4} delay={0} />
           </div>
           {animationPhase === "main" && (
-            <SparkleParticles count={50} duration={4} delay={0} />
+            <SparkleParticles
+              count={mobileParticleCount(50)}
+              duration={4}
+              delay={0}
+            />
           )}
           {animationPhase === "main" && (
             <DiyaLighting count={4} duration={1} delay={1} stagger={0.4} />
@@ -329,26 +346,36 @@ export function DiwaliTemplate({
         <>
           {animationPhase === "main" && (
             <FireworkSystem
-              burstCount={animationConfig.intensity === "low" ? 5 : 7}
-              particlesPerBurst={
+              burstCount={
+                deviceConfig.isMobile
+                  ? 3
+                  : animationConfig.intensity === "low"
+                    ? 5
+                    : 7
+              }
+              particlesPerBurst={mobileParticleCount(
                 animationConfig.intensity === "low"
                   ? 50
                   : animationConfig.intensity === "high"
                     ? 80
-                    : 65
-              }
+                    : 65,
+              )}
               duration={4}
               delay={0}
               colors={animationConfig.colors}
             />
           )}
           {animationPhase === "main" && (
-            <SparkleParticles count={60} duration={4} delay={0} />
+            <SparkleParticles
+              count={mobileParticleCount(60)}
+              duration={4}
+              delay={0}
+            />
           )}
           {animationPhase === "finale" && (
             <FireworkSystem
-              burstCount={3}
-              particlesPerBurst={40}
+              burstCount={deviceConfig.isMobile ? 2 : 3}
+              particlesPerBurst={mobileParticleCount(40)}
               duration={2}
               delay={0}
               colors={animationConfig.colors}
@@ -359,7 +386,11 @@ export function DiwaliTemplate({
 
       {/* Phase 4 (8-10s): Finale sparkles for all variants */}
       {!useReducedMotion && animationPhase === "finale" && (
-        <SparkleParticles count={20} duration={2} delay={0} />
+        <SparkleParticles
+          count={mobileParticleCount(20)}
+          duration={2}
+          delay={0}
+        />
       )}
 
       {/* CSS for fade-in animation */}

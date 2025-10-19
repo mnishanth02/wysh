@@ -128,6 +128,7 @@ export function PersonalizationForm() {
         <Input
           id="recipientName"
           placeholder="e.g., Amma, John, Sarah"
+          autoComplete="name"
           {...register("recipientName")}
           className={`touch-target ${errors.recipientName ? "border-destructive" : ""}`}
         />
@@ -148,6 +149,7 @@ export function PersonalizationForm() {
         <Input
           id="senderName"
           placeholder="e.g., Ravi, Jane, Mike"
+          autoComplete="name"
           {...register("senderName")}
           className={`touch-target ${errors.senderName ? "border-destructive" : ""}`}
         />

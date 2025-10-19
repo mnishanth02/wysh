@@ -10,6 +10,10 @@
 import { gsap } from "gsap";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import {
+  getDeviceAnimationConfig,
+  getMobileParticleCount,
+} from "@/lib/animations";
 import { FESTIVALS } from "@/lib/constants";
 import {
   logPerformanceMetrics,
@@ -63,6 +67,11 @@ export function NewYearTemplate({
 
   const festivalData = FESTIVALS.newyear;
   const colors = festivalData.colorPalette;
+  
+  // T110: Mobile optimization - detect device and reduce particles
+  const deviceConfig = getDeviceAnimationConfig();
+  const mobileParticleCount = (count: number) =>
+    getMobileParticleCount(count);
 
   // T055: Integrate ContextAdapter for relationship-aware adjustments
   const animationConfig = useAnimationContext(
@@ -434,19 +443,21 @@ export function NewYearTemplate({
           >
             <FireworkBurst
               burstCount={
-                animationConfig.intensity === "low"
-                  ? 4
-                  : animationConfig.intensity === "high"
-                    ? 7
-                    : 6
+                deviceConfig.isMobile
+                  ? 3
+                  : animationConfig.intensity === "low"
+                    ? 4
+                    : animationConfig.intensity === "high"
+                      ? 7
+                      : 6
               }
-              particlesPerBurst={
+              particlesPerBurst={mobileParticleCount(
                 animationConfig.intensity === "low"
                   ? 60
                   : animationConfig.intensity === "high"
                     ? 90
-                    : 80
-              }
+                    : 80,
+              )}
               duration={3}
               delay={0}
               colors={animationConfig.colors}
@@ -458,13 +469,13 @@ export function NewYearTemplate({
             className={`absolute inset-0 ${animationPhase === "confetti" || animationPhase === "text" || animationPhase === "complete" ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           >
             <ConfettiSystem
-              count={
+              count={mobileParticleCount(
                 animationConfig.intensity === "low"
                   ? 80
                   : animationConfig.intensity === "high"
                     ? 150
-                    : 120
-              }
+                    : 120,
+              )}
               duration={5}
               delay={0}
               colors={animationConfig.colors}

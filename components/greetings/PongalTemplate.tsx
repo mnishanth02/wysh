@@ -17,6 +17,7 @@
 
 import { gsap } from "gsap";
 import { useEffect, useRef, useState } from "react";
+import { getMobileParticleCount } from "@/lib/animations";
 import { FESTIVALS } from "@/lib/constants";
 import { shouldUseReducedMotion } from "@/lib/performance";
 import type { RelationshipContext } from "@/types";
@@ -71,6 +72,10 @@ export function PongalTemplate({
     relationshipContext?.relationshipType || "friend",
     65, // Base particle count for steam/rice
   );
+
+  // T111: Mobile optimization - reduce particles on mobile
+  const mobileParticleCount = (count: number) =>
+    getMobileParticleCount(count);
 
   // Apply relationship-adjusted colors if available
   const adjustedColors = relationshipContext ? animationConfig.colors : colors;
@@ -277,7 +282,10 @@ export function PongalTemplate({
         animationPhase === "complete") && (
         <>
           <SugarcaneSway duration={8} />
-          <RiceGrains grainCount={40} duration={10} />
+          <RiceGrains
+            grainCount={mobileParticleCount(40)}
+            duration={10}
+          />
         </>
       )}
 
@@ -319,9 +327,11 @@ export function PongalTemplate({
             />
           </div>
 
-          {/* Steam particles (4-10s) */}
+          {/* Steam particles (4-10s) - T111: Mobile optimized */}
           <SteamParticles
-            particleCount={animationConfig.particleCount}
+            particleCount={mobileParticleCount(
+              animationConfig.particleCount,
+            )}
             duration={6 * (animationConfig.duration / 8000)}
             onComplete={() => {
               // Steam complete
