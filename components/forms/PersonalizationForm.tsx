@@ -13,6 +13,7 @@
  */
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useQueryStates } from "nuqs";
 import { useForm } from "react-hook-form";
@@ -129,6 +130,7 @@ export function PersonalizationForm() {
           id="recipientName"
           placeholder="e.g., Amma, John, Sarah"
           autoComplete="name"
+          disabled={ isSubmitting }
           { ...register("recipientName") }
           className={ `touch-target ${errors.recipientName ? "border-destructive" : ""}` }
         />
@@ -150,6 +152,7 @@ export function PersonalizationForm() {
           id="senderName"
           placeholder="e.g., Ravi, Jane, Mike"
           autoComplete="name"
+          disabled={ isSubmitting }
           { ...register("senderName") }
           className={ `touch-target ${errors.senderName ? "border-destructive" : ""}` }
         />
@@ -172,6 +175,7 @@ export function PersonalizationForm() {
           id="customMessage"
           placeholder="Add a personal message (optional)"
           rows={ 4 }
+          disabled={ isSubmitting }
           { ...register("customMessage") }
           className={ `touch-target ${errors.customMessage ? "border-destructive" : ""}` }
         />
@@ -195,6 +199,7 @@ export function PersonalizationForm() {
           onClick={ () =>
             router.push(`/create/relationship?festival=${urlState.festival}`)
           }
+          disabled={ isSubmitting }
           className="flex-1 touch-target-lg"
         >
           Back
@@ -204,6 +209,7 @@ export function PersonalizationForm() {
           disabled={ isSubmitting }
           className="flex-1 touch-target-lg"
         >
+          { isSubmitting && <Loader2 className="size-4 animate-spin" /> }
           { isSubmitting ? "Saving..." : "Continue to Templates" }
         </Button>
       </div>

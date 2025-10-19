@@ -11,7 +11,7 @@
  */
 
 import { gsap } from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { getDeviceAnimationConfig } from "@/lib/animations";
 import { FESTIVALS } from "@/lib/constants";
 import { shouldUseReducedMotion } from "@/lib/performance";
@@ -807,7 +807,7 @@ const GiftUnwrapVariant = ({
   );
 };
 
-export function ChristmasTemplate({
+function ChristmasTemplateComponent({
   recipientName,
   senderName,
   message,
@@ -878,3 +878,18 @@ export function ChristmasTemplate({
       return <SnowGlobeVariant { ...commonProps } />;
   }
 }
+
+// Memoized export to prevent unnecessary re-renders
+export const ChristmasTemplate = memo(ChristmasTemplateComponent, (prevProps, nextProps) => {
+  return (
+    prevProps.recipientName === nextProps.recipientName &&
+    prevProps.senderName === nextProps.senderName &&
+    prevProps.message === nextProps.message &&
+    prevProps.variant === nextProps.variant &&
+    prevProps.isPreview === nextProps.isPreview &&
+    prevProps.relationshipContext.colorIntensity === nextProps.relationshipContext.colorIntensity &&
+    prevProps.relationshipContext.animationSpeed === nextProps.relationshipContext.animationSpeed
+  );
+});
+
+ChristmasTemplate.displayName = "ChristmasTemplate";

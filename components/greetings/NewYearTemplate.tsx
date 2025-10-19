@@ -9,7 +9,7 @@
 
 import { gsap } from "gsap";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import {
   getDeviceAnimationConfig,
   getMobileParticleCount,
@@ -40,7 +40,7 @@ interface NewYearTemplateProps {
   isPreview?: boolean; // T151: Modal preview mode - use responsive sizing
 }
 
-export function NewYearTemplate({
+function NewYearTemplateComponent({
   recipientName,
   senderName,
   message,
@@ -70,8 +70,7 @@ export function NewYearTemplate({
 
   // T110: Mobile optimization - detect device and reduce particles
   const deviceConfig = getDeviceAnimationConfig();
-  const mobileParticleCount = (count: number) =>
-    getMobileParticleCount(count);
+  const mobileParticleCount = (count: number) => getMobileParticleCount(count);
 
   // T055: Integrate ContextAdapter for relationship-aware adjustments
   const animationConfig = useAnimationContext(
@@ -575,3 +574,18 @@ export function NewYearTemplate({
     </div>
   );
 }
+
+// Memoized export to prevent unnecessary re-renders
+export const NewYearTemplate = memo(NewYearTemplateComponent, (prevProps, nextProps) => {
+  return (
+    prevProps.recipientName === nextProps.recipientName &&
+    prevProps.senderName === nextProps.senderName &&
+    prevProps.message === nextProps.message &&
+    prevProps.variant === nextProps.variant &&
+    prevProps.isPreview === nextProps.isPreview &&
+    prevProps.relationshipContext.colorIntensity === nextProps.relationshipContext.colorIntensity &&
+    prevProps.relationshipContext.animationSpeed === nextProps.relationshipContext.animationSpeed
+  );
+});
+
+NewYearTemplate.displayName = "NewYearTemplate";

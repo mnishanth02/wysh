@@ -8,7 +8,7 @@
  */
 
 import { gsap } from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import {
   getDeviceAnimationConfig,
   getMobileParticleCount,
@@ -36,7 +36,7 @@ interface DiwaliTemplateProps {
   isPreview?: boolean; // T151: Modal preview mode - use responsive sizing
 }
 
-export function DiwaliTemplate({
+function DiwaliTemplateComponent({
   recipientName,
   senderName,
   message,
@@ -66,8 +66,7 @@ export function DiwaliTemplate({
 
   // T107: Mobile optimization - detect device and reduce particles
   const deviceConfig = getDeviceAnimationConfig();
-  const mobileParticleCount = (count: number) =>
-    getMobileParticleCount(count);
+  const mobileParticleCount = (count: number) => getMobileParticleCount(count);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -404,3 +403,26 @@ export function DiwaliTemplate({
     </div>
   );
 }
+
+// Memoized export to prevent unnecessary re-renders
+// Custom comparator ignores function reference changes (onAnimationComplete)
+export const DiwaliTemplate = memo(
+  DiwaliTemplateComponent,
+  (prevProps, nextProps) => {
+    // Only re-render if critical props change
+    return (
+      prevProps.recipientName === nextProps.recipientName &&
+      prevProps.senderName === nextProps.senderName &&
+      prevProps.message === nextProps.message &&
+      prevProps.variant === nextProps.variant &&
+      prevProps.isPreview === nextProps.isPreview &&
+      prevProps.relationshipContext.colorIntensity ===
+      nextProps.relationshipContext.colorIntensity &&
+      prevProps.relationshipContext.animationSpeed ===
+      nextProps.relationshipContext.animationSpeed
+      // Ignore onAnimationComplete function reference changes
+    );
+  },
+);
+
+DiwaliTemplate.displayName = "DiwaliTemplate";
