@@ -10,10 +10,10 @@ import { fetchGreetingByShareableId } from "@/lib/convex-server";
 import type { FestivalType } from "@/types";
 
 export const runtime = "edge";
-export const alt = "Festival Greeting";
+export const alt = "Festival Greeting from Wysh";
 export const size = {
-  width: 800,
-  height: 600,
+  width: 1200,
+  height: 630,
 };
 export const contentType = "image/png";
 

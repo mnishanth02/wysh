@@ -164,7 +164,7 @@ Uses `nanoid` (8 chars, URL-safe). **Collision handling**: Retry up to 5 times i
 Pre-filled message format:
 ```
 Check out this festival greeting I made for you! 🎉
-https://wysh.app/g/[shareableId]
+https://wysh.zealer.in/g/[shareableId]
 ```
 Opens WhatsApp with `whatsapp://send?text=...` (mobile) or `https://wa.me/?text=...` (desktop)
 

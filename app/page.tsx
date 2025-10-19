@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { Footer } from "@/components/layout/Footer";
 import { Navigation } from "@/components/layout/Navigation";
 import { SampleGreeting } from "@/components/shared/SampleGreeting";
+import { StatisticsSection } from "@/components/stats/StatisticsSection";
 import { Button } from "@/components/ui/button";
 import { SAMPLE_GREETINGS } from "@/lib/constants";
 
@@ -79,6 +80,9 @@ export default function Home() {
             </div>
           </div>
         </section>
+
+        {/* Statistics Section - Social Proof */}
+        <StatisticsSection />
 
         {/* Sample Greetings Showcase */}
         <section

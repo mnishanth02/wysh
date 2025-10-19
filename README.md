@@ -223,7 +223,7 @@ Add these in Vercel dashboard (Settings → Environment Variables):
 ```env
 # Production
 NEXT_PUBLIC_CONVEX_URL=https://your-production.convex.cloud
-NEXT_PUBLIC_BASE_URL=https://wysh.app
+NEXT_PUBLIC_BASE_URL=https://wysh.zealer.in
 CONVEX_DEPLOY_KEY=your-deploy-key-here  # From Convex dashboard
 ```
 

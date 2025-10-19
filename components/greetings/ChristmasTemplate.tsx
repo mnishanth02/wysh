@@ -11,7 +11,8 @@
  */
 
 import { gsap } from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
+import { getDeviceAnimationConfig } from "@/lib/animations";
 import { FESTIVALS } from "@/lib/constants";
 import { shouldUseReducedMotion } from "@/lib/performance";
 import { generateUniqueKey } from "@/lib/utils";
@@ -45,6 +46,7 @@ const SnowGlobeVariant = ({
   recipientName,
   senderName,
   message,
+  deviceConfig,
 }: {
   containerRef: React.RefObject<HTMLDivElement | null>;
   colors: readonly string[];
@@ -57,8 +59,12 @@ const SnowGlobeVariant = ({
   recipientName: string;
   senderName: string;
   message: string;
+  deviceConfig: ReturnType<typeof getDeviceAnimationConfig>;
 }) => {
   const [bgVisible, setBgVisible] = useState(useReducedMotion);
+
+  // T109: Mobile optimization - reduce snowflakes on mobile
+  const snowflakeCount = deviceConfig.isMobile ? 8 : 20;
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -142,9 +148,9 @@ const SnowGlobeVariant = ({
         minHeight: isPreview ? "auto" : "100vh",
       }}
     >
-      {/* Snowflakes */}
+      {/* Snowflakes - T109: Reduced count on mobile */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map(() => (
+        {[...Array(snowflakeCount)].map(() => (
           <div
             key={`snow-${generateUniqueKey()}`}
             className={`snowflake absolute text-white opacity-70 ${
@@ -817,7 +823,7 @@ const GiftUnwrapVariant = ({
   );
 };
 
-export function ChristmasTemplate({
+function ChristmasTemplateComponent({
   recipientName,
   senderName,
   message,
@@ -830,6 +836,9 @@ export function ChristmasTemplate({
 
   const festivalData = FESTIVALS.christmas;
   const colors = festivalData.colorPalette;
+
+  // T109: Mobile optimization
+  const deviceConfig = getDeviceAnimationConfig();
 
   // T134, T145: Apply context-aware animation duration
   const animationDuration =
@@ -870,6 +879,7 @@ export function ChristmasTemplate({
     recipientName,
     senderName,
     message,
+    deviceConfig, // T109: Pass mobile config to variants
   };
 
   // Render appropriate variant
@@ -884,3 +894,23 @@ export function ChristmasTemplate({
       return <SnowGlobeVariant {...commonProps} />;
   }
 }
+
+// Memoized export to prevent unnecessary re-renders
+export const ChristmasTemplate = memo(
+  ChristmasTemplateComponent,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.recipientName === nextProps.recipientName &&
+      prevProps.senderName === nextProps.senderName &&
+      prevProps.message === nextProps.message &&
+      prevProps.variant === nextProps.variant &&
+      prevProps.isPreview === nextProps.isPreview &&
+      prevProps.relationshipContext.colorIntensity ===
+        nextProps.relationshipContext.colorIntensity &&
+      prevProps.relationshipContext.animationSpeed ===
+        nextProps.relationshipContext.animationSpeed
+    );
+  },
+);
+
+ChristmasTemplate.displayName = "ChristmasTemplate";

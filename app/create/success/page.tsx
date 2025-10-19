@@ -81,26 +81,28 @@ function SuccessContent() {
       </div>
 
       {/* Preview Card */}
-      <Card className="p-6 space-y-4">
-        <div className="space-y-2">
-          <h2 className="text-lg font-semibold">Your Greeting URL</h2>
+      <Card className="p-4 sm:p-6 space-y-4 bg-gradient-to-br from-purple-50/5 to-pink-50/5 border-2">
+        <div className="space-y-3">
+          <h2 className="text-base sm:text-lg font-semibold">
+            Your Greeting URL
+          </h2>
           <div className="flex gap-2">
             <input
               type="text"
               value={greetingUrl}
               readOnly
-              className="flex-1 px-3 py-2 text-sm border rounded-md bg-muted"
+              className="flex-1 px-3 sm:px-4 py-3 text-xs sm:text-sm border-2 rounded-lg bg-background font-mono touch-target"
             />
             <Button
               variant="outline"
               size="icon"
               onClick={handleCopyLink}
-              className="shrink-0"
+              className="shrink-0 h-12 w-12 border-2"
             >
               {copied ? (
-                <Check className="h-4 w-4" />
+                <Check className="h-5 w-5" />
               ) : (
-                <Copy className="h-4 w-4" />
+                <Copy className="h-5 w-5" />
               )}
             </Button>
           </div>

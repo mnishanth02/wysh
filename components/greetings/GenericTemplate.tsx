@@ -7,7 +7,7 @@
  */
 
 import { gsap } from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { FESTIVALS } from "@/lib/constants";
 import { shouldUseReducedMotion } from "@/lib/performance";
 import { generateUniqueKey } from "@/lib/utils";
@@ -23,7 +23,7 @@ interface GenericTemplateProps {
   isPreview?: boolean; // T151: Modal preview mode - use responsive sizing
 }
 
-export function GenericTemplate({
+function GenericTemplateComponent({
   recipientName,
   senderName,
   message,
@@ -292,3 +292,23 @@ export function GenericTemplate({
     </div>
   );
 }
+
+// Memoized export to prevent unnecessary re-renders
+export const GenericTemplate = memo(
+  GenericTemplateComponent,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.recipientName === nextProps.recipientName &&
+      prevProps.senderName === nextProps.senderName &&
+      prevProps.message === nextProps.message &&
+      prevProps.variant === nextProps.variant &&
+      prevProps.isPreview === nextProps.isPreview &&
+      prevProps.relationshipContext.colorIntensity ===
+        nextProps.relationshipContext.colorIntensity &&
+      prevProps.relationshipContext.animationSpeed ===
+        nextProps.relationshipContext.animationSpeed
+    );
+  },
+);
+
+GenericTemplate.displayName = "GenericTemplate";

@@ -16,7 +16,7 @@
  */
 
 import { gsap } from "gsap";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import {
   logPerformanceMetrics,
   shouldUseReducedMotion,
@@ -44,7 +44,7 @@ interface FireworksTemplateProps {
   enableLoop?: boolean; // T108: Optional looped background fireworks
 }
 
-export function FireworksTemplate({
+function FireworksTemplateComponent({
   recipientName,
   senderName,
   message,
@@ -187,7 +187,7 @@ export function FireworksTemplate({
                 life: 1000 + Math.random() * 500,
                 colors: [
                   colors[Math.floor(Math.random() * colors.length)] ||
-                  colors[0],
+                    colors[0],
                 ],
               });
             },
@@ -214,7 +214,7 @@ export function FireworksTemplate({
                 life: 800 + Math.random() * 400,
                 colors: [
                   colors[Math.floor(Math.random() * colors.length)] ||
-                  colors[0],
+                    colors[0],
                 ],
               });
             },
@@ -320,7 +320,7 @@ export function FireworksTemplate({
                 life: 1000 + Math.random() * 500,
                 colors: [
                   colors[Math.floor(Math.random() * colors.length)] ||
-                  colors[0],
+                    colors[0],
                 ],
               });
             },
@@ -651,34 +651,34 @@ export function FireworksTemplate({
 
   return (
     <div
-      ref={ containerRef }
+      ref={containerRef}
       className="relative w-full h-screen overflow-hidden bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900"
     >
-      {/* Background */ }
+      {/* Background */}
       <div
         className="fireworks-bg absolute inset-0 opacity-0"
-        style={ {
+        style={{
           background:
             "radial-gradient(ellipse at center, rgba(30, 41, 59, 0.8) 0%, rgba(15, 23, 42, 1) 100%)",
-        } }
+        }}
       />
 
-      {/* Ground Glow Effect - Makes bottom crackers more visible */ }
+      {/* Ground Glow Effect - Makes bottom crackers more visible */}
       <div
         className="fireworks-ground-glow absolute bottom-0 left-0 right-0 h-1/3 pointer-events-none opacity-0"
-        style={ {
+        style={{
           background: `linear-gradient(to top,
             ${colors[0]}15 0%,
             ${colors[1] || colors[0]}10 20%,
             transparent 100%)`,
           mixBlendMode: "screen",
-        } }
+        }}
       />
 
-      {/* T107: Particle Canvas with Gravity Simulation */ }
+      {/* T107: Particle Canvas with Gravity Simulation */}
       <ParticleCanvas
-        ref={ canvasRef }
-        config={ {
+        ref={canvasRef}
+        config={{
           maxParticles: particleCount * PARTICLE_MULTIPLIER, // Increase for more particles
           colors: colors,
           particleSize: 3,
@@ -688,34 +688,34 @@ export function FireworksTemplate({
           velocityVariation: 0.2,
           opacity: 1,
           blendMode: "screen",
-        } }
+        }}
         className="absolute inset-0 pointer-events-none"
-        autoStart={ true }
+        autoStart={true}
       />
 
-      {/* T111: Text Overlay */ }
+      {/* T111: Text Overlay */}
       <div className="fireworks-content absolute inset-0 flex items-center justify-center pointer-events-none">
         <div className="text-center space-y-4 sm:space-y-6 px-4">
-          {/* Recipient Name */ }
+          {/* Recipient Name */}
           <div className="fireworks-recipient opacity-0">
             <h1
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold"
-              style={ {
+              style={{
                 color: "#FFFFFF",
                 textShadow:
                   "0 4px 12px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 0, 0, 0.9), 0 8px 20px rgba(0, 0, 0, 0.85), 0 2px 4px rgba(0, 0, 0, 1)",
-              } }
+              }}
             >
-              { recipientName }
+              {recipientName}
             </h1>
           </div>
 
-          {/* Message */ }
-          { message && (
+          {/* Message */}
+          {message && (
             <div className="fireworks-message opacity-0">
               <p
                 className="text-lg sm:text-xl md:text-2xl max-w-2xl mx-auto px-4"
-                style={ {
+                style={{
                   color: "#FFFFFF",
                   textShadow:
                     "0 2px 8px rgba(0, 0, 0, 0.95), 0 4px 12px rgba(0, 0, 0, 0.8)",
@@ -723,35 +723,59 @@ export function FireworksTemplate({
                   padding: "1rem 1.5rem",
                   borderRadius: "0.75rem",
                   backdropFilter: "blur(8px)",
-                } }
+                }}
               >
-                { message }
+                {message}
               </p>
             </div>
-          ) }
+          )}
 
-          {/* Sender Name */ }
+          {/* Sender Name */}
           <div className="fireworks-sender opacity-0">
             <p
               className="text-base sm:text-lg md:text-xl"
-              style={ {
+              style={{
                 color: "#FFD700",
                 textShadow:
                   "0 2px 8px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 0, 0, 0.85), 0 4px 12px rgba(0, 0, 0, 0.9), 0 1px 3px rgba(0, 0, 0, 1)",
-              } }
+              }}
             >
-              From { senderName }
+              From {senderName}
             </p>
           </div>
         </div>
       </div>
 
-      {/* Animation Phase Indicator (dev only) */ }
-      { process.env.NODE_ENV === "development" && (
+      {/* Animation Phase Indicator (dev only) */}
+      {process.env.NODE_ENV === "development" && (
         <div className="absolute top-4 left-4 bg-black/50 text-white text-xs px-3 py-1 rounded">
-          Phase: { animationPhase }
+          Phase: {animationPhase}
         </div>
-      ) }
+      )}
     </div>
   );
 }
+
+// Memoized export to prevent unnecessary re-renders
+export const FireworksTemplate = memo(
+  FireworksTemplateComponent,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.recipientName === nextProps.recipientName &&
+      prevProps.senderName === nextProps.senderName &&
+      prevProps.message === nextProps.message &&
+      prevProps.burstCount === nextProps.burstCount &&
+      prevProps.particleCount === nextProps.particleCount &&
+      prevProps.duration === nextProps.duration &&
+      prevProps.enableLoop === nextProps.enableLoop &&
+      prevProps.relationshipContext.colorIntensity ===
+        nextProps.relationshipContext.colorIntensity &&
+      prevProps.relationshipContext.animationSpeed ===
+        nextProps.relationshipContext.animationSpeed &&
+      JSON.stringify(prevProps.colorPalette) ===
+        JSON.stringify(nextProps.colorPalette)
+    );
+  },
+);
+
+FireworksTemplate.displayName = "FireworksTemplate";

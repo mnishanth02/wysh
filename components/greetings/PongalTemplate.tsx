@@ -16,7 +16,8 @@
  */
 
 import { gsap } from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
+import { getMobileParticleCount } from "@/lib/animations";
 import { FESTIVALS } from "@/lib/constants";
 import { shouldUseReducedMotion } from "@/lib/performance";
 import type { RelationshipContext } from "@/types";
@@ -47,7 +48,7 @@ type AnimationPhase =
   | "text"
   | "complete";
 
-export function PongalTemplate({
+function PongalTemplateComponent({
   recipientName,
   senderName,
   message,
@@ -71,6 +72,9 @@ export function PongalTemplate({
     relationshipContext?.relationshipType || "friend",
     65, // Base particle count for steam/rice
   );
+
+  // T111: Mobile optimization - reduce particles on mobile
+  const mobileParticleCount = (count: number) => getMobileParticleCount(count);
 
   // Apply relationship-adjusted colors if available
   const adjustedColors = relationshipContext ? animationConfig.colors : colors;
@@ -277,7 +281,7 @@ export function PongalTemplate({
         animationPhase === "complete") && (
         <>
           <SugarcaneSway duration={8} />
-          <RiceGrains grainCount={40} duration={10} />
+          <RiceGrains grainCount={mobileParticleCount(40)} duration={10} />
         </>
       )}
 
@@ -319,9 +323,9 @@ export function PongalTemplate({
             />
           </div>
 
-          {/* Steam particles (4-10s) */}
+          {/* Steam particles (4-10s) - T111: Mobile optimized */}
           <SteamParticles
-            particleCount={animationConfig.particleCount}
+            particleCount={mobileParticleCount(animationConfig.particleCount)}
             duration={6 * (animationConfig.duration / 8000)}
             onComplete={() => {
               // Steam complete
@@ -413,3 +417,23 @@ export function PongalTemplate({
     </div>
   );
 }
+
+// Memoized export to prevent unnecessary re-renders
+export const PongalTemplate = memo(
+  PongalTemplateComponent,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.recipientName === nextProps.recipientName &&
+      prevProps.senderName === nextProps.senderName &&
+      prevProps.message === nextProps.message &&
+      prevProps.variant === nextProps.variant &&
+      prevProps.isPreview === nextProps.isPreview &&
+      prevProps.relationshipContext?.colorIntensity ===
+        nextProps.relationshipContext?.colorIntensity &&
+      prevProps.relationshipContext?.animationSpeed ===
+        nextProps.relationshipContext?.animationSpeed
+    );
+  },
+);
+
+PongalTemplate.displayName = "PongalTemplate";

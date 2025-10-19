@@ -3,7 +3,7 @@
  * Top navigation bar for the Wysh platform
  */
 
-import { Sparkles } from "lucide-react";
+import { Sparkles, Wand2 } from "lucide-react";
 import Link from "next/link";
 
 export function Navigation() {
@@ -21,9 +21,10 @@ export function Navigation() {
         <div className="ml-auto flex items-center gap-4">
           <Link
             href="/create/festival"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-md hover:shadow-lg hover:scale-105 transition-all duration-200 active:scale-95"
           >
-            Create Greeting
+            <Wand2 className="h-4 w-4" />
+            <span>Create Greeting</span>
           </Link>
         </div>
       </div>

@@ -7,7 +7,8 @@
  */
 
 import { gsap } from "gsap";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
+import { getDeviceAnimationConfig } from "@/lib/animations";
 import { FESTIVALS } from "@/lib/constants";
 import { shouldUseReducedMotion } from "@/lib/performance";
 import { generateUniqueKey } from "@/lib/utils";
@@ -23,7 +24,7 @@ interface HoliTemplateProps {
   isPreview?: boolean; // T151: Modal preview mode - use responsive sizing
 }
 
-export function HoliTemplate({
+function HoliTemplateComponent({
   recipientName,
   senderName,
   message,
@@ -47,6 +48,9 @@ export function HoliTemplate({
 
   // T121: Check for reduced motion preference
   const useReducedMotion = shouldUseReducedMotion();
+
+  // T108: Mobile optimization - detect device for simplified animations
+  const deviceConfig = getDeviceAnimationConfig();
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -152,22 +156,30 @@ export function HoliTemplate({
         minHeight: isPreview ? "auto" : "100vh",
       }}
     >
-      {/* Color splash effects */}
+      {/* Color splash effects - T108: Reduce complexity on mobile */}
       <div className="absolute inset-0 overflow-hidden">
-        {colors.map((color, i) => (
-          <div
-            key={`splash-${generateUniqueKey()}`}
-            className="color-splash absolute rounded-full blur-3xl"
-            style={{
-              backgroundColor: color,
-              opacity: 0,
-              width: `${200 + i * 50}px`,
-              height: `${200 + i * 50}px`,
-              left: `${20 + i * 15}%`,
-              top: `${10 + (i % 3) * 25}%`,
-            }}
-          />
-        ))}
+        {colors
+          .slice(0, deviceConfig.isMobile ? 3 : colors.length)
+          .map((color, i) => (
+            <div
+              key={`splash-${generateUniqueKey()}`}
+              className={`color-splash absolute rounded-full ${
+                deviceConfig.isMobile ? "blur-2xl" : "blur-3xl"
+              }`}
+              style={{
+                backgroundColor: color,
+                opacity: 0,
+                width: deviceConfig.isMobile
+                  ? `${150 + i * 40}px`
+                  : `${200 + i * 50}px`,
+                height: deviceConfig.isMobile
+                  ? `${150 + i * 40}px`
+                  : `${200 + i * 50}px`,
+                left: `${20 + i * 15}%`,
+                top: `${10 + (i % 3) * 25}%`,
+              }}
+            />
+          ))}
       </div>
 
       {/* T151: Responsive content for preview and full-screen modes */}
@@ -248,3 +260,23 @@ export function HoliTemplate({
     </div>
   );
 }
+
+// Memoized export to prevent unnecessary re-renders
+export const HoliTemplate = memo(
+  HoliTemplateComponent,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.recipientName === nextProps.recipientName &&
+      prevProps.senderName === nextProps.senderName &&
+      prevProps.message === nextProps.message &&
+      prevProps.variant === nextProps.variant &&
+      prevProps.isPreview === nextProps.isPreview &&
+      prevProps.relationshipContext.colorIntensity ===
+        nextProps.relationshipContext.colorIntensity &&
+      prevProps.relationshipContext.animationSpeed ===
+        nextProps.relationshipContext.animationSpeed
+    );
+  },
+);
+
+HoliTemplate.displayName = "HoliTemplate";

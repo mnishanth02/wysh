@@ -13,14 +13,17 @@
  */
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowRight, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useQueryStates } from "nuqs";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { FESTIVALS, RELATIONSHIP_TYPES } from "@/lib/constants";
 import { sanitizeMessage, sanitizeName } from "@/lib/sanitize";
 import { greetingParsers } from "@/lib/url-state-parsers";
 
@@ -75,8 +78,24 @@ export function PersonalizationForm() {
 
   // Watch for character count display only
   const customMessage = watch("customMessage") || "";
-  const recipientName = watch("recipientName") || "";
-  const senderName = watch("senderName") || "";
+
+  // Get festival and relationship display names for summary
+  const festivalName = urlState.festival
+    ? FESTIVALS[urlState.festival as keyof typeof FESTIVALS]?.displayName ||
+      urlState.festival
+    : "";
+
+  // Find relationship label from nested structure
+  const getRelationshipLabel = (relationshipValue: string | null): string => {
+    if (!relationshipValue) return "";
+    for (const category of Object.values(RELATIONSHIP_TYPES)) {
+      const found = category.find((r) => r.value === relationshipValue);
+      if (found) return found.label;
+    }
+    return relationshipValue;
+  };
+
+  const relationshipName = getRelationshipLabel(urlState.relationship);
 
   const onSubmit = async (data: PersonalizationFormData) => {
     // Client-side sanitization for defense-in-depth
@@ -120,91 +139,117 @@ export function PersonalizationForm() {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 mobile-gap-4">
-      <div className="space-y-2">
-        <Label htmlFor="recipientName" className="text-sm sm:text-base">
-          Recipient Name <span className="text-destructive">*</span>
-        </Label>
-        <Input
-          id="recipientName"
-          placeholder="e.g., Amma, John, Sarah"
-          {...register("recipientName")}
-          className={`touch-target ${errors.recipientName ? "border-destructive" : ""}`}
-        />
-        <div className="flex justify-between text-xs sm:text-sm">
-          {errors.recipientName && (
-            <p className="text-destructive">{errors.recipientName.message}</p>
-          )}
-          <p className="ml-auto text-muted-foreground">
-            {recipientName.length}/50
-          </p>
-        </div>
-      </div>
-
-      <div className="space-y-2">
-        <Label htmlFor="senderName" className="text-sm sm:text-base">
-          Your Name <span className="text-destructive">*</span>
-        </Label>
-        <Input
-          id="senderName"
-          placeholder="e.g., Ravi, Jane, Mike"
-          {...register("senderName")}
-          className={`touch-target ${errors.senderName ? "border-destructive" : ""}`}
-        />
-        <div className="flex justify-between text-xs sm:text-sm">
+    <Card className="p-6 sm:p-8 shadow-lg border-2 bg-card">
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {/* Sender Name */}
+        <div className="space-y-2">
+          <Label htmlFor="senderName" className="text-base font-medium">
+            Your Name <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="senderName"
+            placeholder="Enter your name"
+            autoComplete="name"
+            disabled={isSubmitting}
+            {...register("senderName")}
+            className={`h-12 text-base ${errors.senderName ? "border-destructive" : ""}`}
+          />
           {errors.senderName && (
-            <p className="text-destructive">{errors.senderName.message}</p>
+            <p className="text-sm text-destructive">
+              {errors.senderName.message}
+            </p>
           )}
-          <p className="ml-auto text-muted-foreground">
-            {senderName.length}/50
-          </p>
         </div>
-      </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="customMessage" className="text-sm sm:text-base">
-          Custom Message{" "}
-          <span className="text-muted-foreground">(Optional)</span>
-        </Label>
-        <Textarea
-          id="customMessage"
-          placeholder="Add a personal message (optional)"
-          rows={4}
-          {...register("customMessage")}
-          className={`touch-target ${errors.customMessage ? "border-destructive" : ""}`}
-        />
-        <div className="flex justify-between text-xs sm:text-sm">
+        {/* Recipient Name */}
+        <div className="space-y-2">
+          <Label htmlFor="recipientName" className="text-base font-medium">
+            Recipient's Name <span className="text-destructive">*</span>
+          </Label>
+          <Input
+            id="recipientName"
+            placeholder="Enter recipient's name"
+            autoComplete="name"
+            disabled={isSubmitting}
+            {...register("recipientName")}
+            className={`h-12 text-base ${errors.recipientName ? "border-destructive" : ""}`}
+          />
+          {errors.recipientName && (
+            <p className="text-sm text-destructive">
+              {errors.recipientName.message}
+            </p>
+          )}
+        </div>
+
+        {/* Custom Message */}
+        <div className="space-y-2">
+          <Label htmlFor="customMessage" className="text-base font-medium">
+            Custom Message{" "}
+            <span className="text-muted-foreground font-normal">
+              (Optional)
+            </span>
+          </Label>
+          <p className="text-sm text-muted-foreground">
+            Leave blank to use our default message
+          </p>
+          <Textarea
+            id="customMessage"
+            placeholder="Your custom message here..."
+            rows={5}
+            disabled={isSubmitting}
+            {...register("customMessage")}
+            className={`text-base resize-none ${
+              errors.customMessage
+                ? "border-destructive border-2"
+                : "border-2 border-primary/20 focus-visible:border-primary"
+            }`}
+          />
+          <div className="flex justify-end">
+            <p className="text-sm text-muted-foreground">
+              {customMessage.length}/150
+            </p>
+          </div>
           {errors.customMessage && (
-            <p className="text-destructive">{errors.customMessage.message}</p>
+            <p className="text-sm text-destructive">
+              {errors.customMessage.message}
+            </p>
           )}
-          <p className="ml-auto text-muted-foreground">
-            {customMessage.length}/150
-          </p>
         </div>
-        <p className="text-xs sm:text-sm text-muted-foreground">
-          Leave blank to use a context-appropriate message
-        </p>
-      </div>
 
-      <div className="flex gap-3 sm:gap-4 pt-4">
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() =>
-            router.push(`/create/relationship?festival=${urlState.festival}`)
-          }
-          className="flex-1 touch-target-lg"
-        >
-          Back
-        </Button>
+        {/* Summary Section */}
+        <Card className="bg-muted/50 p-4 gap-2 space-y-2 border-0">
+          <h3 className="font-semibold text-lg">Summary</h3>
+          <div className="space-y-1 text-sm">
+            <p>
+              <span className="text-muted-foreground">Festival:</span>{" "}
+              <span className="font-medium">{festivalName}</span>
+            </p>
+            <p>
+              <span className="text-muted-foreground">For:</span>{" "}
+              <span className="font-medium capitalize">{relationshipName}</span>
+            </p>
+          </div>
+        </Card>
+
+        {/* Submit Button - Orange Gradient */}
         <Button
           type="submit"
           disabled={isSubmitting}
-          className="flex-1 touch-target-lg"
+          className="w-full h-14 text-base font-semibold bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white shadow-md transition-all duration-200 hover:shadow-lg"
         >
-          {isSubmitting ? "Saving..." : "Continue to Templates"}
+          {isSubmitting ? (
+            <>
+              <Loader2 className="size-5 animate-spin mr-2" />
+              Creating Greeting...
+            </>
+          ) : (
+            <>
+              Create Greeting
+              <ArrowRight className="size-5 ml-2" />
+            </>
+          )}
         </Button>
-      </div>
-    </form>
+      </form>
+    </Card>
   );
 }

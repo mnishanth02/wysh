@@ -132,7 +132,7 @@
 - [x] T069 [US1] Create ShareButton component with WhatsApp deep link in components/shared/ShareButton.tsx
 - [x] T070 [US1] Implement "Copy Link" button with clipboard API
 - [x] T071 [US1] Add "Create Another Greeting" button routing back to festival selection
-- [x] T072 [US1] Display generated greeting URL (wysh.app/g/[shareableId] format)
+- [x] T072 [US1] Display generated greeting URL (wysh.zealer.in/g/[shareableId] format)
 
 #### WhatsApp Integration
 
@@ -514,7 +514,7 @@
 - [ ] T226 Document all environment variables in .env.local.example
 - [ ] T227 Deploy Convex schema and functions to production
 - [ ] T228 Deploy Next.js app to Vercel (production)
-- [ ] T229 Configure custom domain (wysh.app)
+- [ ] T229 Configure custom domain (wysh.zealer.in)
 - [ ] T230 Test production deployment end-to-end
 - [ ] T231 Set up error monitoring (Sentry or similar)
 - [ ] T232 Set up performance monitoring (Vercel Analytics)

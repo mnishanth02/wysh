@@ -15,12 +15,12 @@ import { LoadingState } from "@/components/shared/LoadingState";
 
 function FestivalContent() {
   return (
-    <div className="max-w-5xl mx-auto space-y-6 sm:space-y-8">
-      <div className="text-center space-y-3 sm:space-y-4">
-        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold">
+    <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
+      <div className="text-center space-y-3 sm:space-y-4 px-4">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
           Choose Your Festival
         </h1>
-        <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto px-4">
+        <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
           Select the festival you want to create a greeting for
         </p>
       </div>

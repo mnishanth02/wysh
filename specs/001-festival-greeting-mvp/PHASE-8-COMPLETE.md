@@ -239,9 +239,9 @@ function formatWhatsAppMessage(
 
 | Festival | Sender Name | Generated Message |
 |----------|-------------|-------------------|
-| **Diwali** | Priya | 🪔 I created a special Diwali greeting for you! Open it to see: https://wysh.app/g/abc123 |
-| **Holi** | (none) | 🎨 Check out this personalized Holi greeting I created for you! https://wysh.app/g/def456 |
-| **Christmas** | Sarah | 🎄 I created a special Christmas greeting for you! Open it to see: https://wysh.app/g/ghi789 |
+| **Diwali** | Priya | 🪔 I created a special Diwali greeting for you! Open it to see: https://wysh.zealer.in/g/abc123 |
+| **Holi** | (none) | 🎨 Check out this personalized Holi greeting I created for you! https://wysh.zealer.in/g/def456 |
+| **Christmas** | Sarah | 🎄 I created a special Christmas greeting for you! Open it to see: https://wysh.zealer.in/g/ghi789 |
 
 **Key Improvements**:
 - **Emoji First**: Visual attention grabber in WhatsApp chat list
@@ -462,7 +462,7 @@ useEffect(() => {
 
 ### WhatsApp Web Preview
 1. User pastes greeting URL in WhatsApp Web chat
-2. **WhatsApp fetches OG metadata** from `https://wysh.app/g/[id]`
+2. **WhatsApp fetches OG metadata** from `https://wysh.zealer.in/g/[id]`
 3. **Renders preview card**:
    - 800×600px thumbnail (dynamically generated)
    - Festival-specific colors and emoji
@@ -526,10 +526,10 @@ Route (app) /g/[id]/opengraph-image: 0 B (Edge runtime)
 **T185: Validate og:image URL is publicly accessible**
 **Testing Procedure**:
 1. Deploy to production (Vercel)
-2. Directly visit `https://wysh.app/g/[test-id]/opengraph-image` in browser
+2. Directly visit `https://wysh.zealer.in/g/[test-id]/opengraph-image` in browser
 3. Verify image renders (should see PNG download or inline display)
 4. Check response headers for correct Content-Type: image/png
-5. Test from external tool: https://www.opengraph.xyz/url/https%3A%2F%2Fwysh.app%2Fg%2F[id]
+5. Test from external tool: https://www.opengraph.xyz/url/https%3A%2F%2Fwysh.zealer.in%2Fg%2F[id]
 
 **Expected Result**: OG image URL returns valid PNG, no 403/404 errors
 
@@ -697,7 +697,7 @@ Phase 8 successfully transformed WhatsApp sharing from **functional** into **opt
 ```
 1. WhatsApp Bot Requests OG Metadata
    │
-   ├─> GET https://wysh.app/g/abc123
+   ├─> GET https://wysh.zealer.in/g/abc123
    │   └─> Next.js Server calls generateMetadata()
    │       ├─> Fetches greeting data from Convex
    │       ├─> Generates dynamic title, description
@@ -705,7 +705,7 @@ Phase 8 successfully transformed WhatsApp sharing from **functional** into **opt
    │
    └─> WhatsApp Parses <meta property="og:image">
        │
-       └─> GET https://wysh.app/g/abc123/opengraph-image
+       └─> GET https://wysh.zealer.in/g/abc123/opengraph-image
            └─> Next.js Edge Runtime
                ├─> Fetches greeting data from Convex
                ├─> Extracts festival colors and emoji

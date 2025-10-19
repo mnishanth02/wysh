@@ -30,7 +30,7 @@ A user arrives at Wysh, selects a festival (e.g., Diwali), chooses their relatio
 3. **Given** relationship context selection, **When** user selects "Parents" from Family category, **Then** they see the personalization form
 4. **Given** personalization form, **When** user enters recipient name "Amma", sender name "Ravi", and leaves message blank, **Then** system generates contextual message appropriate for Diwali + Parents relationship
 5. **Given** personalization complete, **When** user views template options, **Then** they see 3-4 Diwali templates with traditional colors and respectful animations suited for parents
-6. **Given** template selection, **When** user taps preferred template and clicks "Create Greeting", **Then** system generates unique URL (format: wysh.app/g/[uniqueId])
+6. **Given** template selection, **When** user taps preferred template and clicks "Create Greeting", **Then** system generates unique URL (format: wysh.zealer.in/g/[uniqueId])
 7. **Given** successful generation, **When** success screen displays, **Then** user sees "Share on WhatsApp" button, "Copy Link" button, and preview option
 8. **Given** WhatsApp share button clicked, **When** WhatsApp opens, **Then** it contains pre-filled message with greeting link
 9. **Given** recipient opens link from WhatsApp, **When** greeting page loads, **Then** animation auto-plays with personalized names and culturally appropriate Diwali visuals
@@ -164,7 +164,7 @@ When a user shares their greeting via WhatsApp, the link displays a rich preview
 - **FR-012**: System MUST display 3-4 animated template options for selected festival
 - **FR-013**: System MUST customize template visual style based on relationship context (colors, animation intensity, composition)
 - **FR-014**: System MUST allow user to preview full animation for each template before selection
-- **FR-015**: System MUST generate unique shareable URL in format wysh.app/g/[uniqueId] upon greeting creation
+- **FR-015**: System MUST generate unique shareable URL in format wysh.zealer.in/g/[uniqueId] upon greeting creation
 - **FR-016**: System MUST display success screen with preview button, WhatsApp share button, copy link button, and "Create Another Greeting" option
 - **FR-017**: System MUST open WhatsApp with pre-filled message containing greeting URL when WhatsApp share button clicked
 - **FR-018**: System MUST copy greeting URL to clipboard when copy link button clicked

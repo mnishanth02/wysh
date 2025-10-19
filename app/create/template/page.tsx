@@ -16,6 +16,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Navigation } from "@/components/layout/Navigation";
 import { LoadingState } from "@/components/shared/LoadingState";
 import { Button } from "@/components/ui/button";
+import { isFestivalEnabled } from "@/lib/feature-flags";
 import { greetingParsers } from "@/lib/url-state-parsers";
 
 function TemplateContent() {
@@ -35,6 +36,15 @@ function TemplateContent() {
     // Redirect to festival selection if required URL state is missing
     if (!festival || !relationship || !recipientName || !senderName) {
       router.push("/create/festival");
+      return;
+    }
+
+    // Redirect if festival is not enabled (backdoor protection)
+    if (!isFestivalEnabled(festival)) {
+      console.warn(
+        `Attempted access to disabled festival: ${festival}. Redirecting to festival selection.`,
+      );
+      router.push("/create/festival");
     }
   }, [festival, relationship, recipientName, senderName, router]);
 
@@ -43,29 +53,35 @@ function TemplateContent() {
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8">
-      <Button variant="ghost" onClick={() => router.back()} className="mb-4">
-        <ArrowLeft className="h-4 w-4 mr-2" />
-        Back
+    <div className="max-w-6xl mx-auto space-y-8 sm:space-y-12">
+      <Button
+        variant="ghost"
+        onClick={() => router.back()}
+        className="touch-target hover:bg-accent"
+      >
+        <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
+        <span className="text-sm sm:text-base">Back to Personalize</span>
       </Button>
 
-      <div className="text-center space-y-4">
+      <div className="text-center space-y-3 sm:space-y-4 px-4">
         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold">
           Choose Your Template
         </h1>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
           Select a beautiful animated template for your greeting
         </p>
       </div>
 
-      <TemplateSelector
-        festival={festival}
-        relationship={relationship}
-        recipientName={recipientName}
-        senderName={senderName}
-        customMessage={customMessage || ""}
-        enablePreview={true}
-      />
+      <div className="px-4">
+        <TemplateSelector
+          festival={festival}
+          relationship={relationship}
+          recipientName={recipientName}
+          senderName={senderName}
+          customMessage={customMessage || ""}
+          enablePreview={true}
+        />
+      </div>
     </div>
   );
 }
@@ -75,7 +91,7 @@ export default function TemplatePage() {
     <div className="flex min-h-screen flex-col">
       <Navigation />
 
-      <main className="flex-1 container mx-auto px-4 py-8 sm:py-12">
+      <main className="flex-1 mobile-p-4 py-6 sm:py-8 md:py-12">
         <Suspense fallback={<LoadingState message="Loading..." />}>
           <TemplateContent />
         </Suspense>

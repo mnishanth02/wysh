@@ -4,9 +4,11 @@
  * Mutations and queries for creating and viewing festival greetings
  */
 
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
+import { validateFestivalEnabled } from "../lib/feature-flags";
 import { generateShareableId } from "../lib/id-generator";
 import { mutation, query } from "./_generated/server";
+import { RATE_LIMIT_POLICIES, rateLimiter } from "./rateLimiter";
 
 // ============================================================================
 // Validation Constants
@@ -105,6 +107,7 @@ function validateMessage(message: string): void {
  *
  * Generates a unique shareable ID and stores greeting data
  * Implements retry logic on ID collision (extremely rare)
+ * Includes rate limiting to prevent abuse
  */
 export const createGreeting = mutation({
   args: {
@@ -114,8 +117,122 @@ export const createGreeting = mutation({
     senderName: v.string(),
     customMessage: v.optional(v.string()),
     templateId: v.string(),
+    clientIp: v.optional(v.string()), // IP address for rate limiting
   },
   handler: async (ctx, args) => {
+    // Rate limiting - check all policies (minute, hour, day)
+    const ipAddress = args.clientIp || "unknown";
+
+    // Skip rate limiting for whitelisted IPs
+    const whitelist = process.env.RATE_LIMIT_WHITELIST_IPS || "";
+    const whitelistedIps = whitelist
+      .split(",")
+      .map((ip) => ip.trim())
+      .filter((ip) => ip !== "");
+    const isWhitelisted = whitelistedIps.includes(ipAddress);
+
+    if (!isWhitelisted) {
+      // Check per-minute limit
+      const minuteLimit = await rateLimiter.limit(
+        ctx,
+        RATE_LIMIT_POLICIES.CREATE_PER_MIN,
+        {
+          key: ipAddress,
+        },
+      );
+
+      if (!minuteLimit.ok) {
+        const retryAfterSeconds = Math.ceil(
+          (minuteLimit.retryAfter || 60000) / 1000,
+        );
+
+        // Log rate limit violation
+        console.warn(
+          JSON.stringify({
+            level: "warn",
+            message: "Rate limit exceeded for greeting creation",
+            ip: ipAddress,
+            endpoint: "createGreeting",
+            policy: "perMinute",
+            retryAfter: retryAfterSeconds,
+            timestamp: new Date().toISOString(),
+          }),
+        );
+
+        throw new ConvexError({
+          code: "RATE_LIMIT_EXCEEDED",
+          message: `You're creating greetings too quickly. Please wait ${retryAfterSeconds} seconds before trying again.`,
+          retryAfter: minuteLimit.retryAfter || 60000,
+        });
+      }
+
+      // Check per-hour limit
+      const hourLimit = await rateLimiter.limit(
+        ctx,
+        RATE_LIMIT_POLICIES.CREATE_PER_HR,
+        {
+          key: ipAddress,
+        },
+      );
+
+      if (!hourLimit.ok) {
+        const retryAfterSeconds = Math.ceil(
+          (hourLimit.retryAfter || 3600000) / 1000,
+        );
+
+        console.warn(
+          JSON.stringify({
+            level: "warn",
+            message: "Hourly rate limit exceeded for greeting creation",
+            ip: ipAddress,
+            endpoint: "createGreeting",
+            policy: "perHour",
+            retryAfter: retryAfterSeconds,
+            timestamp: new Date().toISOString(),
+          }),
+        );
+
+        throw new ConvexError({
+          code: "RATE_LIMIT_EXCEEDED",
+          message: `You've created too many greetings this hour. Please wait ${Math.ceil(retryAfterSeconds / 60)} minutes before trying again.`,
+          retryAfter: hourLimit.retryAfter || 3600000,
+        });
+      }
+
+      // Check per-day limit
+      const dayLimit = await rateLimiter.limit(
+        ctx,
+        RATE_LIMIT_POLICIES.CREATE_PER_DAY,
+        {
+          key: ipAddress,
+        },
+      );
+
+      if (!dayLimit.ok) {
+        const retryAfterSeconds = Math.ceil(
+          (dayLimit.retryAfter || 86400000) / 1000,
+        );
+
+        console.warn(
+          JSON.stringify({
+            level: "warn",
+            message: "Daily rate limit exceeded for greeting creation",
+            ip: ipAddress,
+            endpoint: "createGreeting",
+            policy: "perDay",
+            retryAfter: retryAfterSeconds,
+            timestamp: new Date().toISOString(),
+          }),
+        );
+
+        throw new ConvexError({
+          code: "RATE_LIMIT_EXCEEDED",
+          message: `You've reached the daily limit for creating greetings. Please try again tomorrow.`,
+          retryAfter: dayLimit.retryAfter || 86400000,
+        });
+      }
+    }
+
     // Validate festival type against whitelist
     if (
       !VALID_FESTIVAL_TYPES.includes(
@@ -126,6 +243,11 @@ export const createGreeting = mutation({
         `Invalid festival type. Must be one of: ${VALID_FESTIVAL_TYPES.join(", ")}`,
       );
     }
+
+    // Validate festival is enabled via feature flags (critical security check)
+    validateFestivalEnabled(
+      args.festivalType as (typeof VALID_FESTIVAL_TYPES)[number],
+    );
 
     // Validate relationship type against whitelist
     if (
@@ -262,13 +384,53 @@ export const createGreeting = mutation({
  *
  * Fire-and-forget operation that atomically increments view count
  * Fails silently if greeting not found (non-critical tracking)
+ * Includes rate limiting to prevent view count manipulation/scraping
  */
 export const incrementViewCount = mutation({
   args: {
     greetingId: v.id("greetings"),
+    clientIp: v.optional(v.string()), // IP address for rate limiting
   },
   handler: async (ctx, args) => {
     try {
+      // Rate limiting for view tracking (prevent scraping/manipulation)
+      const ipAddress = args.clientIp || "unknown";
+
+      // Skip rate limiting for whitelisted IPs
+      const whitelist = process.env.RATE_LIMIT_WHITELIST_IPS || "";
+      const whitelistedIps = whitelist
+        .split(",")
+        .map((ip) => ip.trim())
+        .filter((ip) => ip !== "");
+      const isWhitelisted = whitelistedIps.includes(ipAddress);
+
+      if (!isWhitelisted) {
+        // Check view rate limit (100 views per minute per IP)
+        const viewLimit = await rateLimiter.limit(
+          ctx,
+          RATE_LIMIT_POLICIES.VIEW,
+          {
+            key: ipAddress,
+          },
+        );
+
+        if (!viewLimit.ok) {
+          // Log rate limit violation but don't throw (non-critical operation)
+          console.warn(
+            JSON.stringify({
+              level: "warn",
+              message: "View rate limit exceeded",
+              ip: ipAddress,
+              greetingId: args.greetingId,
+              endpoint: "incrementViewCount",
+              timestamp: new Date().toISOString(),
+            }),
+          );
+          // Return success false but don't throw error
+          return { success: false, rateLimited: true };
+        }
+      }
+
       const greeting = await ctx.db.get(args.greetingId);
 
       if (!greeting) {
@@ -407,54 +569,181 @@ function generateContextualMessage(
   relationshipType: string,
   recipientName: string,
 ): string {
+  // Comprehensive message templates for all 15 relationship types × 6 festivals
+  // Messages are culturally appropriate, warm, and relationship-specific
   const messages: Record<string, Record<string, string>> = {
     diwali: {
-      parents: `Dear ${recipientName}, wishing you a Diwali filled with light, prosperity, and countless blessings.`,
-      siblings: `Hey ${recipientName}! Have an amazing Diwali filled with sweets, fun, and fireworks! 🪔`,
-      friend: `${recipientName}, wishing you a sparkling Diwali full of joy and celebration!`,
-      boss: `Respected ${recipientName}, wishing you and your family a prosperous and joyous Diwali.`,
-      partner: `My dearest ${recipientName}, may our love shine as bright as the Diwali diyas. ✨`,
-      default: `Dear ${recipientName}, wishing you a bright and prosperous Diwali!`,
+      // Family - Formal tone
+      parents: `Dear ${recipientName}, may this auspicious Diwali illuminate your life with divine blessings, good health, and endless happiness. Wishing you a joyous festival of lights! 🪔`,
+      spouse: `Dear ${recipientName}, may our bond grow stronger with each diya we light together. Wishing us a blessed and prosperous Diwali filled with love and joy. 🪔✨`,
+      children: `Dearest ${recipientName}, may this Diwali bring you success, happiness, and all the joy your heart can hold. Have a wonderful celebration, my dear! 🪔🎉`,
+      relatives: `Dear ${recipientName}, wishing you and your family a bright and prosperous Diwali filled with love, laughter, and countless blessings. 🪔`,
+
+      // Family - Casual tone
+      siblings: `Hey ${recipientName}! 🪔✨ Hope your Diwali is absolutely amazing with tons of sweets, sparkly diyas, and loads of fun! Let's celebrate big!`,
+
+      // Friends - Casual tone
+      friend: `${recipientName}, wishing you a sparkling Diwali full of joy, laughter, and awesome celebrations! Let's light it up! 🪔✨`,
+      best_friend: `${recipientName}! 🪔 Happy Diwali to my favorite person! May your festival be as bright and amazing as you are! Let's make it unforgettable!`,
+      neighbor: `Hi ${recipientName}! Wishing you and your family a wonderful Diwali filled with light, prosperity, and joyful celebrations! 🪔😊`,
+
+      // Professional
+      boss: `Respected ${recipientName}, wishing you and your family a prosperous and joyous Diwali. May this festival bring new opportunities and continued success. 🪔`,
+      colleague: `Hi ${recipientName}, wishing you a bright and prosperous Diwali! May this festival bring joy and success to you and your loved ones. 🪔`,
+      client: `Dear ${recipientName}, wishing you a wonderful Diwali celebration. May this festival bring prosperity and new opportunities to your ventures. 🪔`,
+      mentor: `Respected ${recipientName}, wishing you a blessed Diwali filled with joy and prosperity. Thank you for your continued guidance and support. 🪔`,
+
+      // Romantic - Intimate tone
+      partner: `My dearest ${recipientName}, you light up my world every day just like the beautiful Diwali diyas. Wishing us a magical celebration together. Love you! 🪔💕`,
+      fiance: `${recipientName}, my love, as we celebrate this Diwali together, I'm grateful for our beautiful journey. Here's to our bright future! 🪔💑`,
+      crush: `Hi ${recipientName}, wishing you a wonderful Diwali filled with happiness and beautiful moments. Hope your festival is as bright as your smile! 🪔✨`,
+
+      default: `Dear ${recipientName}, wishing you a bright and prosperous Diwali filled with joy and blessings! 🪔`,
     },
+
     holi: {
-      parents: `Dear ${recipientName}, may this Holi bring vibrant colors of joy and happiness to your life.`,
-      siblings: `${recipientName}, let's paint the town colorful this Holi! Get ready for color chaos! 🎨`,
-      friend: `${recipientName}, hoping your Holi is as colorful and vibrant as you are!`,
-      boss: `Respected ${recipientName}, wishing you a colorful and joyous Holi celebration.`,
-      partner: `${recipientName}, you bring color to my life every single day. Happy Holi! 💕`,
-      default: `Dear ${recipientName}, wishing you a joyful and colorful Holi!`,
+      // Family - Formal tone
+      parents: `Dear ${recipientName}, may the vibrant colors of Holi bring renewed joy, good health, and happiness to your life. Wishing you a blessed celebration! 🎨`,
+      spouse: `Dear ${recipientName}, may our love be as colorful and vibrant as this beautiful festival. Wishing us a joyful Holi celebration together! 🎨💕`,
+      children: `Dearest ${recipientName}, may your Holi be filled with colors, laughter, and endless joy! Have a fantastic celebration, my dear! 🎨🌈`,
+      relatives: `Dear ${recipientName}, wishing you a colorful and joyous Holi! May this festival bring happiness and prosperity to your family. 🎨`,
+
+      // Family - Casual tone
+      siblings: `${recipientName}! 🎨🌈 Get ready for the most colorful Holi ever! Let's paint the town and have a blast! Color attack incoming!`,
+
+      // Friends - Casual tone
+      friend: `${recipientName}, happy Holi! 🎨 May your life be as colorful and vibrant as you are! Let's make this celebration unforgettable!`,
+      best_friend: `${recipientName}! 🎨🌈 Holi with you is always epic! Ready for colors, chaos, and crazy fun? Let's do this!`,
+      neighbor: `Hi ${recipientName}! Wishing you a wonderful Holi filled with colors, joy, and beautiful memories with your loved ones! 🎨😊`,
+
+      // Professional
+      boss: `Respected ${recipientName}, wishing you a vibrant and joyous Holi. May this colorful festival bring fresh energy and continued success. 🎨`,
+      colleague: `Hi ${recipientName}, wishing you a colorful and joyful Holi celebration! May this festival bring happiness and positivity. 🎨`,
+      client: `Dear ${recipientName}, wishing you a wonderful Holi! May this festival of colors bring joy and prosperity to your endeavors. 🎨`,
+      mentor: `Respected ${recipientName}, wishing you a joyful Holi celebration. May this colorful festival bring happiness and renewed inspiration. 🎨`,
+
+      // Romantic - Intimate tone
+      partner: `${recipientName}, my love, you bring color to my world every single day. Can't wait to celebrate this beautiful Holi with you! 🎨💕`,
+      fiance: `${recipientName}, as we celebrate Holi together, every moment with you feels like a burst of colors. Love you endlessly! 🎨💑`,
+      crush: `Hi ${recipientName}, wishing you a colorful Holi! May your celebration be as bright and beautiful as you are! 🎨✨`,
+
+      default: `Dear ${recipientName}, wishing you a joyful and colorful Holi celebration! 🎨`,
     },
+
     christmas: {
-      parents: `Dear ${recipientName}, wishing you peace, joy, and all the blessings of Christmas.`,
-      siblings: `${recipientName}, Merry Christmas! May your holidays be filled with joy and presents! 🎄`,
-      friend: `${recipientName}, wishing you a Christmas filled with warmth, laughter, and good times!`,
-      boss: `Respected ${recipientName}, Season's greetings and best wishes for a wonderful Christmas.`,
-      partner: `${recipientName}, you're the best gift I could ask for. Merry Christmas, my love! ❤️`,
-      default: `Dear ${recipientName}, wishing you a Merry Christmas and a Happy New Year!`,
+      // Family - Formal tone
+      parents: `Dear ${recipientName}, wishing you a blessed Christmas filled with peace, love, and the warmth of family. May this season bring you endless joy. 🎄`,
+      spouse: `Dear ${recipientName}, you're my greatest blessing. Merry Christmas to us, my love. Here's to creating magical memories together! 🎄❤️`,
+      children: `Dearest ${recipientName}, Merry Christmas! May Santa bring you everything you wished for and may your holidays be filled with joy! 🎄🎁`,
+      relatives: `Dear ${recipientName}, wishing you and your family a wonderful Christmas filled with love, laughter, and beautiful moments! 🎄`,
+
+      // Family - Casual tone
+      siblings: `${recipientName}! 🎄🎁 Merry Christmas! Hope Santa loads you up with awesome gifts! Let's make this holiday super fun!`,
+
+      // Friends - Casual tone
+      friend: `${recipientName}, Merry Christmas! 🎄 Wishing you cozy vibes, great times, and lots of holiday cheer! Let's celebrate!`,
+      best_friend: `${recipientName}! 🎄🎁 Merry Christmas to my favorite person! Hope your holidays are as awesome as you are! Let's party!`,
+      neighbor: `Hi ${recipientName}! Wishing you a Merry Christmas and a wonderful holiday season filled with warmth and joy! 🎄😊`,
+
+      // Professional
+      boss: `Respected ${recipientName}, Season's greetings! Wishing you a wonderful Christmas and a prosperous new year ahead. 🎄`,
+      colleague: `Hi ${recipientName}, Merry Christmas! Wishing you a joyful holiday season and a happy new year ahead! 🎄`,
+      client: `Dear ${recipientName}, wishing you a Merry Christmas and prosperity in the coming year. Thank you for your continued partnership. 🎄`,
+      mentor: `Respected ${recipientName}, wishing you a blessed Christmas. Thank you for your guidance and support throughout the year. 🎄`,
+
+      // Romantic - Intimate tone
+      partner: `${recipientName}, you're the most precious gift in my life. Merry Christmas to us, my love. Forever grateful for you! 🎄❤️`,
+      fiance: `${recipientName}, my love, our first Christmas together is magical. Here's to a lifetime of beautiful celebrations! 🎄💑`,
+      crush: `Hi ${recipientName}, Merry Christmas! Wishing you wonderful holiday moments and joy throughout the season! 🎄✨`,
+
+      default: `Dear ${recipientName}, wishing you a Merry Christmas and a Happy New Year! 🎄`,
     },
+
     newyear: {
-      parents: `Dear ${recipientName}, wishing you health, happiness, and success in the new year ahead.`,
-      siblings: `${recipientName}, cheers to new adventures and amazing memories in the new year! 🎉`,
-      friend: `${recipientName}, here's to another year of friendship and fun! Happy New Year!`,
-      boss: `Respected ${recipientName}, wishing you a successful and prosperous new year.`,
-      partner: `${recipientName}, can't wait to create more beautiful memories with you. Happy New Year! 💫`,
-      default: `Dear ${recipientName}, wishing you a Happy New Year filled with new opportunities!`,
+      // Family - Formal tone
+      parents: `Dear ${recipientName}, as we welcome the new year, may it bring you good health, prosperity, and endless happiness. Wishing you a wonderful year ahead! 🎉`,
+      spouse: `Dear ${recipientName}, here's to another year of love, partnership, and beautiful memories together. Happy New Year, my love! 🎉💕`,
+      children: `Dearest ${recipientName}, Happy New Year! May this year bring you success, happiness, and all your dreams come true! 🎉✨`,
+      relatives: `Dear ${recipientName}, wishing you and your family a Happy New Year filled with health, prosperity, and joyful moments! 🎉`,
+
+      // Family - Casual tone
+      siblings: `${recipientName}! 🎉🥳 Happy New Year! Let's make this year absolutely epic with crazy adventures and awesome memories!`,
+
+      // Friends - Casual tone
+      friend: `${recipientName}, Happy New Year! 🎉 Here's to another year of friendship, fun times, and unforgettable moments!`,
+      best_friend: `${recipientName}! 🎉🥳 New year, same awesome friendship! Let's make this year the best one yet! Cheers to us!`,
+      neighbor: `Hi ${recipientName}! Wishing you a Happy New Year filled with joy, success, and wonderful moments ahead! 🎉😊`,
+
+      // Professional
+      boss: `Respected ${recipientName}, wishing you a successful and prosperous new year. Looking forward to continued achievements ahead. 🎉`,
+      colleague: `Hi ${recipientName}, Happy New Year! Wishing you success and happiness in all your endeavors this year! 🎉`,
+      client: `Dear ${recipientName}, Happy New Year! Wishing you prosperity and exciting opportunities in the year ahead. 🎉`,
+      mentor: `Respected ${recipientName}, Happy New Year! Thank you for your continued guidance. Wishing you success and fulfillment ahead. 🎉`,
+
+      // Romantic - Intimate tone
+      partner: `${recipientName}, my darling, cheers to another year of endless love and beautiful moments with you. You make every day special! 🎉💑`,
+      fiance: `${recipientName}, my love, as we step into this new year together, I'm excited for our beautiful journey ahead. Love you! 🎉💕`,
+      crush: `Hi ${recipientName}, Happy New Year! Wishing you an amazing year filled with happiness and wonderful surprises! 🎉✨`,
+
+      default: `Dear ${recipientName}, wishing you a Happy New Year filled with new opportunities and success! 🎉`,
     },
+
     pongal: {
-      parents: `Dear ${recipientName}, may this Pongal bring abundance, prosperity, and good health to you.`,
-      siblings: `${recipientName}, Happy Pongal! May the harvest bring sweetness to your life! 🌾`,
-      friend: `${recipientName}, wishing you a Pongal filled with joy, prosperity, and delicious food!`,
-      boss: `Respected ${recipientName}, wishing you and your family a prosperous Pongal celebration.`,
-      partner: `${recipientName}, grateful for our harvest of love. Happy Pongal, my dear! 🌻`,
-      default: `Dear ${recipientName}, wishing you a bountiful and happy Pongal!`,
+      // Family - Formal tone
+      parents: `Dear ${recipientName}, may this sacred Pongal bring abundance, prosperity, and good health to your life. Wishing you a blessed harvest festival! 🌾`,
+      spouse: `Dear ${recipientName}, grateful for our harvest of love and togetherness. Wishing us a wonderful Pongal celebration! 🌾💕`,
+      children: `Dearest ${recipientName}, Happy Pongal! May this harvest festival bring you joy, prosperity, and sweet moments! 🌾☀️`,
+      relatives: `Dear ${recipientName}, wishing you and your family a prosperous Pongal filled with abundance and happiness! 🌾`,
+
+      // Family - Casual tone
+      siblings: `${recipientName}! 🌾☀️ Happy Pongal! May your harvest be full of sweetness and your year full of awesome times!`,
+
+      // Friends - Casual tone
+      friend: `${recipientName}, Happy Pongal! 🌾 Wishing you a harvest of joy, prosperity, and lots of delicious treats!`,
+      best_friend: `${recipientName}! 🌾☀️ Happy Pongal to my favorite person! May this festival bring you all the happiness you deserve!`,
+      neighbor: `Hi ${recipientName}! Wishing you a wonderful Pongal celebration filled with joy and prosperity! 🌾😊`,
+
+      // Professional
+      boss: `Respected ${recipientName}, wishing you a prosperous Pongal. May this harvest festival bring growth and success to all endeavors. 🌾`,
+      colleague: `Hi ${recipientName}, Happy Pongal! Wishing you abundance and success in all your undertakings! 🌾`,
+      client: `Dear ${recipientName}, wishing you a prosperous Pongal! May this harvest festival bring growth and new opportunities. 🌾`,
+      mentor: `Respected ${recipientName}, wishing you a blessed Pongal. May this festival bring abundance and continued success. 🌾`,
+
+      // Romantic - Intimate tone
+      partner: `${recipientName}, my love, grateful for our beautiful harvest of love and happiness. Wishing us a wonderful Pongal together! 🌾💕`,
+      fiance: `${recipientName}, as we celebrate Pongal, I'm thankful for our journey together. Here's to our abundant future! 🌾💑`,
+      crush: `Hi ${recipientName}, Happy Pongal! Wishing you a harvest full of happiness and beautiful moments! 🌾✨`,
+
+      default: `Dear ${recipientName}, wishing you a bountiful and happy Pongal! 🌾`,
     },
+
     generic: {
-      parents: `Dear ${recipientName}, sending you love and warm wishes on this special occasion.`,
-      siblings: `${recipientName}, wishing you an amazing celebration filled with joy and fun!`,
-      friend: `${recipientName}, hope your celebration is as wonderful as you are!`,
-      boss: `Respected ${recipientName}, best wishes for a joyous celebration.`,
-      partner: `${recipientName}, you make every celebration special. Love you! ✨`,
-      default: `Dear ${recipientName}, wishing you joy and happiness on this special day!`,
+      // Family - Formal tone
+      parents: `Dear ${recipientName}, sending you love and warm wishes on this special occasion. May it bring you joy and happiness. ✨`,
+      spouse: `Dear ${recipientName}, every celebration is special when I'm with you. Wishing us wonderful moments together! 💕`,
+      children: `Dearest ${recipientName}, wishing you joy and happiness on this special day! Have a fantastic celebration! 🎉`,
+      relatives: `Dear ${recipientName}, wishing you and your family joy and happiness on this special occasion! ✨`,
+
+      // Family - Casual tone
+      siblings: `${recipientName}! 🎉✨ Hope you have an absolutely amazing celebration filled with fun and laughter!`,
+
+      // Friends - Casual tone
+      friend: `${recipientName}, hope your celebration is as wonderful and amazing as you are! Have a great time! ✨🎉`,
+      best_friend: `${recipientName}! ✨🎉 Wishing you the best celebration ever! You deserve all the happiness in the world!`,
+      neighbor: `Hi ${recipientName}! Wishing you a wonderful celebration filled with joy and happiness! ✨😊`,
+
+      // Professional
+      boss: `Respected ${recipientName}, best wishes on this special occasion. May it bring continued success and prosperity. ✨`,
+      colleague: `Hi ${recipientName}, wishing you joy and happiness on this special occasion! Have a wonderful celebration! ✨`,
+      client: `Dear ${recipientName}, warm wishes on this occasion. May it bring prosperity and success to your endeavors. ✨`,
+      mentor: `Respected ${recipientName}, wishing you happiness and continued success on this special occasion. ✨`,
+
+      // Romantic - Intimate tone
+      partner: `${recipientName}, you make every celebration special. Every moment with you is a gift. Love you always! 💕✨`,
+      fiance: `${recipientName}, my love, celebrating with you makes every occasion magical. Here's to us and our beautiful future! 💑✨`,
+      crush: `Hi ${recipientName}, wishing you a wonderful celebration filled with joy and beautiful moments! ✨💫`,
+
+      default: `Dear ${recipientName}, wishing you joy and happiness on this special day! ✨`,
     },
   };
 
@@ -462,6 +751,6 @@ function generateContextualMessage(
   return (
     festivalMessages[relationshipType] ||
     festivalMessages.default ||
-    `Dear ${recipientName}, wishing you joy and happiness!`
+    `Dear ${recipientName}, wishing you joy and happiness! ✨`
   );
 }

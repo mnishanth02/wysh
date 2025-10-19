@@ -9,7 +9,11 @@
 
 import { gsap } from "gsap";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
+import {
+  getDeviceAnimationConfig,
+  getMobileParticleCount,
+} from "@/lib/animations";
 import { FESTIVALS } from "@/lib/constants";
 import {
   logPerformanceMetrics,
@@ -36,7 +40,7 @@ interface NewYearTemplateProps {
   isPreview?: boolean; // T151: Modal preview mode - use responsive sizing
 }
 
-export function NewYearTemplate({
+function NewYearTemplateComponent({
   recipientName,
   senderName,
   message,
@@ -63,6 +67,10 @@ export function NewYearTemplate({
 
   const festivalData = FESTIVALS.newyear;
   const colors = festivalData.colorPalette;
+
+  // T110: Mobile optimization - detect device and reduce particles
+  const deviceConfig = getDeviceAnimationConfig();
+  const mobileParticleCount = (count: number) => getMobileParticleCount(count);
 
   // T055: Integrate ContextAdapter for relationship-aware adjustments
   const animationConfig = useAnimationContext(
@@ -434,19 +442,21 @@ export function NewYearTemplate({
           >
             <FireworkBurst
               burstCount={
-                animationConfig.intensity === "low"
-                  ? 4
-                  : animationConfig.intensity === "high"
-                    ? 7
-                    : 6
+                deviceConfig.isMobile
+                  ? 3
+                  : animationConfig.intensity === "low"
+                    ? 4
+                    : animationConfig.intensity === "high"
+                      ? 7
+                      : 6
               }
-              particlesPerBurst={
+              particlesPerBurst={mobileParticleCount(
                 animationConfig.intensity === "low"
                   ? 60
                   : animationConfig.intensity === "high"
                     ? 90
-                    : 80
-              }
+                    : 80,
+              )}
               duration={3}
               delay={0}
               colors={animationConfig.colors}
@@ -458,13 +468,13 @@ export function NewYearTemplate({
             className={`absolute inset-0 ${animationPhase === "confetti" || animationPhase === "text" || animationPhase === "complete" ? "opacity-100" : "opacity-0 pointer-events-none"}`}
           >
             <ConfettiSystem
-              count={
+              count={mobileParticleCount(
                 animationConfig.intensity === "low"
                   ? 80
                   : animationConfig.intensity === "high"
                     ? 150
-                    : 120
-              }
+                    : 120,
+              )}
               duration={5}
               delay={0}
               colors={animationConfig.colors}
@@ -575,3 +585,23 @@ export function NewYearTemplate({
     </div>
   );
 }
+
+// Memoized export to prevent unnecessary re-renders
+export const NewYearTemplate = memo(
+  NewYearTemplateComponent,
+  (prevProps, nextProps) => {
+    return (
+      prevProps.recipientName === nextProps.recipientName &&
+      prevProps.senderName === nextProps.senderName &&
+      prevProps.message === nextProps.message &&
+      prevProps.variant === nextProps.variant &&
+      prevProps.isPreview === nextProps.isPreview &&
+      prevProps.relationshipContext.colorIntensity ===
+        nextProps.relationshipContext.colorIntensity &&
+      prevProps.relationshipContext.animationSpeed ===
+        nextProps.relationshipContext.animationSpeed
+    );
+  },
+);
+
+NewYearTemplate.displayName = "NewYearTemplate";

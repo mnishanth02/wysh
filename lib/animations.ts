@@ -444,6 +444,104 @@ export class AnimationState {
 }
 
 // ============================================================================
+// Counter Animation Utilities
+// ============================================================================
+
+/**
+ * Animate a number counter using GSAP
+ *
+ * @param target - DOM element to animate (will update textContent)
+ * @param endValue - Final number to count to
+ * @param duration - Animation duration in seconds (default: 2)
+ * @param onUpdate - Optional callback called on each update
+ * @returns GSAP tween
+ */
+export function animateCounter(
+  target: HTMLElement,
+  endValue: number,
+  duration = 2,
+  onUpdate?: (value: number) => void,
+): gsap.core.Tween {
+  const counterObject = { value: 0 };
+
+  return gsap.to(counterObject, {
+    value: endValue,
+    duration,
+    ease: "power2.out",
+    onUpdate: () => {
+      const roundedValue = Math.round(counterObject.value);
+      target.textContent = roundedValue.toLocaleString();
+      onUpdate?.(roundedValue);
+    },
+  });
+}
+
+/**
+ * Get animation configuration for counter based on user preferences
+ */
+export function getCounterAnimationConfig(): {
+  duration: number;
+  ease: string;
+  reducedMotion: boolean;
+} {
+  const reducedMotion =
+    typeof window !== "undefined" &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  return {
+    duration: reducedMotion ? 0.5 : 2,
+    ease: reducedMotion ? "none" : "power2.out",
+    reducedMotion,
+  };
+}
+
+/**
+ * Check if user prefers reduced motion
+ */
+export function prefersReducedMotion(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+}
+
+/**
+ * Detect if device is mobile (screen width < 768px)
+ */
+export function isMobileDevice(): boolean {
+  if (typeof window === "undefined") return false;
+  return window.innerWidth < 768;
+}
+
+/**
+ * Get mobile-optimized particle count (60% reduction for mobile devices)
+ *
+ * @param desktopCount - Desired particle count for desktop
+ * @returns Optimized particle count based on device type
+ */
+export function getMobileParticleCount(desktopCount: number): number {
+  if (typeof window === "undefined") return desktopCount;
+  return isMobileDevice() ? Math.floor(desktopCount * 0.4) : desktopCount;
+}
+
+/**
+ * Get animation configuration based on device capabilities
+ *
+ * @returns Animation config with mobile-specific optimizations
+ */
+export function getDeviceAnimationConfig() {
+  const mobile = isMobileDevice();
+  const reducedMotion = prefersReducedMotion();
+
+  return {
+    isMobile: mobile,
+    prefersReducedMotion: reducedMotion,
+    particleMultiplier: mobile ? 0.4 : 1.0, // 60% reduction on mobile
+    animationDuration: reducedMotion ? 0.3 : mobile ? 0.7 : 1.0,
+    enableComplexEffects: !mobile && !reducedMotion,
+    maxParticles: mobile ? 20 : 50,
+  };
+}
+
+// ============================================================================
 // Exports
 // ============================================================================
 
@@ -471,6 +569,16 @@ export const animations = {
     scaleUp: scaleUpVariants,
     slideUp: slideUpVariants,
     staggerChildren: staggerChildrenVariants,
+  },
+  counter: {
+    animate: animateCounter,
+    getConfig: getCounterAnimationConfig,
+    prefersReducedMotion,
+  },
+  mobile: {
+    isMobileDevice,
+    getMobileParticleCount,
+    getDeviceAnimationConfig,
   },
   optimize: optimizeForAnimation,
   clearOptimization: clearAnimationOptimization,
