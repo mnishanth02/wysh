@@ -15,6 +15,7 @@ import { useState } from "react";
 import { ErrorState } from "@/components/shared/ErrorState";
 import { LoadingState } from "@/components/shared/LoadingState";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { api } from "@/convex/_generated/api";
 import { FESTIVALS } from "@/lib/constants";
 import type { FestivalType } from "@/types";
@@ -51,40 +52,48 @@ function FestivalCard({
   onSelect: () => void;
 }) {
   const [imageError, setImageError] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
     <Card
       className="group relative touch-target gap-0 p-0 cursor-pointer overflow-hidden border-2 shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] rounded-3xl"
-      onClick={onSelect}
+      onClick={ onSelect }
     >
-      {/* Background Image or Gradient Fallback */}
+      {/* Background Image or Gradient Fallback */ }
       <div className="relative h-56 sm:h-64 md:h-72 w-full overflow-hidden">
-        {!imageError ? (
+        {/* Skeleton Loader - shows while image is loading */ }
+        { !imageLoaded && !imageError && (
+          <Skeleton className="absolute inset-0 rounded-none" />
+        ) }
+
+        { !imageError ? (
           <Image
-            src={FESTIVAL_IMAGES[festivalId]}
-            alt={festival.displayName}
+            src={ FESTIVAL_IMAGES[festivalId] }
+            alt={ festival.displayName }
             fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-            priority={festivalId === "diwali" || festivalId === "christmas"}
-            onError={() => setImageError(true)}
+            className={ `object-cover transition-opacity duration-500 group-hover:scale-110 ${imageLoaded ? "opacity-100" : "opacity-0"
+              }` }
+            priority={ festivalId === "diwali" || festivalId === "christmas" }
+            onLoad={ () => setImageLoaded(true) }
+            onError={ () => setImageError(true) }
           />
         ) : (
           <div
             className="absolute inset-0 transition-transform duration-500 group-hover:scale-110"
-            style={{ background: FESTIVAL_GRADIENTS[festivalId] }}
+            style={ { background: FESTIVAL_GRADIENTS[festivalId] } }
           />
-        )}
+        ) }
 
-        {/* Gradient Overlay for better text readability */}
+        {/* Gradient Overlay for better text readability */ }
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
 
-        {/* Festival Info Overlay */}
+        {/* Festival Info Overlay */ }
         <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 text-white">
           <h3 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 drop-shadow-lg">
-            {festival.displayName}
+            { festival.displayName }
           </h3>
           <p className="text-sm sm:text-base md:text-lg text-white/90 drop-shadow">
-            {festivalData.description}
+            { festivalData.description }
           </p>
         </div>
       </div>
@@ -118,20 +127,20 @@ export function FestivalSelector() {
   return (
     <div className="w-full px-4">
       <div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 max-w-5xl mx-auto">
-        {filteredFestivals.map((festival) => {
+        { filteredFestivals.map((festival) => {
           const festivalData = FESTIVALS[festival.festivalId as FestivalType];
           const festivalId = festival.festivalId as FestivalType;
 
           return (
             <FestivalCard
-              key={festival._id}
-              festival={festival}
-              festivalData={festivalData}
-              festivalId={festivalId}
-              onSelect={() => handleFestivalSelect(festivalId)}
+              key={ festival._id }
+              festival={ festival }
+              festivalData={ festivalData }
+              festivalId={ festivalId }
+              onSelect={ () => handleFestivalSelect(festivalId) }
             />
           );
-        })}
+        }) }
       </div>
     </div>
   );

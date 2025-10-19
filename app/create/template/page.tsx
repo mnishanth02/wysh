@@ -44,9 +44,9 @@ function TemplateContent() {
 
   return (
     <div className="max-w-5xl mx-auto space-y-8">
-      <Button variant="ghost" onClick={() => router.back()} className="mb-4">
+      <Button variant="ghost" onClick={ () => router.back() } className="mb-4 touch-target">
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back
+        Back to Personalize
       </Button>
 
       <div className="text-center space-y-4">
@@ -59,12 +59,12 @@ function TemplateContent() {
       </div>
 
       <TemplateSelector
-        festival={festival}
-        relationship={relationship}
-        recipientName={recipientName}
-        senderName={senderName}
-        customMessage={customMessage || ""}
-        enablePreview={true}
+        festival={ festival }
+        relationship={ relationship }
+        recipientName={ recipientName }
+        senderName={ senderName }
+        customMessage={ customMessage || "" }
+        enablePreview={ true }
       />
     </div>
   );
@@ -76,7 +76,7 @@ export default function TemplatePage() {
       <Navigation />
 
       <main className="flex-1 container mx-auto px-4 py-8 sm:py-12">
-        <Suspense fallback={<LoadingState message="Loading..." />}>
+        <Suspense fallback={ <LoadingState message="Loading..." /> }>
           <TemplateContent />
         </Suspense>
       </main>

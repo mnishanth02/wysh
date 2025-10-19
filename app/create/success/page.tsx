@@ -65,7 +65,7 @@ function SuccessContent() {
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
-      {/* Success Message */}
+      {/* Success Message */ }
       <div className="text-center space-y-4">
         <div className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-green-100 text-green-600">
           <Check className="h-8 w-8" />
@@ -80,34 +80,34 @@ function SuccessContent() {
         </p>
       </div>
 
-      {/* Preview Card */}
-      <Card className="p-6 space-y-4">
-        <div className="space-y-2">
-          <h2 className="text-lg font-semibold">Your Greeting URL</h2>
+      {/* Preview Card */ }
+      <Card className="p-4 sm:p-6 space-y-4 bg-gradient-to-br from-purple-50/5 to-pink-50/5 border-2">
+        <div className="space-y-3">
+          <h2 className="text-base sm:text-lg font-semibold">Your Greeting URL</h2>
           <div className="flex gap-2">
             <input
               type="text"
-              value={greetingUrl}
+              value={ greetingUrl }
               readOnly
-              className="flex-1 px-3 py-2 text-sm border rounded-md bg-muted"
+              className="flex-1 px-3 sm:px-4 py-3 text-xs sm:text-sm border-2 rounded-lg bg-background font-mono touch-target"
             />
             <Button
               variant="outline"
               size="icon"
-              onClick={handleCopyLink}
-              className="shrink-0"
+              onClick={ handleCopyLink }
+              className="shrink-0 h-12 w-12 border-2"
             >
-              {copied ? (
-                <Check className="h-4 w-4" />
+              { copied ? (
+                <Check className="h-5 w-5" />
               ) : (
-                <Copy className="h-4 w-4" />
-              )}
+                <Copy className="h-5 w-5" />
+              ) }
             </Button>
           </div>
         </div>
       </Card>
 
-      {/* Sharing Options */}
+      {/* Sharing Options */ }
       <div className="space-y-4">
         <h2 className="text-xl font-semibold text-center">
           Share Your Greeting
@@ -115,14 +115,14 @@ function SuccessContent() {
 
         <div className="grid sm:grid-cols-2">
           <ShareButton
-            shareableId={shareableId}
-            festivalType={festivalType || undefined}
-            senderName={senderName}
+            shareableId={ shareableId }
+            festivalType={ festivalType || undefined }
+            senderName={ senderName }
           />
 
           <Button
             variant="outline"
-            onClick={handleCopyLink}
+            onClick={ handleCopyLink }
             className="h-auto sm:w-full py-4"
           >
             <Copy className="h-5 w-5 mr-2" />
@@ -136,23 +136,23 @@ function SuccessContent() {
         </div>
       </div>
 
-      {/* Preview Link */}
+      {/* Preview Link */ }
       <Card className="p-6 bg-muted/50 space-y-4">
         <div className="flex items-center gap-2 text-muted-foreground">
           <Sparkles className="h-5 w-5" />
           <span className="font-medium">Want to see how it looks?</span>
         </div>
         <Button asChild variant="outline" className="w-full h-11">
-          <Link href={`/g/${shareableId}`} target="_blank">
+          <Link href={ `/g/${shareableId}` } target="_blank">
             Preview Your Greeting
           </Link>
         </Button>
       </Card>
 
-      {/* Create Another */}
+      {/* Create Another */ }
       <div className="text-center space-y-4 pt-4">
         <Button
-          onClick={handleCreateAnother}
+          onClick={ handleCreateAnother }
           size="lg"
           className="w-full h-12 sm:w-auto"
         >
@@ -169,7 +169,7 @@ export default function SuccessPage() {
       <Navigation />
 
       <main className="flex-1 container mx-auto px-4 py-8 sm:py-12">
-        <Suspense fallback={<LoadingState message="Loading..." />}>
+        <Suspense fallback={ <LoadingState message="Loading..." /> }>
           <SuccessContent />
         </Suspense>
       </main>

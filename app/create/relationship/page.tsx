@@ -37,11 +37,11 @@ function RelationshipContent() {
     <div className="max-w-5xl mx-auto space-y-8 sm:space-y-12">
       <Button
         variant="ghost"
-        onClick={() => router.push("/create/festival")}
+        onClick={ () => router.push("/create/festival") }
         className="mb-2 sm:mb-4 touch-target"
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back
+        Back to Festival
       </Button>
 
       <div className="text-center space-y-3 sm:space-y-4 px-4">
@@ -64,7 +64,7 @@ export default function RelationshipPage() {
       <Navigation />
 
       <main className="flex-1 container mx-auto px-4 mobile-p-4 py-6 sm:py-8 md:py-12">
-        <Suspense fallback={<LoadingState message="Loading..." />}>
+        <Suspense fallback={ <LoadingState message="Loading..." /> }>
           <RelationshipContent />
         </Suspense>
       </main>
