@@ -28,7 +28,7 @@ export default defineSchema({
     // Personalization Data
     recipientName: v.string(), // 1-50 characters
     senderName: v.string(), // 1-50 characters
-    customMessage: v.optional(v.string()), // 0-150 characters, user-provided
+    customMessage: v.optional(v.string()), // 0-500 characters, user-provided (supports emojis)
     generatedMessage: v.optional(v.string()), // System-generated if customMessage empty
 
     // Template & Sharing

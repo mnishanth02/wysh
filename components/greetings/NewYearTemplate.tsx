@@ -108,7 +108,7 @@ function NewYearTemplateComponent({
       // Variant-specific animation timelines
       if (variant === "1") {
         // VARIANT 1: Countdown to Fireworks
-        // T053: Phase 1 (0-4s): Countdown with background intensity increase
+        // T053: Phase 1 (0-5s): Countdown with background intensity increase (extended)
         tl.call(
           () => {
             setBgVisible(true);
@@ -118,26 +118,26 @@ function NewYearTemplateComponent({
           0,
         );
 
-        // T054: Phase 2 (4-7s): Fireworks - synchronized with countdown completion
-        tl.addLabel("countdownComplete", 4); // Timeline label for synchronization
+        // T054: Phase 2 (5-9s): Fireworks - synchronized with countdown completion (extended)
+        tl.addLabel("countdownComplete", 5); // Timeline label for synchronization
         tl.call(() => setAnimationPhase("fireworks"), [], "countdownComplete");
 
-        // T053: Phase 3 (5-10s): Confetti burst from top
-        tl.call(() => setAnimationPhase("confetti"), [], 5);
+        // T053: Phase 3 (6-10s): Confetti burst from top
+        tl.call(() => setAnimationPhase("confetti"), [], 6);
 
-        // T053: Phase 4 (7-10s): Text explosion and text reveal
-        tl.call(() => setAnimationPhase("text"), [], 7);
+        // T053: Phase 4 (9-13s): Text explosion and text reveal (delayed until after animations)
+        tl.call(() => setAnimationPhase("text"), [], 9);
 
-        // Animate text elements (8-10s)
+        // Animate text elements (9.5-13s - delayed until animations complete)
         tl.to(
           ".newyear-recipient",
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 1,
             ease: "power2.out",
           },
-          8,
+          9.5,
         );
 
         tl.to(
@@ -145,10 +145,10 @@ function NewYearTemplateComponent({
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 1,
             ease: "power2.out",
           },
-          8.5,
+          10.2,
         );
 
         tl.to(
@@ -156,14 +156,14 @@ function NewYearTemplateComponent({
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 1,
             ease: "power2.out",
           },
-          9,
+          10.9,
         );
       } else if (variant === "2") {
         // VARIANT 2: Champagne Pop Celebration
-        // New champagne-specific animation sequence
+        // New champagne-specific animation sequence (extended duration)
         tl.call(
           () => {
             setBgVisible(true);
@@ -173,79 +173,25 @@ function NewYearTemplateComponent({
           0,
         );
 
-        // Phase 1 (0-1s): Bottle shake and cork pop
-        // ChampagneBottle will call onPopComplete at 1s
+        // Phase 1 (0-2s): Bottle shake and cork pop (extended)
+        // ChampagneBottle will call onPopComplete at 2s
 
-        // Phase 2 (1-2.5s): Sparkles shoot upward
-        tl.call(() => setAnimationPhase("champagne-sparkles"), [], 1);
+        // Phase 2 (2-4s): Sparkles shoot upward (extended)
+        tl.call(() => setAnimationPhase("champagne-sparkles"), [], 2);
 
-        // Phase 3 (2.5-3.5s): Burst explosion at top
-        tl.call(() => setAnimationPhase("champagne-burst"), [], 2.5);
+        // Phase 3 (4-5.5s): Burst explosion at top (extended)
+        tl.call(() => setAnimationPhase("champagne-burst"), [], 4);
 
-        // Phase 4 (3.5s+): Text explosion reveals "Happy New Year 2026!"
-        tl.call(() => setAnimationPhase("text"), [], 3.5);
+        // Phase 4 (5.5s+): Text explosion reveals "Happy New Year 2026!"
+        tl.call(() => setAnimationPhase("text"), [], 5.5);
 
-        // Phase 5: Animate text elements (4.5-7s)
+        // Phase 5: Animate text elements (6-9s - delayed until animations complete)
         tl.to(
           ".newyear-recipient",
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
-            ease: "power2.out",
-          },
-          4.5,
-        );
-
-        tl.to(
-          ".newyear-message",
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power2.out",
-          },
-          5,
-        );
-
-        tl.to(
-          ".newyear-sender",
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
-            ease: "power2.out",
-          },
-          5.5,
-        );
-      } else if (variant === "3") {
-        // VARIANT 3: Fireworks Sky Spectacular
-        // Emphasis on fireworks with minimal countdown
-        tl.call(
-          () => {
-            setBgVisible(true);
-            setAnimationPhase("fireworks");
-          },
-          [],
-          0,
-        );
-
-        // Extended fireworks display (0-5s)
-        tl.call(() => setAnimationPhase("fireworks"), [], 0);
-
-        // Confetti complement (3-8s)
-        tl.call(() => setAnimationPhase("confetti"), [], 3);
-
-        // Text reveal (5-10s)
-        tl.call(() => setAnimationPhase("text"), [], 5);
-
-        // Animate text elements (6-10s)
-        tl.to(
-          ".newyear-recipient",
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.8,
+            duration: 1,
             ease: "power2.out",
           },
           6,
@@ -256,10 +202,10 @@ function NewYearTemplateComponent({
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 1,
             ease: "power2.out",
           },
-          6.5,
+          6.8,
         );
 
         tl.to(
@@ -267,10 +213,64 @@ function NewYearTemplateComponent({
           {
             opacity: 1,
             y: 0,
-            duration: 0.8,
+            duration: 1,
+            ease: "power2.out",
+          },
+          7.6,
+        );
+      } else if (variant === "3") {
+        // VARIANT 3: Fireworks Sky Spectacular
+        // Emphasis on fireworks with minimal countdown (extended for visual impact)
+        tl.call(
+          () => {
+            setBgVisible(true);
+            setAnimationPhase("fireworks");
+          },
+          [],
+          0,
+        );
+
+        // Extended fireworks display (0-6.5s)
+        tl.call(() => setAnimationPhase("fireworks"), [], 0);
+
+        // Confetti complement (4-9s)
+        tl.call(() => setAnimationPhase("confetti"), [], 4);
+
+        // Text reveal (6.5s+)
+        tl.call(() => setAnimationPhase("text"), [], 6.5);
+
+        // Animate text elements (7-11s - delayed until animations complete)
+        tl.to(
+          ".newyear-recipient",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
             ease: "power2.out",
           },
           7,
+        );
+
+        tl.to(
+          ".newyear-message",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+          },
+          7.8,
+        );
+
+        tl.to(
+          ".newyear-sender",
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+          },
+          8.6,
         );
       }
 

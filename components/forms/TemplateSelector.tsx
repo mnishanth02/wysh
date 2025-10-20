@@ -9,6 +9,7 @@
 
 import { useMutation } from "convex/react";
 import { Eye } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -140,6 +141,33 @@ const TEMPLATE_CONFIGS: Record<
     },
     // generic-3 is not in backend's allowed list, so remove it
   ],
+};
+
+// Template icon mappings - static SVG images for visual representation
+const TEMPLATE_ICONS: Record<string, string> = {
+  // Diwali templates
+  "diwali-1": "/festivals/diwali/diya.svg",
+  "diwali-2": "/festivals/diwali/rangoli-pattern.svg",
+  "diwali-3": "/festivals/newyear/firework-base.svg",
+  // Holi templates
+  "holi-1": "/festivals/diwali/sparkle.svg",
+  "holi-2": "/festivals/diwali/sparkle.svg",
+  "holi-3": "/festivals/diwali/rangoli-pattern.svg",
+  // Christmas templates
+  "christmas-1": "/festivals/diwali/sparkle.svg",
+  "christmas-2": "/festivals/diwali/sparkle.svg",
+  "christmas-3": "/festivals/diwali/sparkle.svg",
+  // New Year templates
+  "newyear-1": "/festivals/newyear/firework-base.svg",
+  "newyear-2": "/festivals/newyear/confetti-shapes.svg",
+  "newyear-3": "/festivals/newyear/firework-base.svg",
+  // Pongal templates
+  "pongal-1": "/festivals/pongal/sun.svg",
+  "pongal-2": "/festivals/pongal/pot.svg",
+  "pongal-3": "/festivals/pongal/kolam.svg",
+  // Generic templates
+  "generic-1": "/festivals/newyear/confetti-shapes.svg",
+  "generic-2": "/festivals/newyear/confetti-shapes.svg",
 };
 
 export function TemplateSelector({
@@ -288,6 +316,19 @@ export function TemplateSelector({
                   background: `linear-gradient(${gradientAngle}deg, ${festivalData.colorPalette[colorIndex1]}, ${festivalData.colorPalette[colorIndex2]})`,
                 }}
               >
+                {/* Template Icon/Visual - Static representation */}
+                {TEMPLATE_ICONS[template.id] && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Image
+                      src={TEMPLATE_ICONS[template.id]}
+                      alt={template.name}
+                      width={150}
+                      height={150}
+                      className="opacity-40 group-hover:opacity-60 transition-opacity duration-300"
+                    />
+                  </div>
+                )}
+
                 {/* Gradient Overlay for depth */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 

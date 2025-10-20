@@ -56,21 +56,32 @@ export function sanitizeName(name: string, maxLength = 50): string {
 
 /**
  * Sanitize custom message input
- * Allows text and common punctuation, but strips HTML
+ * Allows text, emojis, and common punctuation, but strips HTML
  *
  * @param message - Raw message input
- * @param maxLength - Maximum allowed length (default: 150)
+ * @param maxLength - Maximum allowed length (default: 500)
  * @returns Sanitized message
  */
-export function sanitizeMessage(message: string, maxLength = 150): string {
+export function sanitizeMessage(message: string, maxLength = 500): string {
   if (!message) return "";
 
   // Sanitize with DOMPurify
   let clean = sanitizeText(message);
 
-  // Allow text, numbers, and common punctuation
-  // Preserves: letters, numbers, spaces, and .,!?;:'"()-—
-  clean = clean.replace(/[^a-zA-Z0-9\s.,!?;:'"()\-—]/g, "");
+  // Allow text, numbers, common punctuation, and emojis
+  // This pattern preserves:
+  // - Alphanumeric characters and common punctuation: .,!?;:'"()-—
+  // - Unicode letters (\p{L}) and numbers (\p{N})
+  // - Emojis through a broader range using character codes
+  // - Spaces and line breaks
+
+  // First pass: remove obviously dangerous characters but preserve emojis
+  // Unicode emoji ranges:
+  // - U+1F300-U+1F9FF (Miscellaneous Symbols, Emoticons, etc.)
+  // - U+2600-U+27BF (Miscellaneous Symbols)
+  // - U+2300-U+23FF (Miscellaneous Technical)
+  // - U+1F900-U+1F9FF (Supplemental Symbols)
+  clean = clean.replace(/[^\w\s.,!?;:'"()\-—\u0080-\uFFFF]/g, "");
 
   // Collapse multiple spaces
   clean = clean.replace(/\s+/g, " ");
@@ -120,8 +131,8 @@ export function sanitizeGreetingInputs(inputs: {
     throw new Error("Sender name must be 50 characters or less");
   }
 
-  if (customMessage && customMessage.length > 150) {
-    throw new Error("Custom message must be 150 characters or less");
+  if (customMessage && customMessage.length > 500) {
+    throw new Error("Custom message must be 500 characters or less");
   }
 
   return {

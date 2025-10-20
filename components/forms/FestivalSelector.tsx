@@ -125,14 +125,15 @@ function FestivalCard({
 
 export function FestivalSelector() {
   const router = useRouter();
-  const [isNavigating, setIsNavigating] = useState(false);
+  const [navigatingFestival, setNavigatingFestival] =
+    useState<FestivalType | null>(null);
   const festivals = useQuery(api.festivals.listFestivals);
 
   const handleFestivalSelect = (festivalType: FestivalType) => {
     // Prevent multiple clicks while navigating
-    if (isNavigating) return;
+    if (navigatingFestival) return;
 
-    setIsNavigating(true);
+    setNavigatingFestival(festivalType);
     // Navigation with festival parameter in the URL
     router.push(`/create/relationship?festival=${festivalType}`);
   };
@@ -159,6 +160,9 @@ export function FestivalSelector() {
           const festivalData = FESTIVALS[festival.festivalId as FestivalType];
           const festivalId = festival.festivalId as FestivalType;
           const isEnabled = isFestivalEnabled(festivalId);
+          // Only show "Coming Soon" and disable if the festival is actually disabled
+          // Don't disable when navigating to prevent the flash effect on enabled festivals
+          const shouldDisable = !isEnabled;
 
           return (
             <FestivalCard
@@ -167,7 +171,7 @@ export function FestivalSelector() {
               festivalData={festivalData}
               festivalId={festivalId}
               onSelect={() => handleFestivalSelect(festivalId)}
-              isDisabled={!isEnabled || isNavigating}
+              isDisabled={shouldDisable}
             />
           );
         })}

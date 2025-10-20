@@ -125,17 +125,17 @@ function DiwaliTemplateComponent({
         y: 20,
       });
 
-      // Phase 1 (0-2s): Background fade via React state + diya lighting
+      // Phase 1 (0-3s): Background fade via React state + diya lighting
       setBgVisible(true);
       tl.call(() => setAnimationPhase("intro"), [], 0);
 
-      // Phase 2 (2-6s): Fireworks + sparkles
-      tl.call(() => setAnimationPhase("main"), [], 2);
+      // Phase 2 (3-8s): Fireworks + sparkles (extended for visual impact)
+      tl.call(() => setAnimationPhase("main"), [], 3);
 
-      // Phase 3 (6-8s): Text reveal with character animations
-      tl.call(() => setAnimationPhase("text"), [], 6);
+      // Phase 3 (8-9s): Text reveal with character animations (delayed until after animations)
+      tl.call(() => setAnimationPhase("text"), [], 8);
 
-      // Fade in content container first
+      // Fade in content container first (at 8s, after animations)
       tl.to(
         ".diwali-content",
         {
@@ -143,19 +143,19 @@ function DiwaliTemplateComponent({
           duration: 0.5,
           ease: "power2.out",
         },
-        6,
+        8,
       );
 
-      // Text reveal animations (6-10s)
+      // Text reveal animations (8-13s - delayed until animations complete)
       tl.to(
         ".greeting-title",
         {
           scale: 1,
           opacity: 1,
-          duration: 1,
+          duration: 1.2,
           ease: "back.out(1.5)",
         },
-        6.5,
+        8.5,
       );
 
       tl.to(
@@ -163,10 +163,10 @@ function DiwaliTemplateComponent({
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          duration: 1,
           ease: "power2.out",
         },
-        7,
+        9,
       );
 
       tl.to(
@@ -174,10 +174,10 @@ function DiwaliTemplateComponent({
         {
           y: 0,
           opacity: 1,
-          duration: 1,
+          duration: 1.2,
           ease: "power2.out",
         },
-        7.5,
+        9.8,
       );
 
       tl.to(
@@ -185,14 +185,14 @@ function DiwaliTemplateComponent({
         {
           y: 0,
           opacity: 1,
-          duration: 0.8,
+          duration: 1,
           ease: "power2.out",
         },
-        8.5,
+        11,
       );
 
-      // Phase 4 (9-10s): Finale with sparkle loop
-      tl.call(() => setAnimationPhase("finale"), [], 9);
+      // Phase 4 (12-13s): Finale with sparkle loop
+      tl.call(() => setAnimationPhase("finale"), [], 12);
 
       timelineRef.current = tl;
     }, containerRef);
