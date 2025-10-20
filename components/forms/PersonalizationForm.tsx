@@ -13,9 +13,10 @@
  */
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Loader2 } from "lucide-react";
+import { ArrowRight, Loader2, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useQueryStates } from "nuqs";
+import { useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
@@ -77,6 +78,7 @@ export function PersonalizationForm() {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<PersonalizationFormData>({
     resolver: zodResolver(personalizationSchema),
@@ -89,8 +91,41 @@ export function PersonalizationForm() {
     },
   });
 
-  // Watch for character count display only
+  // Watch form fields for clearing functionality and validation
   const customMessage = watch("customMessage") || "";
+  const senderName = watch("senderName") || "";
+  const recipientName = watch("recipientName") || "";
+
+  // Track the previous default message to detect when festival/relationship changes
+  const prevDefaultMessageRef = useRef(defaultMessage);
+  const isInitializedRef = useRef(false);
+
+  // Update default message only when festival/relationship changes, not on every render
+  useEffect(() => {
+    // Only update if:
+    // 1. There's a new default message (festival/relationship changed)
+    // 2. User hasn't provided a custom URL message
+    // 3. The current textarea is empty or contains the OLD default message
+    if (
+      defaultMessage !== prevDefaultMessageRef.current &&
+      !urlState.customMessage
+    ) {
+      // Festival or relationship changed, update to new default
+      setValue("customMessage", defaultMessage, { shouldDirty: false });
+    }
+    prevDefaultMessageRef.current = defaultMessage;
+  }, [defaultMessage, urlState.customMessage, setValue]);
+
+  // Initialize textarea with default message on mount if not already set
+  useEffect(() => {
+    // Only run this once per component mount
+    if (!isInitializedRef.current && defaultMessage && !customMessage) {
+      setValue("customMessage", defaultMessage, { shouldDirty: false });
+      isInitializedRef.current = true;
+    }
+  }, [defaultMessage, customMessage, setValue]);
+
+  // ...existing code...
 
   // Get festival and relationship display names for summary
   const festivalName = urlState.festival
@@ -150,14 +185,32 @@ export function PersonalizationForm() {
           <Label htmlFor="senderName" className="text-base font-medium">
             Your Name <span className="text-destructive">*</span>
           </Label>
-          <Input
-            id="senderName"
-            placeholder="Enter your name"
-            autoComplete="name"
-            disabled={ isSubmitting }
-            { ...register("senderName") }
-            className={ `h-12 text-base ${errors.senderName ? "border-destructive" : ""}` }
-          />
+          <div className="relative">
+            <Input
+              id="senderName"
+              placeholder="Enter your name"
+              autoComplete="name"
+              disabled={ isSubmitting }
+              { ...register("senderName") }
+              className={ `h-12 text-base pr-10 ${errors.senderName ? "border-destructive" : ""}` }
+            />
+            {/* Clear button for sender name */ }
+            { senderName && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                onClick={ () =>
+                  setValue("senderName", "", { shouldDirty: true })
+                }
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
+                aria-label="Clear name"
+                title="Clear name"
+              >
+                <X className="size-4 text-orange-500" />
+              </Button>
+            ) }
+          </div>
           { errors.senderName && (
             <p className="text-sm text-destructive">
               { errors.senderName.message }
@@ -170,14 +223,32 @@ export function PersonalizationForm() {
           <Label htmlFor="recipientName" className="text-base font-medium">
             Recipient's Name <span className="text-destructive">*</span>
           </Label>
-          <Input
-            id="recipientName"
-            placeholder="Enter recipient's name"
-            autoComplete="name"
-            disabled={ isSubmitting }
-            { ...register("recipientName") }
-            className={ `h-12 text-base ${errors.recipientName ? "border-destructive" : ""}` }
-          />
+          <div className="relative">
+            <Input
+              id="recipientName"
+              placeholder="Enter recipient's name"
+              autoComplete="name"
+              disabled={ isSubmitting }
+              { ...register("recipientName") }
+              className={ `h-12 text-base pr-10 ${errors.recipientName ? "border-destructive" : ""}` }
+            />
+            {/* Clear button for recipient name */ }
+            { recipientName && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                onClick={ () =>
+                  setValue("recipientName", "", { shouldDirty: true })
+                }
+                className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8"
+                aria-label="Clear recipient name"
+                title="Clear recipient name"
+              >
+                <X className="size-4 text-orange-500" />
+              </Button>
+            ) }
+          </div>
           { errors.recipientName && (
             <p className="text-sm text-destructive">
               { errors.recipientName.message }
@@ -197,17 +268,35 @@ export function PersonalizationForm() {
             Review and edit the default message below, or write your own. You
             can use emojis to add more personality! 🎉
           </p>
-          <Textarea
-            id="customMessage"
-            placeholder="Your custom message here... You can use emojis like 🎉 ✨ 🎊"
-            rows={ 8 }
-            disabled={ isSubmitting }
-            { ...register("customMessage") }
-            className={ `text-base resize-none ${errors.customMessage
-              ? "border-destructive border-2"
-              : "border-2 border-primary/20 focus-visible:border-primary"
-              }` }
-          />
+          <div className="relative">
+            <Textarea
+              id="customMessage"
+              placeholder="Your custom message here... You can use emojis like 🎉 ✨ 🎊"
+              rows={ 8 }
+              disabled={ isSubmitting }
+              { ...register("customMessage") }
+              className={ `text-base resize-none pr-12 ${errors.customMessage
+                  ? "border-destructive border-2"
+                  : "border-2 border-primary/20 focus-visible:border-primary"
+                }` }
+            />
+            {/* Clear button - appears in bottom-right corner of textarea */ }
+            { customMessage && (
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                onClick={ () =>
+                  setValue("customMessage", "", { shouldDirty: true })
+                }
+                className="absolute bottom-2 right-2"
+                aria-label="Clear message"
+                title="Clear message"
+              >
+                <X className="size-5 text-orange-500" />
+              </Button>
+            ) }
+          </div>
           <div className="flex justify-end">
             <p className="text-sm text-muted-foreground">
               { customMessage.length }/500
