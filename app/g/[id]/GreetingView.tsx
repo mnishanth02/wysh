@@ -89,8 +89,6 @@ export function GreetingView({ shareableId }: GreetingViewProps) {
     }
   }, [greeting?._id, incrementViewCount]);
 
-  // No-op: Tap to Play removed
-
   if (greeting === undefined) {
     return <LoadingState message="Loading your greeting..." />;
   }
