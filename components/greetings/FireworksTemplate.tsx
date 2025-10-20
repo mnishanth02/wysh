@@ -787,7 +787,7 @@ function FireworksTemplateComponent({
           blendMode: "screen",
         }}
         className="absolute inset-0 pointer-events-none"
-        autoStart={true}
+        autoStart
       />
 
       {/* T111: Text Overlay */}

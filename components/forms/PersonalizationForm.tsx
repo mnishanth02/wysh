@@ -85,7 +85,7 @@ export function PersonalizationForm() {
     defaultValues: {
       recipientName: urlState.recipientName,
       senderName: urlState.senderName,
-      customMessage: urlState.customMessage || defaultMessage,
+      customMessage: urlState.customMessage ?? defaultMessage,
     },
   });
 
