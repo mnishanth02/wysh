@@ -9,6 +9,7 @@
 
 import { useMutation } from "convex/react";
 import { Eye } from "lucide-react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -142,6 +143,33 @@ const TEMPLATE_CONFIGS: Record<
   ],
 };
 
+// Template icon mappings - static SVG images for visual representation
+const TEMPLATE_ICONS: Record<string, string> = {
+  // Diwali templates
+  "diwali-1": "/festivals/diwali/diya.svg",
+  "diwali-2": "/festivals/diwali/rangoli-pattern.svg",
+  "diwali-3": "/festivals/newyear/firework-base.svg",
+  // Holi templates
+  "holi-1": "/festivals/diwali/sparkle.svg",
+  "holi-2": "/festivals/diwali/sparkle.svg",
+  "holi-3": "/festivals/diwali/rangoli-pattern.svg",
+  // Christmas templates
+  "christmas-1": "/festivals/diwali/sparkle.svg",
+  "christmas-2": "/festivals/diwali/sparkle.svg",
+  "christmas-3": "/festivals/diwali/sparkle.svg",
+  // New Year templates
+  "newyear-1": "/festivals/newyear/firework-base.svg",
+  "newyear-2": "/festivals/newyear/confetti-shapes.svg",
+  "newyear-3": "/festivals/newyear/firework-base.svg",
+  // Pongal templates
+  "pongal-1": "/festivals/pongal/sun.svg",
+  "pongal-2": "/festivals/pongal/pot.svg",
+  "pongal-3": "/festivals/pongal/kolam.svg",
+  // Generic templates
+  "generic-1": "/festivals/newyear/confetti-shapes.svg",
+  "generic-2": "/festivals/newyear/confetti-shapes.svg",
+};
+
 export function TemplateSelector({
   festival,
   relationship,
@@ -257,20 +285,20 @@ export function TemplateSelector({
 
   return (
     <div className="space-y-6 sm:space-y-8">
-      {/* Context Indicator - Redesigned */}
+      {/* Context Indicator - Redesigned */ }
       <div className="text-center p-4 sm:p-5 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-2xl border border-primary/20">
         <p className="text-sm sm:text-base text-foreground">
-          Templates styled for{" "}
+          Templates styled for{ " " }
           <span className="font-bold text-primary">
-            {relationshipContext.visualTone}
-          </span>{" "}
+            { relationshipContext.visualTone }
+          </span>{ " " }
           tone
         </p>
       </div>
 
-      {/* Template Grid - Redesigned with larger cards */}
+      {/* Template Grid - Redesigned with larger cards */ }
       <div className="grid gap-5 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        {templates.map((template, index) => {
+        { templates.map((template, index) => {
           // Use different color combinations for each template variant
           const colorIndex1 = index % festivalData.colorPalette.length;
           const colorIndex2 = (index + 1) % festivalData.colorPalette.length;
@@ -278,74 +306,87 @@ export function TemplateSelector({
 
           return (
             <Card
-              key={template.id}
+              key={ template.id }
               className="group gap-0 p-0 touch-target overflow-hidden border-2 shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-[1.02] active:scale-[0.98] rounded-3xl"
             >
-              {/* Template Preview - Enlarged */}
+              {/* Template Preview - Enlarged */ }
               <div
                 className="relative h-56 sm:h-64 flex items-center justify-center overflow-hidden transition-transform duration-500 group-hover:scale-110"
-                style={{
+                style={ {
                   background: `linear-gradient(${gradientAngle}deg, ${festivalData.colorPalette[colorIndex1]}, ${festivalData.colorPalette[colorIndex2]})`,
-                }}
+                } }
               >
-                {/* Gradient Overlay for depth */}
+                {/* Template Icon/Visual - Static representation */ }
+                { TEMPLATE_ICONS[template.id] && (
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <Image
+                      src={ TEMPLATE_ICONS[template.id] }
+                      alt={ template.name }
+                      width={ 150 }
+                      height={ 150 }
+                      className="opacity-40 group-hover:opacity-60 transition-opacity duration-300"
+                    />
+                  </div>
+                ) }
+
+                {/* Gradient Overlay for depth */ }
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent" />
 
                 <div className="relative text-center text-white space-y-2 sm:space-y-3 p-4 sm:p-6 drop-shadow-lg">
                   <p className="text-2xl sm:text-3xl md:text-4xl font-bold">
-                    {recipientName}
+                    { recipientName }
                   </p>
                   <p className="text-sm sm:text-base md:text-lg opacity-90">
-                    From {senderName}
+                    From { senderName }
                   </p>
                 </div>
               </div>
 
-              {/* Template Info - Improved spacing */}
+              {/* Template Info - Improved spacing */ }
               <div className="p-5 sm:p-6 space-y-3 sm:space-y-4 bg-card">
                 <div>
                   <h3 className="text-lg sm:text-xl font-bold mb-1 sm:mb-2">
-                    {template.name}
+                    { template.name }
                   </h3>
                   <p className="text-sm sm:text-base text-muted-foreground">
-                    {template.description}
+                    { template.description }
                   </p>
                 </div>
 
-                {/* Action Buttons - Improved design */}
+                {/* Action Buttons - Improved design */ }
                 <div className="flex gap-3 pt-2">
-                  {enablePreview && (
+                  { enablePreview && (
                     <Button
                       variant="outline"
                       size="default"
                       className="flex-1 touch-target h-11 sm:h-12 text-sm sm:text-base font-medium"
-                      onClick={() => handlePreview(template.id)}
+                      onClick={ () => handlePreview(template.id) }
                     >
                       <Eye className="h-4 w-4 sm:h-5 sm:w-5 mr-2" />
                       Preview
                     </Button>
-                  )}
+                  ) }
                   <Button
-                    variant={enablePreview ? "default" : "default"}
+                    variant={ enablePreview ? "default" : "default" }
                     size="default"
-                    className={`${enablePreview ? "flex-1" : "w-full"} touch-target h-11 sm:h-12 text-sm sm:text-base font-semibold`}
-                    disabled={selectedTemplate === template.id}
-                    onClick={() => handleTemplateSelect(template.id)}
+                    className={ `${enablePreview ? "flex-1" : "w-full"} touch-target h-11 sm:h-12 text-sm sm:text-base font-semibold` }
+                    disabled={ selectedTemplate === template.id }
+                    onClick={ () => handleTemplateSelect(template.id) }
                   >
-                    {selectedTemplate === template.id
+                    { selectedTemplate === template.id
                       ? "Creating..."
-                      : "Select Template"}
+                      : "Select Template" }
                   </Button>
                 </div>
               </div>
             </Card>
           );
-        })}
+        }) }
       </div>
 
-      {/* Preview Dialog with Animation - Enhanced Design */}
-      {enablePreview && (
-        <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
+      {/* Preview Dialog with Animation - Enhanced Design */ }
+      { enablePreview && (
+        <Dialog open={ isPreviewOpen } onOpenChange={ setIsPreviewOpen }>
           <DialogContent className="max-w-5xl h-[90vh] p-0 flex flex-col overflow-hidden rounded-3xl">
             <DialogHeader className="p-4 sm:p-6 bg-background border-b shrink-0">
               <DialogTitle className="text-lg sm:text-xl font-bold">
@@ -356,40 +397,40 @@ export function TemplateSelector({
               </DialogDescription>
             </DialogHeader>
 
-            {/* Responsive preview container with proper aspect ratio */}
+            {/* Responsive preview container with proper aspect ratio */ }
             <div className="relative flex-1 min-h-0 w-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
-              {previewTemplate && (
+              { previewTemplate && (
                 <GreetingRenderer
-                  festivalType={festival}
-                  relationshipType={relationship}
-                  recipientName={recipientName}
-                  senderName={senderName}
+                  festivalType={ festival }
+                  relationshipType={ relationship }
+                  recipientName={ recipientName }
+                  senderName={ senderName }
                   message={
                     customMessage || `Happy ${festivalData.displayName}!`
                   }
-                  templateId={previewTemplate}
-                  isPreview={true}
+                  templateId={ previewTemplate }
+                  isPreview={ true }
                 />
-              )}
+              ) }
             </div>
 
             <div className="p-4 sm:p-6 border-t bg-background shrink-0">
               <div className="flex gap-3 justify-end">
                 <Button
                   variant="outline"
-                  onClick={handleClosePreview}
+                  onClick={ handleClosePreview }
                   size="default"
                   className="text-sm sm:text-base h-11 sm:h-12 px-6 font-medium"
                 >
                   Close
                 </Button>
                 <Button
-                  onClick={() => {
+                  onClick={ () => {
                     if (previewTemplate) {
                       handleClosePreview();
                       handleTemplateSelect(previewTemplate);
                     }
-                  }}
+                  } }
                   size="default"
                   className="text-sm sm:text-base h-11 sm:h-12 px-6 font-semibold"
                 >
@@ -399,7 +440,7 @@ export function TemplateSelector({
             </div>
           </DialogContent>
         </Dialog>
-      )}
+      ) }
     </div>
   );
 }
