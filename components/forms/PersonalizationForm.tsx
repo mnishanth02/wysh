@@ -43,7 +43,7 @@ const personalizationSchema = z.object({
     .trim(),
   customMessage: z
     .string()
-    .max(150, "Message must be 150 characters or less")
+    .max(500, "Message must be 500 characters or less")
     .trim()
     .optional(),
 });
@@ -68,9 +68,9 @@ export function PersonalizationForm() {
   const defaultMessage =
     urlState.festival && urlState.relationship
       ? generateContextualMessage(
-        urlState.festival as FestivalType,
-        urlState.relationship as RelationshipType,
-      )
+          urlState.festival as FestivalType,
+          urlState.relationship as RelationshipType,
+        )
       : "";
 
   const {
@@ -95,7 +95,7 @@ export function PersonalizationForm() {
   // Get festival and relationship display names for summary
   const festivalName = urlState.festival
     ? FESTIVALS[urlState.festival as keyof typeof FESTIVALS]?.displayName ||
-    urlState.festival
+      urlState.festival
     : "";
 
   // Find relationship label from nested structure
@@ -144,8 +144,8 @@ export function PersonalizationForm() {
 
   return (
     <Card className="p-6 sm:p-8 shadow-lg border-2 bg-card">
-      <form onSubmit={ handleSubmit(onSubmit) } className="space-y-4">
-        {/* Sender Name */ }
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        {/* Sender Name */}
         <div className="space-y-2">
           <Label htmlFor="senderName" className="text-base font-medium">
             Your Name <span className="text-destructive">*</span>
@@ -154,18 +154,18 @@ export function PersonalizationForm() {
             id="senderName"
             placeholder="Enter your name"
             autoComplete="name"
-            disabled={ isSubmitting }
-            { ...register("senderName") }
-            className={ `h-12 text-base ${errors.senderName ? "border-destructive" : ""}` }
+            disabled={isSubmitting}
+            {...register("senderName")}
+            className={`h-12 text-base ${errors.senderName ? "border-destructive" : ""}`}
           />
-          { errors.senderName && (
+          {errors.senderName && (
             <p className="text-sm text-destructive">
-              { errors.senderName.message }
+              {errors.senderName.message}
             </p>
-          ) }
+          )}
         </div>
 
-        {/* Recipient Name */ }
+        {/* Recipient Name */}
         <div className="space-y-2">
           <Label htmlFor="recipientName" className="text-base font-medium">
             Recipient's Name <span className="text-destructive">*</span>
@@ -174,73 +174,75 @@ export function PersonalizationForm() {
             id="recipientName"
             placeholder="Enter recipient's name"
             autoComplete="name"
-            disabled={ isSubmitting }
-            { ...register("recipientName") }
-            className={ `h-12 text-base ${errors.recipientName ? "border-destructive" : ""}` }
+            disabled={isSubmitting}
+            {...register("recipientName")}
+            className={`h-12 text-base ${errors.recipientName ? "border-destructive" : ""}`}
           />
-          { errors.recipientName && (
+          {errors.recipientName && (
             <p className="text-sm text-destructive">
-              { errors.recipientName.message }
+              {errors.recipientName.message}
             </p>
-          ) }
+          )}
         </div>
 
-        {/* Custom Message */ }
+        {/* Custom Message */}
         <div className="space-y-2">
           <Label htmlFor="customMessage" className="text-base font-medium">
-            Custom Message{ " " }
+            Custom Message{" "}
             <span className="text-muted-foreground font-normal">
-              (Optional)
+              (Optional - Emojis welcome!)
             </span>
           </Label>
           <p className="text-sm text-muted-foreground">
-            Review and edit the default message below, or write your own
+            Review and edit the default message below, or write your own. You
+            can use emojis to add more personality! 🎉
           </p>
           <Textarea
             id="customMessage"
-            placeholder="Your custom message here..."
-            rows={ 5 }
-            disabled={ isSubmitting }
-            { ...register("customMessage") }
-            className={ `text-base resize-none ${errors.customMessage
+            placeholder="Your custom message here... You can use emojis like 🎉 ✨ 🎊"
+            rows={5}
+            disabled={isSubmitting}
+            {...register("customMessage")}
+            className={`text-base resize-none ${
+              errors.customMessage
                 ? "border-destructive border-2"
                 : "border-2 border-primary/20 focus-visible:border-primary"
-              }` }
+            }`}
           />
           <div className="flex justify-end">
             <p className="text-sm text-muted-foreground">
-              { customMessage.length }/150
+              {customMessage.length}/500
             </p>
           </div>
-          { errors.customMessage && (
+          {errors.customMessage && (
             <p className="text-sm text-destructive">
-              { errors.customMessage.message }
+              {errors.customMessage.message}
             </p>
-          ) }
+          )}
         </div>
 
-        {/* Summary Section */ }
+        {/* Summary Section */}
         <Card className="bg-muted/50 p-4 gap-2 space-y-2 border-0">
           <h3 className="font-semibold text-lg">Summary</h3>
           <div className="space-y-1 text-sm">
             <p>
-              <span className="text-muted-foreground">Festival:</span>{ " " }
-              <span className="font-medium">{ festivalName }</span>
+              <span className="text-muted-foreground">Festival:</span>{" "}
+              <span className="font-medium">{festivalName}</span>
             </p>
             <p>
-              <span className="text-muted-foreground">For:</span>{ " " }
-              <span className="font-medium capitalize">{ relationshipName }</span>
+              <span className="text-muted-foreground">For:</span>{" "}
+              <span className="font-medium capitalize">{relationshipName}</span>
             </p>
           </div>
         </Card>
 
-        {/* Submit Button - Orange Gradient */ }
+        {/* Submit Button - Orange Gradient */}
         <Button
           type="submit"
-          disabled={ isSubmitting }
+          disabled={isSubmitting}
           className="w-full h-14 text-base font-semibold bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white shadow-md transition-all duration-200 hover:shadow-lg"
         >
-          { isSubmitting ? (
+          {isSubmitting ? (
             <>
               <Loader2 className="size-5 animate-spin mr-2" />
               Creating Greeting...
@@ -250,7 +252,7 @@ export function PersonalizationForm() {
               Create Greeting
               <ArrowRight className="size-5 ml-2" />
             </>
-          ) }
+          )}
         </Button>
       </form>
     </Card>

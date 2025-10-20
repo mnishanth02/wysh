@@ -291,8 +291,8 @@ export const createGreeting = mutation({
       throw new Error("Sender name must be 50 characters or less");
     }
 
-    if (args.customMessage && args.customMessage.length > 150) {
-      throw new Error("Custom message must be 150 characters or less");
+    if (args.customMessage && args.customMessage.length > 500) {
+      throw new Error("Custom message must be 500 characters or less");
     }
 
     // Server-side XSS prevention: validate no HTML/script content

@@ -1,16 +1,106 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" aria-labelledby="confettiTitle confettiDesc" role="img">
+    <title id="confettiTitle">Confetti Shapes</title>
+    <desc id="confettiDesc">Colorful celebration confetti including rectangles, circles, triangles, stars and sparkles</desc>
+
     <defs>
-        <path id="c" fill="currentColor" d="m5 0 5 8.66H0Z"/>
-        <path id="d" fill="currentColor" d="m5 0 1 4 4 1-4 1-1 4-1-4-4-1 4-1Z"/>
-        <path id="e" fill="currentColor" d="m5 0 1.18 3.82 3.82.3-2.91 2.79.85 3.8L5 8.18l-2.94 2.53.85-3.8L0 4.12l3.82-.3Z"/>
-        <circle id="b" cx="5" cy="5" r="5" fill="currentColor"/>
-        <rect id="a" width="10" height="6" fill="currentColor" rx="1"/>
+        <!-- Enhanced shape definitions with gradients -->
+        <linearGradient id="rectGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:currentColor;stop-opacity:1"/>
+            <stop offset="100%" style="stop-color:currentColor;stop-opacity:0.8"/>
+        </linearGradient>
+
+        <radialGradient id="circGrad" cx="30%" cy="30%" r="70%">
+            <stop offset="0%" style="stop-color:currentColor;stop-opacity:1"/>
+            <stop offset="100%" style="stop-color:currentColor;stop-opacity:0.85"/>
+        </radialGradient>
+
+        <!-- Shadow filter for depth -->
+        <filter id="confettiShadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="0.8" result="blur"/>
+            <feOffset in="blur" dx="0.5" dy="0.5" result="offsetBlur"/>
+            <feComponentTransfer in="offsetBlur" result="shadow">
+                <feFuncA type="linear" slope="0.4"/>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode in="shadow"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+
+        <!-- Shimmer filter -->
+        <filter id="shimmer" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation="0.3" result="blur"/>
+            <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+
+        <!-- Shape definitions with enhanced detail -->
+        <!-- Rectangle with rounded corners -->
+        <rect id="confettiRect" width="11" height="7" fill="url(#rectGrad)" rx="1.5" ry="1.5"/>
+
+        <!-- Circle with gradient -->
+        <circle id="confettiCircle" cx="5.5" cy="5.5" r="5.5" fill="url(#circGrad)"/>
+
+        <!-- Triangle -->
+        <path id="confettiTriangle" fill="currentColor" d="m5.5 0 5.5 9.5H0Z"/>
+
+        <!-- 4-point sparkle star -->
+        <path id="confettiSparkle" fill="currentColor" d="m5 0 1.2 3.8 3.8.3-2.9 2.8.8 3.8L5 8.2l-2.9 2.5.8-3.8L0 4.1l3.8-.3Z"/>
+
+        <!-- 8-point star -->
+        <path id="confettiStar" fill="currentColor" d="m5 0 1 4 4 1-4 1-1 4-1-4-4-1 4-1Z"/>
+
+        <!-- Diamond -->
+        <path id="confettiDiamond" fill="currentColor" d="m5 0 3 5-3 5-3-5Z"/>
+
+        <!-- Heart -->
+        <path id="confettiHeart" fill="currentColor" d="M5 9.5Q0 6 0 3.5T2.5 1 5 2.5 7.5 1 10 3.5 10 6Q10 6 5 9.5Z"/>
     </defs>
-    <g opacity=".3">
-        <use x="10" y="10" fill="#1e90ff" href="#a"/>
-        <use x="30" y="10" fill="#ff1493" href="#b"/>
-        <use x="50" y="10" fill="gold" href="#c"/>
-        <use x="70" y="10" fill="#32cd32" href="#d"/>
-        <use x="10" y="30" fill="#9370db" href="#e"/>
+
+    <!-- Confetti pieces with various shapes, colors and positions -->
+    <g filter="url(#confettiShadow)">
+        <!-- Row 1 -->
+        <use x="8" y="8" fill="#1e90ff" href="#confettiRect" opacity="0.85" transform="rotate(15 13.5 11.5)"/>
+        <use x="28" y="8" fill="#ff1493" href="#confettiCircle" opacity="0.9"/>
+        <use x="48" y="8" fill="#ffd700" href="#confettiTriangle" opacity="0.85" transform="rotate(-20 53.5 12.5)"/>
+        <use x="68" y="8" fill="#32cd32" href="#confettiStar" opacity="0.9" transform="rotate(25 73 13)"/>
+        <use x="86" y="8" fill="#9370db" href="#confettiSparkle" opacity="0.85"/>
+
+        <!-- Row 2 -->
+        <use x="5" y="25" fill="#ff6347" href="#confettiDiamond" opacity="0.9" transform="rotate(30 10 30)"/>
+        <use x="24" y="25" fill="#00ced1" href="#confettiRect" opacity="0.85" transform="rotate(-25 29.5 28.5)"/>
+        <use x="44" y="25" fill="#ff8c00" href="#confettiHeart" opacity="0.9" transform="rotate(10 49 30)"/>
+        <use x="64" y="25" fill="#98fb98" href="#confettiCircle" opacity="0.85"/>
+        <use x="84" y="25" fill="#dda0dd" href="#confettiTriangle" opacity="0.9" transform="rotate(35 89.5 29.5)"/>
+
+        <!-- Row 3 -->
+        <use x="12" y="42" fill="#ffb6c1" href="#confettiStar" opacity="0.85" transform="rotate(-15 17 47)"/>
+        <use x="32" y="42" fill="#87ceeb" href="#confettiCircle" opacity="0.9"/>
+        <use x="52" y="42" fill="#f0e68c" href="#confettiRect" opacity="0.85" transform="rotate(20 57.5 45.5)"/>
+        <use x="72" y="42" fill="#90ee90" href="#confettiSparkle" opacity="0.9" transform="rotate(-30 77 47)"/>
+
+        <!-- Row 4 -->
+        <use x="8" y="58" fill="#ffa07a" href="#confettiTriangle" opacity="0.85" transform="rotate(40 13.5 62.5)"/>
+        <use x="28" y="58" fill="#20b2aa" href="#confettiDiamond" opacity="0.9" transform="rotate(-10 33 63)"/>
+        <use x="48" y="58" fill="#db7093" href="#confettiCircle" opacity="0.85"/>
+        <use x="68" y="58" fill="#ffd700" href="#confettiHeart" opacity="0.9" transform="rotate(15 73 63)"/>
+        <use x="86" y="58" fill="#ff69b4" href="#confettiStar" opacity="0.85" transform="rotate(-25 91 63)"/>
+
+        <!-- Row 5 -->
+        <use x="15" y="75" fill="#00fa9a" href="#confettiRect" opacity="0.9" transform="rotate(10 20.5 78.5)"/>
+        <use x="35" y="75" fill="#ff4500" href="#confettiSparkle" opacity="0.85" transform="rotate(-35 40 80)"/>
+        <use x="55" y="75" fill="#1e90ff" href="#confettiCircle" opacity="0.9"/>
+        <use x="75" y="75" fill="#ffa500" href="#confettiTriangle" opacity="0.85" transform="rotate(25 80.5 79.5)"/>
+    </g>
+
+    <!-- Highlight shimmer on select pieces -->
+    <g filter="url(#shimmer)" opacity="0.6">
+        <circle cx="33.5" cy="11.5" r="2" fill="#fff"/>
+        <circle cx="69.5" cy="30.5" r="1.8" fill="#fff"/>
+        <circle cx="37" cy="47.5" r="2" fill="#fff"/>
+        <circle cx="53.5" cy="63.5" r="1.8" fill="#fff"/>
+        <circle cx="60.5" cy="80.5" r="2" fill="#fff"/>
     </g>
 </svg>

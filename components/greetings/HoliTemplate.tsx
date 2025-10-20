@@ -40,10 +40,10 @@ function HoliTemplateComponent({
 
   const _animationDuration =
     relationshipContext.animationSpeed === "slow"
-      ? 7
+      ? 8
       : relationshipContext.animationSpeed === "fast"
-        ? 4
-        : 5.5;
+        ? 6
+        : 7;
 
   // T121: Check for reduced motion preference
   const useReducedMotion = shouldUseReducedMotion();
@@ -85,12 +85,12 @@ function HoliTemplateComponent({
       // Trigger background fade via React state
       setBgVisible(true);
 
-      // Color splashes burst from center
+      // Color splashes burst from center (0-2.5s)
       tl.from(".color-splash", {
         scale: 0,
         opacity: 0,
-        duration: 1.2,
-        stagger: 0.1,
+        duration: 2,
+        stagger: 0.15,
         ease: "back.out(2)",
       }).to(
         ".color-splash",
@@ -101,16 +101,16 @@ function HoliTemplateComponent({
         "<",
       );
 
-      // Text animations
+      // Text animations - delayed until after animations (5s+)
       tl.from(
         ".greeting-text",
         {
           scale: 0.8,
           opacity: 0,
-          duration: 1,
+          duration: 1.2,
           ease: "elastic.out(1, 0.5)",
         },
-        "-=0.5",
+        5,
       );
 
       tl.from(
@@ -118,10 +118,10 @@ function HoliTemplateComponent({
         {
           x: -50,
           opacity: 0,
-          duration: 0.8,
+          duration: 1,
           ease: "power2.out",
         },
-        "-=0.3",
+        5.2,
       );
 
       tl.from(
@@ -129,10 +129,10 @@ function HoliTemplateComponent({
         {
           x: 50,
           opacity: 0,
-          duration: 0.8,
+          duration: 1,
           ease: "power2.out",
         },
-        "-=0.5",
+        5.4,
       );
     }, containerRef);
 

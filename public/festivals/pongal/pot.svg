@@ -1,22 +1,103 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120">
-    <title>Traditional Pongal Pot</title>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" aria-labelledby="potTitle potDesc" role="img">
+    <title id="potTitle">Traditional Pongal Pot</title>
+    <desc id="potDesc">Clay pot used for cooking Pongal sweet rice, decorated with traditional patterns and vibrant colors</desc>
+
     <defs>
-        <linearGradient id="a" x1="0%" x2="100%" y1="0%" y2="100%">
-            <stop offset="0%" style="stop-color:#e07a5f;stop-opacity:1"/>
-            <stop offset="50%" style="stop-color:#d2691e;stop-opacity:1"/>
-            <stop offset="100%" style="stop-color:#c05a40;stop-opacity:1"/>
+        <!-- Enhanced pot body gradient with metallic clay effect -->
+        <linearGradient id="potBodyGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#f08a6f;stop-opacity:1"/>
+            <stop offset="30%" style="stop-color:#e07a5f;stop-opacity:1"/>
+            <stop offset="70%" style="stop-color:#d2691e;stop-opacity:1"/>
+            <stop offset="100%" style="stop-color:#b85438;stop-opacity:1"/>
         </linearGradient>
-        <pattern id="b" width="10" height="10" x="0" y="0" patternUnits="userSpaceOnUse">
-            <circle cx="5" cy="5" r="1.5" fill="#ff6b35" opacity=".5"/>
+
+        <!-- Rim gradient -->
+        <linearGradient id="rimGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+            <stop offset="0%" style="stop-color:#f59a7f;stop-opacity:1"/>
+            <stop offset="50%" style="stop-color:#d2691e;stop-opacity:1"/>
+            <stop offset="100%" style="stop-color:#a0522d;stop-opacity:1"/>
+        </linearGradient>
+
+        <!-- Decorative pattern (dots) -->
+        <pattern id="dotPattern" width="12" height="12" x="0" y="0" patternUnits="userSpaceOnUse">
+            <circle cx="6" cy="6" r="2" fill="#ff8c42" opacity="0.6"/>
+            <circle cx="6" cy="6" r="1.2" fill="#ffa500" opacity="0.8"/>
         </pattern>
+
+        <!-- Shadow filter -->
+        <filter id="potShadow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur in="SourceAlpha" stdDeviation="2" result="blur"/>
+            <feOffset in="blur" dx="2" dy="3" result="offsetBlur"/>
+            <feComponentTransfer in="offsetBlur" result="shadow">
+                <feFuncA type="linear" slope="0.4"/>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode in="shadow"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+
+        <!-- Inner shadow for depth -->
+        <filter id="innerShadow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur"/>
+            <feComposite in="blur" in2="SourceAlpha" operator="out" result="inverse"/>
+            <feFlood flood-color="#000" flood-opacity="0.3" result="color"/>
+            <feComposite in="color" in2="inverse" operator="in" result="shadow"/>
+            <feComposite in="shadow" in2="SourceGraphic" operator="over"/>
+        </filter>
     </defs>
-    <path fill="url(#a)" stroke="#8b4513" stroke-width="1.5" d="m30 40-5 55q0 10 10 10h30q10 0 10-10l-5-55Z"/>
-    <path fill="#ff6b35" d="M28 43h44v3H28z" opacity=".9"/>
-    <path fill="#fdee00" d="M28 49h44v2.5H28z" opacity=".8"/>
-    <path fill="url(#b)" d="M28 55h44v35H28z"/>
-    <path fill="#ff8c42" d="M28 67h44v1.5H28zm0 8h44v1.5H28zm0 8h44v1.5H28z" opacity=".6"/>
-    <ellipse cx="50" cy="40" fill="#d2691e" rx="20" ry="4"/>
-    <ellipse cx="50" cy="40" fill="none" stroke="#8b4513" stroke-width="1.5" rx="20" ry="4"/>
-    <ellipse cx="50" cy="39.5" fill="#e89b7e" opacity=".6" rx="18" ry="3"/>
-    <ellipse cx="50" cy="105" opacity=".2" rx="25" ry="3"/>
+
+    <!-- Ground shadow -->
+    <ellipse cx="50" cy="107" fill="#00000030" opacity="0.5" rx="28" ry="4"/>
+
+    <!-- Main pot body with enhanced curves -->
+    <path fill="url(#potBodyGradient)" stroke="#8b4513" stroke-width="1.8" d="m29 40-5 56q0 11 11 11h30q11 0 11-11l-5-56Z" filter="url(#potShadow)"/>
+
+    <!-- Inner shadow effect on pot body -->
+    <path fill="none" stroke="#00000020" stroke-width="1.2" d="m30 42-4.5 54q0 9.5 9.5 9.5h30q9.5 0 9.5-9.5l-4.5-54"/>
+
+    <!-- Decorative bands -->
+    <path fill="#ff7f50" d="M27 43h46v3.5H27z" opacity="0.95"/>
+    <path fill="none" stroke="#ff6347" stroke-width="0.8" d="M28 44.5h44" opacity="0.7"/>
+
+    <path fill="#ffd700" d="M27 50h46v3H27z" opacity="0.9"/>
+    <path fill="none" stroke="#ffb300" stroke-width="0.8" d="M28 51.5h44" opacity="0.7"/>
+
+    <!-- Patterned section -->
+    <path fill="url(#dotPattern)" d="M27 56h46v36H27z"/>
+
+    <!-- Horizontal decorative lines -->
+    <g fill="#ff8c42" opacity="0.7">
+        <path d="M27 68h46v2H27z"/>
+        <path d="M27 77h46v2H27z"/>
+        <path d="M27 86h46v2H27z"/>
+    </g>
+
+    <!-- Vertical accent stripes -->
+    <g stroke="#ff6b35" stroke-width="0.5" opacity="0.4">
+        <line x1="35" x2="33" y1="56" y2="92"/>
+        <line x1="50" x2="50" y1="56" y2="92"/>
+        <line x1="65" x2="67" y1="56" y2="92"/>
+    </g>
+
+    <!-- Pot rim (top opening) -->
+    <ellipse cx="50" cy="40" fill="url(#rimGradient)" rx="21" ry="4.5"/>
+    <ellipse cx="50" cy="40" fill="none" stroke="#8b4513" stroke-width="1.8" rx="21" ry="4.5"/>
+
+    <!-- Inner rim highlight -->
+    <ellipse cx="50" cy="39.5" fill="#f5a582" opacity="0.7" rx="19" ry="3.5"/>
+    <ellipse cx="50" cy="39" fill="#ffc9a8" opacity="0.5" rx="16" ry="2.5"/>
+
+    <!-- Rim edge detail -->
+    <ellipse cx="50" cy="40.5" fill="#b85438" opacity="0.6" rx="20" ry="1.5"/>
+
+    <!-- Pot base shadow detail -->
+    <ellipse cx="50" cy="106" fill="#c05a40" opacity="0.4" rx="24" ry="2"/>
+
+    <!-- Decorative symbols on pot -->
+    <g fill="#ffd700" opacity="0.6">
+        <circle cx="40" cy="62" r="1.5"/>
+        <circle cx="60" cy="62" r="1.5"/>
+        <circle cx="50" cy="72" r="1.5"/>
+    </g>
 </svg>

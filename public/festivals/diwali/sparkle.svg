@@ -1,11 +1,82 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-labelledby="sparkleTitle sparkleDesc" role="img">
+    <title id="sparkleTitle">Sparkle</title>
+    <desc id="sparkleDesc">A shimmering sparkle effect representing light and celebration</desc>
+
     <defs>
-        <radialGradient id="a" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" style="stop-color:#fff;stop-opacity:1"/>
-            <stop offset="50%" style="stop-color:gold;stop-opacity:1"/>
-            <stop offset="100%" style="stop-color:orange;stop-opacity:0"/>
+        <!-- Enhanced radial gradient with more vibrant colors -->
+        <radialGradient id="sparkleGradient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+            <stop offset="25%" style="stop-color:#fffacd;stop-opacity:1"/>
+            <stop offset="50%" style="stop-color:#ffd700;stop-opacity:1"/>
+            <stop offset="75%" style="stop-color:#ffa500;stop-opacity:0.8"/>
+            <stop offset="100%" style="stop-color:#ff8c00;stop-opacity:0"/>
         </radialGradient>
+
+        <!-- Secondary gradient for inner core -->
+        <radialGradient id="coreGradient" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" style="stop-color:#ffffff;stop-opacity:1"/>
+            <stop offset="50%" style="stop-color:#ffffe0;stop-opacity:0.95"/>
+            <stop offset="100%" style="stop-color:#ffd700;stop-opacity:0.9"/>
+        </radialGradient>
+
+        <!-- Glow filter for enhanced luminosity -->
+        <filter id="sparkleGlow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="1.5" result="blur"/>
+            <feComponentTransfer in="blur" result="glow">
+                <feFuncA type="linear" slope="2"/>
+            </feComponentTransfer>
+            <feMerge>
+                <feMergeNode in="glow"/>
+                <feMergeNode in="glow"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+
+        <!-- Shimmer filter -->
+        <filter id="shimmer" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="0.5" result="blur"/>
+            <feColorMatrix in="blur" type="saturate" values="1.5" result="saturate"/>
+            <feMerge>
+                <feMergeNode in="saturate"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
     </defs>
-    <path fill="url(#a)" d="m12 0 1.5 10.5L24 12l-10.5 1.5L12 24l-1.5-10.5L0 12l10.5-1.5Z"/>
-    <circle cx="12" cy="12" r="3" fill="#fff" opacity=".8"/>
+
+    <!-- Outer glow halo -->
+    <circle cx="12" cy="12" r="9" fill="url(#sparkleGradient)" opacity="0.4" filter="url(#sparkleGlow)"/>
+
+    <!-- Main sparkle star with enhanced paths -->
+    <path fill="url(#sparkleGradient)" d="m12 0 1.8 10.2L24 12l-10.2 1.8L12 24l-1.8-10.2L0 12l10.2-1.8Z" opacity="0.95" filter="url(#shimmer)"/>
+
+    <!-- Secondary smaller sparkle for depth -->
+    <path fill="url(#coreGradient)" d="m12 3 1.2 7.8L21 12l-7.8 1.2L12 21l-1.2-7.8L3 12l7.8-1.2Z" opacity="0.9"/>
+
+    <!-- Inner core circles for brightness -->
+    <circle cx="12" cy="12" r="4" fill="url(#coreGradient)" opacity="0.85" filter="url(#sparkleGlow)"/>
+    <circle cx="12" cy="12" r="2.5" fill="#ffffff" opacity="0.9"/>
+
+    <!-- Accent rays (4 smaller rays between main points) -->
+    <g fill="#fffacd" opacity="0.7">
+        <ellipse cx="12" cy="5" rx="0.8" ry="2"/>
+        <ellipse cx="19" cy="12" rx="2" ry="0.8"/>
+        <ellipse cx="12" cy="19" rx="0.8" ry="2"/>
+        <ellipse cx="5" cy="12" rx="2" ry="0.8"/>
+    </g>
+
+    <!-- Diagonal accent rays -->
+    <g fill="#ffd700" opacity="0.6" transform="rotate(45 12 12)">
+        <ellipse cx="12" cy="6" rx="0.6" ry="1.5"/>
+        <ellipse cx="18" cy="12" rx="1.5" ry="0.6"/>
+        <ellipse cx="12" cy="18" rx="0.6" ry="1.5"/>
+        <ellipse cx="6" cy="12" rx="1.5" ry="0.6"/>
+    </g>
+
+    <!-- Bright highlight dots at tips -->
+    <g fill="#ffffff" opacity="0.8">
+        <circle cx="12" cy="1" r="0.8"/>
+        <circle cx="23" cy="12" r="0.8"/>
+        <circle cx="12" cy="23" r="0.8"/>
+        <circle cx="1" cy="12" r="0.8"/>
+    </g>
 </svg>

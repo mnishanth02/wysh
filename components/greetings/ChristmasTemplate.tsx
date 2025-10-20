@@ -90,32 +90,32 @@ const SnowGlobeVariant = ({
 
       setBgVisible(true);
 
-      // Snowflakes falling
+      // Snowflakes falling (0-2.5s, extended for visual impact)
       tl.from(".snowflake", {
         y: -100,
         opacity: 0,
-        duration: animationDuration * 0.3,
-        stagger: 0.1,
+        duration: animationDuration * 0.35,
+        stagger: 0.12,
         ease: "power1.in",
       });
 
-      // Text animations
+      // Text animations - delayed until after snowflakes (5s+)
       tl.from(
         ".greeting-text",
-        { y: 30, opacity: 0, duration: 1, ease: "power2.out" },
-        "-=1",
+        { y: 30, opacity: 0, duration: 1.2, ease: "power2.out" },
+        5,
       );
 
       tl.from(
         ".recipient-name",
-        { y: 20, opacity: 0, duration: 0.8, ease: "power2.out" },
-        "-=0.3",
+        { y: 20, opacity: 0, duration: 1, ease: "power2.out" },
+        5.3,
       );
 
       tl.from(
         ".sender-name",
-        { y: 20, opacity: 0, duration: 0.8, ease: "power2.out" },
-        "-=0.5",
+        { y: 20, opacity: 0, duration: 1, ease: "power2.out" },
+        5.6,
       );
 
       // Lights twinkling

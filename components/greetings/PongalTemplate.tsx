@@ -100,66 +100,66 @@ function PongalTemplateComponent({
 
       // Phase callbacks for conditional rendering
       tl.call(() => setAnimationPhase("sunrise"), [], 0);
-      tl.addLabel("sunriseComplete", 2);
+      tl.addLabel("sunriseComplete", 3);
 
       tl.call(() => setAnimationPhase("kolam"), [], "sunriseComplete");
-      tl.addLabel("kolamComplete", 4);
+      tl.addLabel("kolamComplete", 5.5);
 
-      tl.call(() => setAnimationPhase("pot"), [], 3);
-      tl.addLabel("potBoiling", 6);
+      tl.call(() => setAnimationPhase("pot"), [], 4);
+      tl.addLabel("potBoiling", 7);
 
-      tl.call(() => setAnimationPhase("celebration"), [], 4);
+      tl.call(() => setAnimationPhase("celebration"), [], 5);
 
-      // T080: Text reveal sequence (6-10s)
-      tl.call(() => setAnimationPhase("text"), [], 6);
+      // T080: Text reveal sequence (7.5s+, delayed until after animations)
+      tl.call(() => setAnimationPhase("text"), [], 7.5);
 
-      // Greeting text "Happy Pongal" (6-7s)
+      // Greeting text "Happy Pongal" (7.5-8.5s)
       tl.from(
         ".greeting-text",
         {
           y: 50,
           opacity: 0,
           scale: 0.8,
-          duration: 1,
+          duration: 1.2,
           ease: "back.out(1.5)",
         },
-        6,
+        7.5,
       );
 
-      // Recipient name (7-8s)
+      // Recipient name (8.5-9.5s)
       tl.from(
         ".recipient-name",
         {
           y: 30,
           opacity: 0,
-          duration: 1,
+          duration: 1.2,
           ease: "power2.out",
         },
-        7,
+        8.5,
       );
 
-      // Message body (8-9s)
+      // Message body (9.5-10.5s)
       tl.from(
         ".message-body",
         {
           y: 20,
           opacity: 0,
-          duration: 1,
+          duration: 1.2,
           ease: "power2.out",
         },
-        8,
+        9.5,
       );
 
-      // Sender name (9-10s)
+      // Sender name (10.5-11.5s)
       tl.from(
         ".sender-name",
         {
           y: 20,
           opacity: 0,
-          duration: 1,
+          duration: 1.2,
           ease: "power2.out",
         },
-        9,
+        10.5,
       );
     }, containerRef);
 
